@@ -1,0 +1,161 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex flex-row">
+                    <div class="col-4">
+                        <div class="row m-2">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-center">
+                                    <img src="~/img/image-not-available.jpg" class="rounded img-fluid w-100 h-100" alt="..." id="imgCatalog" />
+                                </div>
+                            </div>
+                        </div>
+                     
+                    </div>
+                    <div class="col-8">
+                       @*  <div class="row">
+                            <label class="col-2 col-form-label text-end fw-bold"> Catalogo: </label>
+                            <div class="col-3">
+                                <label class="col-form-label" id="labelCatalogo"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-2 col-form-label text-end fw-bold"> Classe: </label>
+                            <div class="col-3">
+                                <label class="col-form-label" id="labelClasse"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-2 col-form-label text-end fw-bold"> Tipo: </label>
+                            <div class="col-3">
+                                <label class="col-form-label" id="labelTipo"></label>
+                            </div>
+                        </div> *@
+                        <div class="row">
+                            <label class="col-2 col-form-label text-end fw-bold"> Codigo: </label>
+                            <div class="col-10">
+                                <label class="col-form-label" id="labelCodigo"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-2 col-form-label text-end fw-bold"> Item: </label>
+                            <div class="col-10">
+                                <label class="col-form-label" id="labelItem"></label>
+                            </div>
+                        </div>
+                        <form class="row" id="formInsertImage" action="InsertCatalogImage" method="post" enctype="multipart/form-data">
+                            <div class="col-8">
+                                <input type="hidden" id="inputIdCatalogo" name="IdCatalogo">
+                                <input class="form-control" type="file" id="formFile" name="imgFile">
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-info" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+          @*       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row mb-2">
+        <label for="ddlCatalogo" class="col-1 col-form-label text-end fw-bold"> Catalogo: </label>
+        <div class="col-2">
+            <select id="ddlCatalogo" onchange="ddlCatalogoChangedGestor(this)" class="form-select">
+                <option value="">Selecionar..</option>
+                <option value="1">Ferramentas</option>
+                <option value="2">EPI</option>
+                <option value="3">Consumiveis</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="ddlClasse" class="col-1 col-form-label text-end fw-bold"> Classe: </label>
+        <div class="col-2">
+            <select id="ddlClasse" onchange="ddlClasseChangedGestor(this)" class="form-select">
+                <option value="">Open this select menu</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="ddlTipo" class="col-1 col-form-label text-end fw-bold"> Tipo: </label>
+        <div class="col-2">
+            <select id="ddlTipo" class="form-select">
+                <option value="">Open this select menu</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="inputCodigo" class="col-1 col-form-label text-end fw-bold"> Codigo: </label>
+        <div class="col-3">
+            <input class="form-control" id="inputCodigo" oninput="formataCodigoProduto(this, event);" maxlength="14">
+        </div>
+    </div>
+    <div class="row mb-2">
+        <label for="inputItem" class="col-1 col-form-label text-end fw-bold"> Item: </label>
+        <div class="col-3">
+            <input class="form-control" id="inputItem">
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-4 d-flex justify-content-end">
+            <button class="btn btn-info text-white" id="btnSubmitSearch" type="submit">
+                <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSpanSearch" aria-hidden="true"></span>
+                Search
+            </button>
+            @* <button class="btn btn-danger text-white" id="btnLimpar" type="reset">Limpar</button> *@
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle">Id</th>
+                        <th class="text-center align-middle">Codigo</th>
+                        <th class="text-center align-middle">Item</th>
+                        <th class="text-center align-middle"></th>
+                    </tr>
+                </thead>
+                <tbody id="catalogTable">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-4 visually-hidden" id="paginationDiv">
+        <div class="col-12 d-flex justify-content-center align-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center" id="paginationControls">
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/adminside/imagecatalogjs.js"></script>

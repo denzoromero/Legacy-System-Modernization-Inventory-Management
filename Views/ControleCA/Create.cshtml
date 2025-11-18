@@ -1,0 +1,91 @@
+﻿@model FerramentariaTest.Entities.Catalogo
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Catalogo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdCategoria" class="control-label"></label>
+                <input asp-for="IdCategoria" class="form-control" />
+                <span asp-validation-for="IdCategoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorMetro" class="control-label"></label>
+                <input asp-for="PorMetro" class="form-control" />
+                <span asp-validation-for="PorMetro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorAferido" class="control-label"></label>
+                <input asp-for="PorAferido" class="form-control" />
+                <span asp-validation-for="PorAferido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorSerial" class="control-label"></label>
+                <input asp-for="PorSerial" class="form-control" />
+                <span asp-validation-for="PorSerial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestricaoEmprestimo" class="control-label"></label>
+                <input asp-for="RestricaoEmprestimo" class="form-control" />
+                <span asp-validation-for="RestricaoEmprestimo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImpedirDescarte" class="control-label"></label>
+                <input asp-for="ImpedirDescarte" class="form-control" />
+                <span asp-validation-for="ImpedirDescarte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HabilitarDescarteEPI" class="control-label"></label>
+                <input asp-for="HabilitarDescarteEPI" class="form-control" />
+                <span asp-validation-for="HabilitarDescarteEPI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeRetornoAutomatico" class="control-label"></label>
+                <input asp-for="DataDeRetornoAutomatico" class="form-control" />
+                <span asp-validation-for="DataDeRetornoAutomatico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataRegistro" class="control-label"></label>
+                <input asp-for="DataRegistro" class="form-control" />
+                <span asp-validation-for="DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ativo" class="control-label"></label>
+                <input asp-for="Ativo" class="form-control" />
+                <span asp-validation-for="Ativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

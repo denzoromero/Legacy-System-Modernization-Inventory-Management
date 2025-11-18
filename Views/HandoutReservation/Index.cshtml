@@ -1,0 +1,121 @@
+﻿
+
+@* @await Component.InvokeAsync("ValuePartial") *@
+
+<h1>Reservation</h1>
+
+<!-- Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    TERMO DE ADESÃO AO USO DO CRACHÁ PARA RETIRADA DE FERRAMENTAS E EPIs
+                </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+                <ol class="list-group list-group-numbered list-group-flush">
+                    <li class="list-group-item">
+                        <p>
+                        O crachá é <b> de uso pessoal, individual e intransferível,</b> sendo de minha responsabilidade
+                        exclusiva;
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                        O crachá será utilizado tanto para fins de <b>identificação e acesso ao estaleiro,</b> quanto para a
+                        <b>retirada de itens do almoxarifado, tais como ferramentas e EPIs/ EPCs </b> necessários ao
+                        desempenho das minhas atividades laborais;
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                        O colaborador é responsável por zelar pelos seus materiais e equipamentos de trabalho,
+                        incluindo o crachá, e deve comunicar imediatamente ao setor de Recursos Humanos em caso
+                        de perda, roubo ou extravio e, se for o caso, arcar com os custos de reposição, conforme as
+                        normas internas da empresa.
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                        O uso indevido, compartilhamento ou qualquer forma de transferência do crachá a terceiros
+                        poderá acarretar <b>sanções disciplinares,</b> conforme as normas internas da empresa;
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                        Comprometo-me a devolver o crachá funcional à empresa em caso de desligamento,
+                        transferência de função ou qualquer outra situação que implique no encerramento ou
+                        suspensão do vínculo com a empresa ou na desnecessidade de sua utilização.
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                        Declaro, ainda, que <b>recebi da empresa BrasFELS, para meu uso obrigatório, os
+                            Equipamentos de Proteção Individual e Coletivas (EPIs e EPCs)
+                        </b> inerentes à minha atividade,
+                        e obrigo-me a utilizá-los corretamente durante o tempo em que permanecerem à minha
+                        disposição, observando as medidas gerais de disciplina e uso que integram a NR-06 sobre
+                        Equipamentos de Proteção Individual da Portaria nº 3214 de 08 de junho de 1978;
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            Declaro estar ciente de que <b>devo devolver os equipamentos de trabalho e proteção no ato
+                                do meu desligamento da empresa,
+                            </b> e que, na eventualidade de perda, extravio ou não
+                            devolução, concordo com o desconto do valor correspondente em folha de pagamento,
+                            conforme os termos do art. 462, §1º da Consolidação das Leis do Trabalho (CLT).
+                        </p>
+                    </li>
+                    <li class="list-group-item">
+                        <p>
+                            <b>Declaro estar ciente e de acordo com as normas e políticas internas da empresa
+                            relacionadas ao uso do crachá funcional e à retirada de EPIs e ferramentas e comprometome cumpri-las integralmente e a zelar pela integridade do crachá e equipamentos
+                            entregues e seguir as orientações estabelecidas pela empresa quanto ao seu uso.
+                            </b>
+                        </p>
+                    </li>
+                </ol>
+      </div>
+      <div class="modal-footer d-flex justify-content-end">
+                <span class="spinner-border me-2 visually-hidden" id="loadingTermsCondition"></span>
+          <div class="col-6">
+               <input type="text" class="form-control me-2" id="TermCracha" name="icard" autocomplete="off" style="-webkit-text-security: disc;">
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#termsModal">
+    Launch demo modal
+</button> *@
+
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <form asp-action="CompleteReservationPage" class="w-100" id="formEmployeeCracha">
+        <div class="row mb-2">
+            <div class="d-flex justify-content-center align-items-center">
+                    <label for="Cracha" class="col-2 col-form-label text-end fw-bold me-2">Cracha:</label>
+                    <span class="spinner-border me-2 visually-hidden" id="loadingConfirmation"></span>
+                    <div class="col-4">
+                    <input type="text" class="form-control me-2" id="CrachaInput" name="icard" autocomplete="off" style="-webkit-text-security: disc;">
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-info text-white ms-3 d-flex justify-content-center align-content-center" id="btnSearch">Buscar</button>
+                    </div>        
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@* <script src="~/lib/index.min.js"></script> *@
+<script>
+    let openTermsValidation = @(ViewBag.OpenTermsModal != null ? "true" : "false");
+</script>
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/handout/indexhandoutjs.js"></script>
+

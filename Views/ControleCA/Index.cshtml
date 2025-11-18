@@ -1,0 +1,127 @@
+﻿@model IPagedList<FerramentariaTest.Models.CatalogoViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Controle de C.A.</h1>
+
+@await Component.InvokeAsync("ValuePartial")
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}*@
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+
+<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" style="color: white;">
+    <img src="~/img/search.svg" /> Search 
+</button>
+
+<!-- Modal -->
+<form asp-action="GetControleCA" method="get">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Search</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Codigo</label>
+                        <div class="col-sm-7">
+                            <input name="CodigoCA" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                        <div class="col-sm-7">
+                            <input name="ItemCA" class="form-control form-control-sm" id="colFormLabelSm">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Numero C.A</label>
+                        <div class="col-sm-7">
+                            <input name="NumeroCA" class="form-control form-control-sm" id="colFormLabelSm">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary"> <img src="~/img/search.svg" /> Search </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Nome
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                        <a asp-action="Details" asp-route-id="@item.Id"><img src="~/img/plus-circle-fill.svg" /></a>
+                        @* <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if (Model != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
+}
+

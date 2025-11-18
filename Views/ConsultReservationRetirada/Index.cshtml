@@ -1,0 +1,212 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="container-fluid">
+    <ul class="nav nav-pills mb-5 d-flex justify-content-center" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Chapa</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Order No</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+            <div class="container-fluid">
+                <form class="row mt-3" id="consultPorChapa">
+                    <label class="col-3 col-form-label text-end fw-bold">Chapa:</label>
+                    <div class="col-3">
+                        <input class="form-control" id="inputChapaFilter" />
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-info text-white" id="btnSubmitSearch" type="submit">
+                            <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSpanSearch" aria-hidden="true"></span>
+                            Search
+                        </button>
+                        <button class="btn btn-danger text-white" id="btnLimpar" type="reset">Limpar</button>
+                    </div>
+                
+                    <div class="row border border-success rounded-2 mt-4">
+                        <div class="row d-flex justify-content-center m-3" data-bs-toggle="collapse" href="#collapseExample">
+                            <h5 class="ms-4 fw-bold">Filtros:</h5>
+                        </div>
+                        <div class="collapse" id="collapseExample">
+                            <div class="d-flex flex-row">
+                                <div class="col-6">
+                                    <div class="row mb-3">
+                                        <label for="ddlCatalogo" class="col-2 col-form-label text-end fw-bold"> Catalogo: </label>
+                                        <div class="col-6">
+                                            <select id="ddlCatalogo" onchange="ddlCatalogoChangedGestor(this)" class="form-select">
+                                                <option value="">Selecionar..</option>
+                                                <option value="1">Ferramentas</option>
+                                                <option value="2">EPI</option>
+                                                <option value="3">Consumiveis</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="ddlClasse" class="col-2 col-form-label text-end fw-bold"> Classe: </label>
+                                        <div class="col-6">
+                                            <select id="ddlClasse" onchange="ddlClasseChangedGestor(this)" class="form-select">
+                                                <option value="">Open this select menu</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="ddlTipo" class="col-2 col-form-label text-end fw-bold"> Tipo: </label>
+                                        <div class="col-6">
+                                            <select id="ddlTipo" class="form-select">
+                                                <option value="">Open this select menu</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row mb-3">
+                                        <label for="inputCodigo" class="col-2 col-form-label text-end fw-bold"> Codigo: </label>
+                                        <div class="col-6">
+                                            <input class="form-control" id="inputCodigo" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="inputItem" class="col-2 col-form-label text-end fw-bold"> Item: </label>
+                                        <div class="col-6">
+                                            <input class="form-control" id="inputItem">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                
+                    </div>
+                </form>
+            </div>
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="d-flex justify-content-end">
+                        <div class="col-1 bg-success bg-opacity-50 d-flex justify-content-center align-items-center rounded rounded-4 me-2">
+                            <label class="col-form-label text-center fw-bold">Concluído</label>
+                        </div>
+                        <div class="col-1 bg-danger bg-opacity-50 d-flex justify-content-center rounded rounded-4 ">
+                            <label class="text-center fw-bold fs-6 rounded rounded-4">Expired/Cancellado</label>
+                        </div>
+                    </div>                                    
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row mt-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="consultEmployeeTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center align-middle">Classe</th>
+                                    <th class="text-center align-middle">Codigo</th>
+                                    <th class="text-center align-middle">Item</th>
+                                    <th class="text-center align-middle">Membro</th>
+                                    <th class="text-center align-middle">Lider</th>
+                                    <th class="text-center align-middle">Qtd</th>
+                                    <th class="text-center align-middle">Localização</th>
+                                    <th class="text-center align-middle">OrderNo</th>
+                                    <th class="text-center align-middle">Tipo</th>
+                                    <th class="text-center align-middle">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultEmployeeBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+            <div class="container-fluid">
+
+                <form class="row mt-3" id="consultationForm">
+                    <label class="col-3 col-form-label text-end fw-bold">No. Pedido:</label>
+                    <div class="col-3">
+                        <input class="form-control" id="inputFilter" />
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-info text-white" id="btnOrderNo" type="submit">
+                            <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSpanSearchOrder" aria-hidden="true"></span>
+                            Search
+                        </button>
+                    </div>
+                </form>
+
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <label class="col-form-label text-end fw-bold">No. Pedido:</label>
+                            <label class="col-form-label text-end" id="labelOrderNo"></label>
+                        </div>
+                        <div class="col-6">
+                            <label class="col-form-label text-end fw-bold">Tipo:</label>
+                            <label class="col-form-label text-end" id="labelType"></label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <label class="col-form-label text-end fw-bold">Data Registro:</label>
+                            <label class="col-form-label text-end" id="labelDateRegistration"></label>
+                        </div>
+                        <div class="col-6">
+                            <label class="col-form-label text-end fw-bold">Date Validade:</label>
+                            <label class="col-form-label text-end" id="labelDateExpiration"></label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <label class="col-form-label text-end fw-bold">Leader:</label>
+                            <label class="col-form-label text-end" id="labelLeader"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row mt-4 d-flex justify-content-end">
+                        <div class="col-1 bg-success bg-opacity-50 d-flex justify-content-center align-items-center rounded rounded-4 me-2">
+                            <label class="col-form-label text-center fw-bold">Concluído</label>
+                        </div>
+                        <div class="col-1 bg-danger bg-opacity-50 d-flex justify-content-center rounded rounded-4 ">
+                            <label class="text-center fw-bold fs-6 rounded rounded-4">Expired/Cancellado</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row mt-4">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="ConsultTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center align-middle">Classe</th>
+                                        <th class="text-center align-middle">Codigo</th>
+                                        <th class="text-center align-middle">Nome</th>
+                                        <th class="text-center align-middle">Membro</th>
+                                        <th class="text-center align-middle">Qtd</th>
+                                        <th class="text-center align-middle">Localização</th>
+                                        <th class="text-center align-middle">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ConsultBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="~/views_js/universalhelper.js"></script>
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/consultreservationretirada/consultreservationretiradajs.js"></script>

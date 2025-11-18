@@ -1,0 +1,141 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="modal fade" id="addNewLeader" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Insert Leader</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4 mb-4 ms-2">
+                        <input type="text" class="form-control" placeholder="Chapa/Nome" id="addNewLeaderInput">
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-info text-white" id="btnSearchEmployee">Search</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <form id="leaderInformationForm" asp-action="InsertLeader" method="POST">
+                        <div class="col-12">
+                            <div class="d-flex align-items-start">
+                                <div class="col-3 d-flex align-content-center justify-content-center border border-primary">
+                                    <img src="~/img/image-not-available.jpg" class="rounded img-cover" id="imgEmployee" />
+                                </div>
+                                <div class="col-9">
+                                    <div>
+                                        <label class="col-form-label fw-bold ms-1">Chapa:</label>
+                                        <label id="chapaLeaderLabel"></label>
+                                        <input type="hidden" id="chapaMemberHidden" name="ChapaMember" />
+                                        <input type="hidden" id="codPessoaMemberHidden" name="CodPessoaMember" />
+                                        <input type="hidden" id="terceiroMemberHidden" name="IdTerceiroMember" />
+                                        <div class="invalid-feedback" id="chapaLeaderFeedback">
+                                            Please search for the employee first.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="col-form-label fw-bold ms-1">Nome:</label>
+                                        <label id="nomeLeaderLabel"></label>
+                                        <input type="hidden" id="nomeHidden" name="NomeMember" />
+                                    </div>
+                                    <div>
+                                        <label class="col-form-label fw-bold ms-1">Cod Situação:</label>
+                                        <label id="situacaoLeaderLabel"></label>
+                                        <input type="hidden" id="situacaoLeaderHidden" name="MemberSituacao" />
+                                        <div class="invalid-feedback" id="situacaoLeaderFeedback">
+                                            Cannot add as leader because he is already dismissed.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="col-form-label fw-bold ms-1">Função:</label>
+                                        <label id="funcaoLeaderLabel"></label>
+                                        <input type="hidden" id="funcaoLeaderHidden" name="MemberFuncao" />
+                                    </div>
+                                    <div>
+                                        <label class="col-form-label fw-bold ms-1">Secao:</label>
+                                        <label id="secaoLeaderLabel"></label>
+                                        <input type="hidden" id="secaoLeaderHidden" name="MemberSecao" />
+                                        <input type="hidden" id="UserId" name="IdUser" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveButton" style="display:none;">Insert Leader</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="d-flex justify-content-between">
+            <div class="col-6 d-flex">
+                <div class="col-8">
+                    <input class="form-control" id="filterSearchLeader" name="Filtro" placeholder="Chapa/Nome">
+                </div>
+                <button type="button" class="btn btn-info text-white" id="btnSearchLeader">
+                    <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSearchLeader"></span>
+                    Search
+                </button>
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                <div class="col-2">
+                    <button type="submit" class="btn btn-info me-2 d-flex justify-content-center align-content-center text-white" data-bs-toggle="modal" data-bs-target="#addNewLeader">Add Leader</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@*     <form asp-action="UploadCatalogImage" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Default file input example</label>
+            <input class="form-control" type="file" id="formFile" name="imgFile">
+        </div>
+        <button class="btn btn-info" type="submit"> upload </button>
+    </form> *@
+
+
+        <div class="row mt-4 d-flex justify-content-end">
+            <div class="col-1 bg-danger bg-opacity-50 d-flex justify-content-center rounded rounded-4 ">
+                <label class="text-center fw-bold fs-6 rounded rounded-4">Inativado</label>
+            </div>
+        </div>
+
+
+    <div class="row mt-4">
+        <table class="table table-hover" id="leaderTable">
+            <thead>
+                <tr>
+                    <th class="text-center align-middle">Id</th>
+                    <th class="text-center align-middle">Chapa</th>
+                    <th class="text-center align-middle">Nome</th>
+                    <th class="text-center align-middle">Funcao</th>
+                    <th class="text-center align-middle">Secao</th>
+                    <th class="text-center align-middle"></th>
+                </tr>
+            </thead>
+            <tbody id="leaderTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row mt-4">
+
+    </div>
+</div>
+
+
+
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/adminside/indexadmin.js"></script>

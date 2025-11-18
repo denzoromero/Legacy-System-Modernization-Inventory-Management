@@ -1,0 +1,50 @@
+﻿@model FerramentariaTest.Models.ObraViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Obra</h4>
+<hr />
+
+@*<div id="myAlert" class="alert alert-warning" role="alert" style="@(ViewBag.ShowAlertWarning == true ? "display: block;" : "display: none;")">
+    <img src="~/img/exclamation-triangle.svg" />   A simple warning alert—check it out!
+</div>
+*@
+
+<form asp-action="Create">
+    @Html.AntiForgeryToken()
+    <div class="col-md-3">
+
+        <div class="row mb-2">
+            <label asp-for="Codigo" class="col-sm-3 col-form-label col-form-label-sm">Codigo</label>
+            <div class="col-sm-7">
+                <input asp-for="Codigo" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+            <span asp-validation-for="Codigo" class="text-danger"></span>
+        </div>
+
+        <div class="row mb-2">
+            <label asp-for="Nome" class="col-sm-3 col-form-label col-form-label-sm">Nome</label>
+            <div class="col-sm-7">
+                <input asp-for="Nome" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" /> Back </button>
+        </a>
+
+
+        <button type="submit" class="btn btn-primary" style="margin-left: 10px;">
+            <img src="~/img/plus-lg.svg" alt="Plus Icon"> Create
+        </button>
+    </div>
+</form>
+

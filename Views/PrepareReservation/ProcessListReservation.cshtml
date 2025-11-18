@@ -1,0 +1,169 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@* @model List<FerramentariaTest.Models.ReservedProductModel>? *@
+@model ProcessListReservationModel
+
+
+<div class="modal fade" id="popoverModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEmployeeTitle">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="d-flex align-items-start">
+                            @*  <div class="col-3 d-flex align-content-center justify-content-center border border-primary">
+                            <img src="~/img/image-not-available.jpg" class="rounded img-cover" alt="..." id="imgEmployee" />
+                            </div> *@
+                            <div class="col-9">
+                                <div>
+                                    <label class="col-form-label fw-bold">Chapa:</label>
+                                    <label class="col-form-label" id="chapaLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Nome:</label>
+                                    <label class="col-form-label" id="nomeLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Cod Situacao:</label>
+                                    <label class="col-form-label" id="situacaoLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Função:</label>
+                                    <label class="col-form-label" id="funcaoLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Seção:</label>
+                                    <label class="col-form-label" id="secaoLabel"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Transferencia</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="reservationTransferTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center align-middle">Pedido No</th>
+                            <th class="text-center align-middle">Codigo</th>
+                            <th class="text-center align-middle">Produto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationTransferBody">
+
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-4 d-flex justify-content-end">
+                        <label class="col-form-label fw-bold">Ferramentaria</label>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-select" id="transferSelect">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12 d-flex justify-content-center">
+                       @* <input placeholder="Observacao" class="form-control" id="inputObs"/> *@
+                        <textarea class="form-control" placeholder="Observacao" id="inputObs"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning text-white" id="btnTransfer">
+                    <span class="spinner-border spinner-border-sm me-1 visually-hidden" id="loadingConfirmation"></span>
+                    Transferir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row ms-4 mb-3">
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-secondary me-2" id="GoBackToIndex" type="button" onclick="goBackToIndex()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+            </svg>
+            Voltar
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="d-flex align-items-center justify-content-center visually-hidden" id="loadingDivision">
+        <div class="spinner-grow me-2" id="spinnerDiv"></div>
+        <strong role="status" id="spinnerDivName"></strong>
+    </div>
+</div>
+
+<form asp-action="FinalizeReservations" method="post" id="formFinalReservation">
+
+<input type="hidden" value="@Model.TransactionId" name="TransactionId"/>
+<div class="row mb-3">
+    <table class="table" id="ReservationConfirmationTable">
+        <thead>
+            <tr>
+                <th class="text-center align-middle">#</th>
+                <th class="text-center align-middle">Codigo</th>
+                <th class="text-center align-middle">Produto</th>
+                <th class="text-center align-middle">Estoque</th>
+                <th class="text-center align-middle">Qtd</th>
+                <th class="text-center align-middle">Data Retorno</th>
+                <th class="text-center align-middle">Solicitante</th>
+                <th class="text-center align-middle">Liberador</th>
+                <th class="text-center align-middle">Observação</th>
+                <th class="text-center align-middle"></th>
+            </tr>
+        </thead>
+        <tbody id="ReservationConfirmationBody">
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="row">
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-info justify-content-end me-4 text-white" id="ProcessSubmitBtn" type="submit">
+           <span class="spinner-border spinner-border-sm me-1 visually-hidden" id="loadingFull"></span>
+           Processar
+        </button>
+    </div>
+</div>
+    
+</form>
+
+
+
+
+
+
+<script type="text/javascript">
+    var passeddata = @Html.Raw(Json.Serialize(Model.ReservedItems));
+</script>
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/reservations/processlistreservationjs.js"></script>

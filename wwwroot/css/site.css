@@ -1,0 +1,392 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+.custom-popover {
+    --bs-popover-max-width: 200px;
+    --bs-popover-border-color: var(--bd-violet-bg);
+    --bs-popover-header-bg: var(--bd-violet-bg);
+    --bs-popover-header-color: var(--bs-white);
+    --bs-popover-body-padding-x: 1rem;
+    --bs-popover-body-padding-y: .5rem;
+}
+
+.scrollable-table {
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+}
+
+
+/*
+   LOADING ANIMATION
+*/
+.loadingIndicator.show {
+    display: block;
+}
+
+
+.loader {
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 100px;
+    animation: l1 1s linear infinite alternate;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: none;
+}
+
+    .loader:before {
+        content: "Loading..."
+    }
+
+@keyframes l1 {
+    to {
+        opacity: 0
+    }
+}
+
+.blurred {
+    filter: blur(5px);
+    pointer-events: none; /* Optional: Prevent interactions with blurred content */
+    user-select: none; /* Optional: Prevent text selection */
+}
+
+
+/*.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    --w: 10ch;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 70px;
+    line-height: 1.4em;
+    letter-spacing: var(--w);
+    width: var(--w);
+    overflow: hidden;
+    white-space: nowrap;
+    color: darkorange;
+    text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange;
+    animation: l20 2s infinite linear;
+    display: none;
+}
+
+    .loader:before {
+        content: "Loading...";
+    }
+
+@keyframes l20 {
+    9.09% {
+        text-shadow: calc( 0*var(--w)) -10px darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    18.18% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) -10px darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    27.27% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) -10px darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    36.36% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) -10px darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    45.45% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) -10px darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    54.54% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) -10px darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    63.63% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) -10px darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    72.72% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) -10px darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    81.81% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) -10px darkorange,calc(-9*var(--w)) 0 darkorange
+    }
+
+    90.90% {
+        text-shadow: calc( 0*var(--w)) 0 darkorange,calc(-1*var(--w)) 0 darkorange,calc(-2*var(--w)) 0 darkorange,calc(-3*var(--w)) 0 darkorange,calc(-4*var(--w)) 0 darkorange, calc(-5*var(--w)) 0 darkorange,calc(-6*var(--w)) 0 darkorange,calc(-7*var(--w)) 0 darkorange,calc(-8*var(--w)) 0 darkorange,calc(-9*var(--w)) -10px darkorange
+    }
+}*/
+
+.show {
+    display: block !important;
+}
+
+
+/*.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 60px;
+    background: linear-gradient(90deg,darkorange 50%,darkorange0 0) right/200% 100%;
+    animation: l21 2s infinite linear;
+    display: none;  Initially hide the loader 
+}
+
+    .loader::before {
+        content: "Loading...";
+        color: darkorange0;
+        padding: 0 5px;
+        background: inherit;
+        background-image: linear-gradient(90deg,#fff 50%,darkorange 0);
+        -webkit-background-clip: text;
+        background-clip: text;
+    }
+
+@keyframes l21 {
+    100% {
+        background-position: left
+    }
+}
+
+.show {
+    display: block !important;
+}*/
+/* Dark mode styles */
+/*body[data-theme="dark"] .loader {
+    background: linear-gradient(90deg, #fff 50%, darkorange0 0) right/200% 100%;*/ /* Adjust the dark mode background colors */
+/*}
+
+    body[data-theme="dark"] .loader::before {
+        color: #fff;
+        background: inherit;
+        background-image: linear-gradient(90deg, darkorange 50%, #fff0 0);*/ /* Adjust the dark mode background colors */
+/*}*/
+
+
+/*
+   Body
+*/
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.navbar {
+    padding: 10px 10px;
+    /*background: #00ffff;*/
+    background: #091E427D;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+
+.small-column {
+    width: 50px; /* Set the desired width */
+}
+
+:root {
+    --background-light: #ffffff;
+    --text-light: #333333;
+    --background-dark: #212429;
+    --text-dark: #ffffff;
+}
+
+body[data-theme="light"] {
+    color: var(--text-light);
+    background-color: var(--background-light);
+}
+
+    body[data-theme="light"] .modal-content {
+        background-color: #ffffff; /* Set your desired background color for light mode */
+    }
+
+body[data-theme="dark"] {
+    color: var(--text-dark);
+    background-color: var(--background-dark);
+}
+
+    body[data-theme="dark"] .modal-content {
+        background-color: #212429; /* Set your desired background color for dark mode */
+    }
+
+
+
+.containerfer {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.column {
+    flex: 1;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+}
+
+.left {
+    flex: 80%;
+    order: 1; /* Set the display order for the left column */
+}
+
+.right {
+    flex: 80%;
+    order: 3; /* Set the display order for the right column to be last */
+}
+
+.content {
+    flex: 20%;
+    order: 2;  Set the display order for the middle column 
+}
+
+
+
+
+.header {
+    z-index: 100; /* Ensure it appears above other content */
+    position: sticky;
+    top: 0;
+}
+
+.table-container {
+    max-height: 400px; /* Set a maximum height for the content area */
+    overflow-y: auto; /* Add a vertical scrollbar if content overflows */
+}
+
+.pagination-container .pagination a {
+    margin-right: 10px; /* Adjust the margin-right value as needed */
+}
+
+
+.pagination-container .pagination > li:not(:first-child) {
+    margin-left: 15px; /* Adjust the margin-left value for the links after the first one */
+}
+
+
+/*
+   GESTOR 
+*/
+.colored-Inativo {
+    background-color: tomato;
+    color: white; /* Set text color to white or another color for better visibility */
+    padding: 5px; /* Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.colored-Emprestado {
+    background-color: mediumblue;
+    color: white; /* Set text color to white or another color for better visibility */
+    padding: 5px; /* Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.colored-Extraviado {
+    background-color: yellowgreen;
+    color: white; /* Set text color to white or another color for better visibility */
+    padding: 5px; /* Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.Devolucao-Extraviado {
+    background-color: #FF3048;
+    color: white; /* Set text color to white or another color for better visibility */
+    padding: 5px; /* Add padding for better appearance */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.active-check {
+    background-color: yellow; /* Replace with the desired background color */
+}
+
+.inactive-check {
+    background-color: indianred; /* Replace with the desired background color */
+}
+
+.BoldThis {
+    font-weight: bold;
+}
+
+
+.cell-light-mode {
+    border: 1px solid #000000;
+    text-align: center;
+}
+
+.cell-dark-mode {
+    border: 1px solid #ffffff; /* Change border color for dark mode */
+    text-align: center;
+}
+
+.auto-style1 {
+    background-color: lightgray;
+    color: black !important;
+}
+
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sticky-alert {
+    position: fixed;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    z-index: 100000; /* Ensures it stays on top of other elements */
+}
+
+.invalid-row {
+    background-color: #ffcccc !important; /* Light red background */
+}
+
+
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+/*#sidebar {
+    min-width: 300px;
+    max-width: 300px;*/
+    /*background: #7386D5;
+    color: #fff;*/
+    /*background: #56baed;*/
+    /*color: #00ffff;*/
+    /*color: lightblue;
+    transition: all 0.3s;
+}*/
+
+

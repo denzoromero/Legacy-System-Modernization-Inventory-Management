@@ -1,0 +1,438 @@
+﻿@model FerramentariaTest.Models.CatalogoViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Edit Item</h3>
+
+@*<h4>Item</h4>*@
+<hr />
+
+
+
+<form asp-action="Edit">
+    @Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-md-8">
+
+        <label class="control-label"> Id: </label>
+        <span>@Model.Id</span>
+        <input type="hidden" asp-for="Id" />
+
+    <div class="row mb-3">
+        <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Catalogo</label>
+        <div class="col-sm-5">
+                    <select id="ddlCatalogo" class="form-select form-select-sm" name="Catalogo" aria-label="Small select example" disabled>
+                    @if (Model.CategoriaClasse == 1)
+                    {
+                        <option value="1" selected>Ferramentaria</option>
+                    }
+                    else if (Model.CategoriaClasse == 2)
+                    {
+                        <option value="2" selected>EPI</option>
+                    }
+                    else if (Model.CategoriaClasse == 3)
+                    {
+                        <option value="3" selected>Consumiveis</option>
+                    }
+            </select>
+        </div>
+         
+    </div>
+
+
+
+        <div class="row mb-3">
+            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Classe</label>
+            <div class="col-sm-5">
+                <select id="ddlClasse" class="form-select form-select-sm" aria-label="Small select example" disabled>
+                    <option value="@Model.IdCategoriaPai" selected>@Model.CategoriaNomePai</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Tipo</label>
+            <div class="col-sm-5">
+                <select id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example" disabled>
+                    <option value="@Model.IdCategoria" selected>@Model.CategoriaNome</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Controle</label>
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="controleRadio" id="radio1" value="porMetro" disabled @(Model.PorMetro == 1 ? "checked" : "")>
+                    <label class="form-check-label" for="radio1">Por Metro</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="controleRadio" id="radio2" value="porAferido" disabled @(Model.PorAferido == 1 ? "checked" : "")>
+                    <label class="form-check-label" for="radio2">Por Aferido</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="controleRadio" id="radio3" value="porSerial" disabled @(Model.PorSerial == 1 ? "checked" : "")>
+                    <label class="form-check-label" for="radio3">Por Serial</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="controleRadio" id="radio4" value="porQuantidade" disabled @(Model.PorMetro != 1 && Model.PorAferido != 1 && Model.PorSerial != 1 ? "checked" : "")>
+                    <label class="form-check-label" for="radio4">Por Quantidade</label>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Codigo:</label>
+            <div class="col-sm-5">
+                    <input name="codigo" class="form-control form-control-sm" id="codigoInput" value="@Model.Codigo">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Item:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="floatingTextarea2" name="item" style="height: 80px">@Model.Nome</textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Descrição:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control"  id="floatingTextarea2" name="descricao" style="height: 80px">@Model.Descricao</textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Ferramentaria</label>
+            <div class="col-sm-5">
+                <select class="form-select form-select-sm" aria-label="Small select example" name="ferramentaria">
+                    <option value="0">Selecionar...</option>
+                    @foreach (var item in ViewBag.FerramentariaItems)
+                    {
+                        <option value="@item.Id">@item.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-10">
+                <p class="tdFormEdicao">As informações de prateleiras ao lado mudam conforme a seleção do Ferramentaria acima</p>
+            </div>
+        </div>
+        <div class="row mb-3 mb-md-0 mt-md-3">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Prateleira:</label>
+                            <input type="text" class="form-control" id="txtPos1Prateleira" name="txtPos1Prateleira" />
+                            <br />
+                            <input type="text" class="form-control" id="txtPo2Prateleira" name="txtPo2Prateleira" />
+                            <br />
+                            <input type="text" class="form-control" id="txtPos3Prateleira" name="txtPos3Prateleira" />
+                            <br />
+                            <input type="text" class="form-control" id="txtPos4Prateleira" name="txtPos4Prateleira" />
+                            <br />
+                            <input type="text" class="form-control" id="txtPos5Prateleira" name="txtPos5Prateleira" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Coluna:</label>
+                            <input type="text" class="form-control" id="txtPos1Coluna" name="txtPos1Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos2Coluna" name="txtPos2Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos3Coluna" name="txtPos3Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos4Coluna" name="txtPos4Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos5Coluna" name="txtPos5Coluna" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Linha:</label>
+                            <input type="text" class="form-control" id="txtPos1Linha" name="txtPos1Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos2Linha" name="txtPos2Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos3Linha" name="txtPos3Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos4Linha" name="txtPos4Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos5Linha" name="txtPos5Linha" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6 mt-5 mt-md-0">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Prateleira:</label>
+                            <input type="text" class="form-control" id="txtPos6Prateleira" name="txtPos6Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos7Prateleira" name="txtPos7Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos8Prateleira" name="txtPos8Prateleira" />
+                         <br />
+                            <input type="text" class="form-control" id="txtPos9Prateleira" name="txtPos9Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos10Prateleira" name="txtPos10Prateleira" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Coluna:</label>
+                            <input type="text" class="form-control" id="txtPos6Coluna" name="txtPos6Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos7Coluna" name="txtPos7Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos8Coluna" name="txtPos8Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos9Coluna" name="txtPos9Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos10Coluna" name="txtPos10Coluna" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Linha:</label>
+                            <input type="text" class="form-control" id="txtPos6Linha" name="txtPos6Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos7Linha" name="txtPos7Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos8Linha" name="txtPos8Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos9Linha" name="txtPos9Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos10Linha" name="txtPos10Linha" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <div class="col-md-4">
+            <div class="row mb-3">
+                <label class="col-sm-9 col-form-label col-form-label-sm">Restrição de Empréstimo:</label>
+                <div class="col-sm-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="Restri" name="restricao"
+                        @(Model.RestricaoEmprestimo == 1 ? "checked" : "") value="@Model.RestricaoEmprestimo">
+                        <label class="form-check-label" for="checkboxLabel1"></label>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">Impedir Descarte:</label>
+            <div class="col-sm-3">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="Impedir" @(Model.ImpedirDescarte == 1 ? "checked" : "") value="@Model.ImpedirDescarte" name="impedir">
+                    <label class="form-check-label" for="checkboxLabel2"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">Habilitar descarte do EPI no Setor Atual do Balconista:</label>
+            <div class="col-sm-3">
+                <div class="form-check form-check-inline">
+                        @if (Model.CategoriaClasse == 2)
+                        {
+                            <input class="form-check-input" type="checkbox" id="epi" name="epi" @(Model.HabilitarDescarteEpi == 1 ? "checked" : "")>
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="checkbox" id="epi" name="epi" disabled value="@Model.HabilitarDescarteEpi" @(Model.HabilitarDescarteEpi == 1 ? "checked" : "")>
+                        }
+                    <label class="form-check-label" for="checkboxLabel3"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">
+                Ativar Data de Retorno automática com
+                    <input class="form-control form-control-sm" type="text" id="daysInput" name="DataAutomatico" value="@Model.DataDeRetornoAutomatico" style="width: 70px;" disabled> dias após data de Empréstimo
+            </label>
+            <div class="col-sm-2">
+                <div class="form-check form-check-inline">
+                        @if (Model.CategoriaClasse == 2)
+                        {
+                            <input class="form-check-input" type="checkbox" id="DataRetorno" @(Model.DataDeRetornoAutomatico != 0 ? "checked" : "")>
+                        }
+                        else
+                        {
+                            <input class="form-check-input" type="checkbox" id="DataRetorno" disabled @(Model.DataDeRetornoAutomatico != 0 ? "checked" : "")>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<br />
+<br />
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" />Back </button>
+    </a>
+
+    <button type="submit" class="btn btn-outline-warning"> Salvar</button>
+</div>
+
+</form>
+
+
+<script>
+    // Get the checkbox element
+    var checkbox = document.getElementById("DataRetorno");
+
+    // Get the input element you want to enable/disable
+    var daysInput = document.getElementById("daysInput");
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener("change", function () {
+        // If the checkbox is checked, enable the input field; otherwise, disable it
+        daysInput.disabled = !checkbox.checked;
+    });
+
+    // Initial state based on the checkbox's default state
+    daysInput.disabled = !checkbox.checked;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var codigoInput = document.getElementById("codigoInput");
+
+        codigoInput.addEventListener("input", function () {
+            var inputValue = codigoInput.value.replace(/[^0-9]/g, "");
+            var formattedValue = inputValue.replace(/(\d{2})(\d{2})(\d{2})(\d{5})/, "$1.$2.$3.$4");
+            codigoInput.value = formattedValue;
+        });
+    });
+
+    function updateCheckboxValue(checkboxId) {
+        var checkbox = document.getElementById(checkboxId);
+
+        checkbox.addEventListener("change", function () {
+            if (checkbox.checked) {
+                checkbox.value = "1"; // Set the value to 1 when checked
+            } else {
+                checkbox.value = "0"; // Set the value to 0 when unchecked
+            }
+        });
+    }
+
+    // Apply the function to each checkbox with a unique ID
+    updateCheckboxValue("Restri");
+    updateCheckboxValue("Impedir");
+    updateCheckboxValue("epi");
+    updateCheckboxValue("DataRetorno");
+
+    //// Get the checkbox element
+    //var checkbox = document.getElementById("Restri");
+
+    //// Add an event listener to update the value when the checkbox state changes
+    //checkbox.addEventListener("change", function () {
+    //    if (checkbox.checked) {
+    //        checkbox.value = "1"; // Set the value to 1 when checked
+    //    } else {
+    //        checkbox.value = "0"; // Set the value to 0 when unchecked
+    //    }
+    //});
+
+
+
+</script>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="IdCategoria" class="control-label"></label>
+                <input asp-for="IdCategoria" class="form-control" />
+                <span asp-validation-for="IdCategoria" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorMetro" class="control-label"></label>
+                <input asp-for="PorMetro" class="form-control" />
+                <span asp-validation-for="PorMetro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorAferido" class="control-label"></label>
+                <input asp-for="PorAferido" class="form-control" />
+                <span asp-validation-for="PorAferido" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorSerial" class="control-label"></label>
+                <input asp-for="PorSerial" class="form-control" />
+                <span asp-validation-for="PorSerial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestricaoEmprestimo" class="control-label"></label>
+                <input asp-for="RestricaoEmprestimo" class="form-control" />
+                <span asp-validation-for="RestricaoEmprestimo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImpedirDescarte" class="control-label"></label>
+                <input asp-for="ImpedirDescarte" class="form-control" />
+                <span asp-validation-for="ImpedirDescarte" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HabilitarDescarteEPI" class="control-label"></label>
+                <input asp-for="HabilitarDescarteEPI" class="form-control" />
+                <span asp-validation-for="HabilitarDescarteEPI" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataDeRetornoAutomatico" class="control-label"></label>
+                <input asp-for="DataDeRetornoAutomatico" class="form-control" />
+                <span asp-validation-for="DataDeRetornoAutomatico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataRegistro" class="control-label"></label>
+                <input asp-for="DataRegistro" class="form-control" />
+                <span asp-validation-for="DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ativo" class="control-label"></label>
+                <input asp-for="Ativo" class="form-control" />
+                <span asp-validation-for="Ativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+

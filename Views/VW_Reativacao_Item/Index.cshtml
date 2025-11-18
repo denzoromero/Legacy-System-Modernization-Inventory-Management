@@ -1,0 +1,567 @@
+﻿@*@model IPagedList<FerramentariaTest.Entities.VW_Reativacao_Item>*@
+@model FerramentariaTest.Models.CombinedInativoAtivo
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Reinclusão de Item | Inativado</h3>
+
+<!-- ConfirmReactivation to Reactivate Modal -->
+<form asp-action="ConfirmReactivation" method="post">
+    @Html.AntiForgeryToken()
+@if (ViewBag.ProductToReactivate != null)
+{
+ VW_Reativacao_ItemViewModel? details = ViewBag.ProductToReactivate as VW_Reativacao_ItemViewModel;
+<div class="modal fade" id="ConfirmReactivateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Reinclusão de Item | Inativado</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">                                             
+                    <div class="row">
+                        <div class="row mb-2">
+                            <label for="Id" class="col-3 col-form-label">Id</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Id </label>
+                                <input type="hidden" name="Id" value="@details.Id">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Codigo" class="col-3 col-form-label">Codigo</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Codigo </label>
+                                <input type="hidden" name="Codigo" value="@details.Codigo">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Produto" class="col-3 col-form-label">Produto</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Descricao </label>
+                                <input type="hidden" name="Descricao" value="@details.Descricao">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="AF" class="col-3 col-form-label">AF</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.AF </label>
+                                <input type="hidden" name="AF" value="@details.AF">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="PAT" class="col-3 col-form-label">PAT</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.PAT </label>
+                                <input type="hidden" name="PAT" value="@details.PAT">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Saldo" class="col-3 col-form-label">Saldo</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Saldo </label>
+                                <input type="hidden" name="Saldo" value="@details.Saldo">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Controle" class="col-3 col-form-label">Controle</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Controle </label>
+                                <input type="hidden" name="Controle" value="@details.Controle">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Estoque" class="col-3 col-form-label">Estoque</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.LocalEmEstoque </label>
+                                <input type="hidden" name="LocalEmEstoque" value="@details.LocalEmEstoque">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Motivo" class="col-3 col-form-label">Motivo</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Motivo </label>
+                                <input type="hidden" name="Motivo" value="@details.Motivo">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Justificativa" class="col-3 col-form-label">Justificativa</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Justificativa </label>
+                                <input type="hidden" name="Justificativa" value="@details.Justificativa">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Usuario" class="col-3 col-form-label">Usuario</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.Usuario </label>
+                                <input type="hidden" name="Usuario" value="@details.Usuario">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="DataInativo" class="col-3 col-form-label">Data da Inativação</label>
+                            <div class="col-7">
+                                <label class="col-form-label" id="Id"> @details.DataInativacao.ToString("dd/MM/yyyy HH:mm ") </label>
+                                <input type="hidden" name="DataInativacao" value="@details.DataInativacao">
+                                <input type="hidden" name="Status" value="@details.Status">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="Informe" class="col-3 col-form-label">Informe a Justificativa para Reativação</label>
+                            <div class="col-7">
+                                @if (details.Status == 1)
+                                {
+                                   <textarea name="Justificativa_Reativacao" class="form-control" rows="2" id="Informe" disabled>
+                                       @if (!string.IsNullOrEmpty(details.Justificativa_Reativacao))
+                                       {
+                                           @details.Justificativa_Reativacao
+                                       }
+                                   </textarea>
+                                   <input type="hidden" name="Justificativa_Reativacao" value="@details.Justificativa_Reativacao">
+                                }                  
+                            </div>
+                        </div>
+                    </div>                           
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    @if (Model?.LoggedUserDetails?.Editar == 1)
+                    {                  
+                            @if (details.Status == 1)
+                            {
+                                <button type="submit" id="confirmReactivate" class="btn btn-primary">Confirmar Reactivação</button>
+                            }                     
+                    }
+                    else
+                    {
+                        
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+}
+</form>
+
+<!-- RequestToReactivate to Reactivate Modal -->
+<form asp-action="RequestToReactivate" method="post">
+    @Html.AntiForgeryToken()
+    @if (ViewBag.ProductToRequest != null)
+    {
+        VW_Reativacao_ItemViewModel? details = ViewBag.ProductToRequest as VW_Reativacao_ItemViewModel;
+        <div class="modal fade" id="ProductRequested" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Reinclusão de Item | Inativado</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if (ViewBag.ErrorRequestToReactivate != null)
+                        {
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ErrorRequestToReactivate
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="row mb-2">
+                                <label for="Id" class="col-3 col-form-label">Id</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Id </label>
+                                    <input type="hidden" name="Id" value="@details.Id">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Codigo" class="col-3 col-form-label">Codigo</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Codigo </label>
+                                    <input type="hidden" name="Codigo" value="@details.Codigo">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Produto" class="col-3 col-form-label">Produto</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Descricao </label>
+                                    <input type="hidden" name="Descricao" value="@details.Descricao">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="AF" class="col-3 col-form-label">AF</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.AF </label>
+                                    <input type="hidden" name="AF" value="@details.AF">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="PAT" class="col-3 col-form-label">PAT</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.PAT </label>
+                                    <input type="hidden" name="PAT" value="@details.PAT">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Saldo" class="col-3 col-form-label">Saldo</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Saldo </label>
+                                    <input type="hidden" name="Saldo" value="@details.Saldo">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Controle" class="col-3 col-form-label">Controle</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Controle </label>
+                                    <input type="hidden" name="Controle" value="@details.Controle">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Estoque" class="col-3 col-form-label">Estoque</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.LocalEmEstoque </label>
+                                    <input type="hidden" name="LocalEmEstoque" value="@details.LocalEmEstoque">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Motivo" class="col-3 col-form-label">Motivo</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Motivo </label>
+                                    <input type="hidden" name="Motivo" value="@details.Motivo">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Justificativa" class="col-3 col-form-label">Justificativa</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Justificativa </label>
+                                    <input type="hidden" name="Justificativa" value="@details.Justificativa">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Usuario" class="col-3 col-form-label">Usuario</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.Usuario </label>
+                                    <input type="hidden" name="Usuario" value="@details.Usuario">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="DataInativo" class="col-3 col-form-label">Data da Inativação</label>
+                                <div class="col-7">
+                                    <label class="col-form-label" id="Id"> @details.DataInativacao.ToString("dd/MM/yyyy HH:mm ") </label>
+                                    <input type="hidden" name="DataInativacao" value="@details.DataInativacao">
+                                    <input type="hidden" name="Status" value="@details.Status">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="Informe" class="col-3 col-form-label">Informe a Justificativa para Reativação</label>
+                                <div class="col-7">
+                                    <textarea name="Justificativa_Reativacao" class="form-control" rows="2" id="InformeRequest" onclick="moveCursorToStart()"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        @if (Model?.LoggedUserDetails?.Editar == 1)
+                        {
+                            <button type="submit" id="requestReactivate" class="btn btn-primary">Registrar Solicitação de Reactivação</button>
+                        }
+                        else
+                        {
+
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</form>
+
+
+
+
+<form asp-action="SearchInativoProducts" method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Codigo" class="col-sm-3 col-form-label col-form-label-sm">Código</label>
+                <div class="col-sm-7">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14" value="@(Model?.VW_Reactivacao_SearchViewModel?.Codigo ?? "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Descricao" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                <div class="col-sm-7">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Descricao" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.Descricao ?? "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.AF" class="col-sm-3 col-form-label col-form-label-sm">AF/Serial</label>
+                <div class="col-sm-7">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.AF" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.AF ?? "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.PAT" class="col-sm-3 col-form-label col-form-label-sm" >PAT</label>
+                <div class="col-sm-7">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.PAT" class="form-control form-control-sm" id="colFormLabelSm" oninput="SomenteNumeros(this, event);" value="@(Model?.VW_Reactivacao_SearchViewModel?.PAT ?? null)">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Controle" class="col-sm-3 col-form-label col-form-label-sm">Controle</label>
+                <div class="col-sm-7">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Controle" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.Controle ?? "")">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.LocalEmEstoque" class="col-sm-3 col-form-label col-form-label-sm">Estoque</label>
+                <div class="col-sm-4">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.LocalEmEstoque" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.LocalEmEstoque ?? "")">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Motivo" class="col-sm-3 col-form-label col-form-label-sm">Motivo</label>
+                <div class="col-sm-4">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Motivo" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.Motivo ?? "")">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Justificativa" class="col-sm-3 col-form-label col-form-label-sm">Justificativa</label>
+                <div class="col-sm-4">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Justificativa" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.Justificativa ?? "")">
+                </div>
+            </div>
+            <div class="row mb-6">
+                <label asp-for="VW_Reactivacao_SearchViewModel.Usuario" class="col-sm-3 col-form-label col-form-label-sm">Usuário Responsável pela Inativação</label>
+                <div class="col-sm-4">
+                    <input asp-for="VW_Reactivacao_SearchViewModel.Usuario" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.Usuario ?? "")">
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data da Ocorrência da Inativação</label>
+                <div class="col-sm-4">
+                    De <input asp-for="VW_Reactivacao_SearchViewModel.De" type="date" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.De ?? DateTime.MinValue)">
+                </div>
+                <div class="col-sm-4">
+                    Ate <input asp-for="VW_Reactivacao_SearchViewModel.Ate" type="date" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model?.VW_Reactivacao_SearchViewModel?.De ?? DateTime.MinValue)">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="VW_Reactivacao_SearchViewModel.Pagination" id="pagination10" value="10" checked>
+                    <label class="form-check-label" for="pagination10">10</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="VW_Reactivacao_SearchViewModel.Pagination" id="pagination30" value="30">
+                    <label class="form-check-label" for="pagination30">30</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" asp-for="VW_Reactivacao_SearchViewModel.Pagination" id="pagination50" value="50">
+                    <label class="form-check-label" for="pagination50">50</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info loadingButton" id="searchButton" style="color: white;">
+                        <img src="~/img/search.svg" /> Filtrar
+                    </button>
+                    @if (Model != null && Model.ResultCount != null)
+                    {
+                        <label for="colFormLabelSm" class=" col-form-label">Resultado: @Model.ResultCount </label>
+                    }               
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                AF/Serial
+            </th>
+            <th>
+                PAT
+            </th>
+            <th>
+                Saldo
+            </th>
+            <th>
+                Controle
+            </th>
+            <th>
+                Estoque
+            </th>
+            <th>
+                Motivo
+            </th>
+            <th>
+                Usuario
+            </th>
+            <th>
+                Data Inactivacao
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @if (Model.VW_Reativacao_ItemViewModel != null)
+            {
+                @foreach (var item in Model.VW_Reativacao_ItemViewModel)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/img/x-circle-fill.svg" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Codigo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AF)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PAT)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Saldo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Controle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LocalEmEstoque)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Motivo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Usuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataInativacao)
+                        </td>
+                        <td>
+                            @if (Model?.LoggedUserDetails?.Editar == 1)
+                            {
+                                @if (item.Status == 1)
+                                {
+                                    <a asp-action="GetProductToReactivate" asp-route-id="@item.Id"><img src="~/img/bootstrap-reboot.svg" /> </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="GetProductToRequest" asp-route-id="@item.Id"> <img src="~/img/pencil-square.svg" /> </a>
+                                }                                
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        }
+          
+    </tbody>
+</table>
+
+@if (Model != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model.VW_Reativacao_ItemViewModel, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
+}
+
+@if (ViewBag.ProductToReactivate != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ConfirmReactivateModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ProductToRequest != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ProductRequested');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    var confirmButton = document.getElementById("confirmReactivate");
+    var requestButton = document.getElementById("requestReactivate");
+    var form = document.getElementById("reactivationForm");
+
+    confirmButton.addEventListener("click", function () {
+        console.log("Confirm button clicked");
+        form.action = "@Url.Action("ConfirmReactivation", "VW_Reativacao_Item")";
+        console.log("Form action set to ConfirmReactivation");
+        form.submit();
+    });
+
+    requestButton.addEventListener("click", function () {
+        console.log("Request button clicked");
+        form.action = "@Url.Action("RequestToReactivate", "VW_Reativacao_Item")";
+        console.log("Form action set to RequestToReactivate");
+        form.submit();
+    });
+</script>
+
+<script>
+    function moveCursorToStart() {
+        var textarea = document.getElementById("Informe");
+        textarea.selectionStart = 0;
+        textarea.selectionEnd = 0;
+    }
+</script>
+
+
+
+

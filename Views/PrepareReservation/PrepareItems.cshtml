@@ -1,0 +1,536 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using System.Web
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion mb-4" id="accordionSolicitante-Liberador">
+                    <div class="accordion-item">
+
+                        <div class="card-header fw-bold text-center" data-bs-toggle="collapse" data-bs-target="#solicitante-liberador">
+                            Solicitante - Liberador
+                        </div>
+
+                        <div id="solicitante-liberador" class="accordion-collapse collapse show" data-bs-parent="#accordionSolicitante">
+                            <div class="accordion-body">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <label class="col-12 col-form-label d-flex align-content-center justify-content-center">
+                                                    <b> Solicitante: </b>
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="col-4 d-flex align-content-center justify-content-center">
+                                                            @if (Model != null && Model?.MemberInfo?.Image != null)
+                                                            {
+                                                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.MemberInfo.Image)" class="rounded img-cover" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="~/img/image-not-available.jpg" class="rounded img-cover" />
+                                                            }
+
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Chapa:</label>
+                                                                <label id="chapaLabel">@Model?.MemberInfo?.Chapa</label>
+                                                                <input type="hidden" id="chapaHidden" name="MemberChapa" />
+                                                                <input type="hidden" id="terceiroHidden" name="MemberIdTerceiro" />
+                                                                <input type="hidden" id="coligadaHidden" name="MemberCodColigada" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Nome:</label>
+                                                                <label id="nomeLabel">@Model?.MemberInfo?.Nome</label>
+                                                                <input type="hidden" id="nomeHidden" name="Nome" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Cod Situação:</label>
+                                                                <label id="situacaoMemberLabel">@Model?.MemberInfo?.CodSituacao</label>
+                                                                <input type="hidden" id="situacaoMemberHidden" name="MemberSituacao" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Função:</label>
+                                                                <label id="funcaoMemberLabel">@Model?.MemberInfo?.Funcao</label>
+                                                                <input type="hidden" id="funcaoMemberHidden" name="MemberFuncao" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Secao:</label>
+                                                                <label id="secaoMemberLabel">@Model?.MemberInfo?.Secao</label>
+                                                                <input type="hidden" id="secaoMemberHidden" name="MemberSecao" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <label class="col-12 col-form-label d-flex align-content-center justify-content-center">
+                                                    <b> Liberador: </b>
+                                                </label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="d-flex align-items-start">
+                                                        <div class="col-4 d-flex align-content-center justify-content-center">
+                                                            @if (Model?.LeaderInfo?.Image != null)
+                                                            {
+                                                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.LeaderInfo.Image)" class="rounded img-cover" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="~/img/image-not-available.jpg" class="rounded img-cover" />
+                                                            }
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Chapa:</label>
+                                                                <label id="chapaLeaderLabel">@Model?.LeaderInfo?.Chapa</label>
+                                                                <input type="hidden" id="chapaLeaderHidden" name="LeaderChapa" />
+                                                                <input type="hidden" id="terceiroLeaderHidden" name="LeaderIdTerceiro" />
+                                                                <input type="hidden" id="coligadaLeaderHidden" name="LeaderCodColigada" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Nome:</label>
+                                                                <label id="nomeLeaderLabel">@Model?.LeaderInfo?.Nome</label>
+                                                                <input type="hidden" id="nomeLeaderHidden" name="LeaderNome" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Cod Situação:</label>
+                                                                <label id="situacaoLeaderLabel">@Model?.LeaderInfo?.CodSituacao</label>
+                                                                <input type="hidden" id="situacaoLeaderHidden" name="LeaderSituacao" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Função:</label>
+                                                                <label id="funcaoLeaderLabel">@Model?.LeaderInfo?.Funcao</label>
+                                                                <input type="hidden" id="funcaoLeaderHidden" name="LeaderFuncao" />
+                                                            </div>
+                                                            <div>
+                                                                <label class="col-form-label fw-bold">Secao:</label>
+                                                                <label id="secaoLeaderLabel">@Model?.LeaderInfo?.Secao</label>
+                                                                <input type="hidden" id="secaoLeaderHidden" name="LeaderSecao" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion mb-4" id="accordionReservationDetail">
+                    <div class="accordion-item">
+
+                        <div class="card-header fw-bold" data-bs-toggle="collapse" data-bs-target="#reservationDetail">
+                            Reservation Details
+                        </div>
+
+                        <div id="reservationDetail" class="accordion-collapse collapse show" data-bs-parent="#accordionReservationDetail">
+                            <div class="accordion-body">
+                                <div class="card-body">
+                                    <div class="col-12">
+
+                                        <div class="row mb-2">
+                                            <label class="col-2 fw-bold">Classe:</label>
+                                            <div class="col-2">
+                                                <input type="hidden" id="idReservationHidden" name="IdReservation" value="@Model?.IdReservation" />
+                                                <input type="hidden" id="idCatalogoHidden" name="IdCatalogo" />
+                                                <input type="hidden" id="classeHidden" name="Classe" />
+                                                <label class="form-label" id="classeLabel">@Model?.Classe</label>
+                                            </div>
+                                            <label class="col-2 fw-bold">PorType:</label>
+                                            <div class="col-3">
+                                                <input type="hidden" id="idReservationHidden" name="IdReservation" />
+                                                <input type="hidden" id="idCatalogoHidden" name="IdCatalogo" />
+                                                <input type="hidden" id="classeHidden" name="Classe" />
+                                                <label class="form-label" id="typeLabel">@Model?.Type</label>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label class="col-2 fw-bold">Codigo:</label>
+                                            <div class="col-2">
+                                                <label class="form-label">@Model?.Codigo</label>
+                                            </div>
+                                            <label class="col-2 fw-bold">Item:</label>
+                                            <div class="col-6">
+                                                <label class="form-label">@Model?.itemNome</label>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label class="col-2 fw-bold">Qty Requested:</label>
+                                            <div class="col-8">
+                                                <label class="form-label" id="qtyRequested">@Model?.QuantidadeResquested</label>
+                                                <input type="hidden" id="qtyHidden" name="QuantidadeResquested" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <label class="col-2 fw-bold">Obra:</label>
+                                            <div class="col-8">
+                                                <label class="form-label" id="obraNameLabel">@Model?.ObraName</label>
+                                                <input type="hidden" id="obraNameHidden" name="ObraName" />
+                                                <input type="hidden" id="idObraHidden" name="IdObra" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-5">
+                                            <label class="col-2 fw-bold">Reservation Expiry Date:</label>
+                                            <div class="col-8">
+                                                <label class="form-label" id="expiryDateLabel">@Model?.ExpiryDateString</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-4 mt-5 ">
+                                            <label class="col-2 fw-bold">Options:</label>
+                                            <div class="col-8 d-flex align-content-center align-items-center">
+                                                <div class="col-2">
+                                                    <button type="button" class="btn btn-warning text-white" id="TransferButton"> Transfer </button>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button type="button" class="btn btn-danger text-white" id="CancelButton"> Cancel </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="TransferDiv" class="border border-primary bg-warning bg-opacity-50 rounded" style="display:none;">
+                                            <form class="needs-validation" id="processTransferForm">
+                                                <div class="row m-2">
+                                                    <div id="hiddenInputsContainerTransfer">
+                                                    </div>
+                                                    <label class="col-2 fw-bold form-label">Transfer To:</label>
+                                                    <div class="col-4">
+                                                        <select class="form-select" id="transferFerramentariaSelect" name="IdFerramentariaDestination" aria-label="Default select example">
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select Ferramentaria to Transfer.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row m-2">
+                                                    <label class="col-2 fw-bold form-label">Note:</label>
+                                                    <div class="col-6 ObsArea">
+                                                        <textarea class="form-control text-area" name="obsTransfer" id="obsTransferTextarea"></textarea>
+                                                        <div class="invalid-feedback" id="transferObsFeedback">
+                                                            Please justify the transfer of sector.
+                                                        </div>
+                                                        <div class="row m-2 d-flex justify-content-end">
+                                                            <div class="col-2">
+                                                                <button type="submit" class="btn btn-warning text-white" id="submitTransfer">Transfer</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div id="CancelDiv" class="border border-primary bg-danger bg-opacity-25 rounded" style="display:none;">
+                                            <form class="needs-validation" id="processCancellationForm">
+                                                <div class="row m-2">
+                                                    <div id="hiddenInputsContainerCancellation">
+                                                    </div>
+                                                    <label class="col-2 fw-bold form-label">Note:</label>
+                                                    <div class="col-6 ObsArea">
+                                                        <textarea class="form-control text-area" name="obsCancel" id="cancelTextarea"></textarea>
+                                                        <div class="invalid-feedback" id="cancelObsFeedback">
+                                                            Please justify the cancellation.
+                                                        </div>
+                                                        <div class="row m-2 d-flex justify-content-end">
+                                                            <div class="col-2">
+                                                                <button type="submit" class="btn btn-danger text-white" id="submitCancellation">Cancel</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="productList">
+                    <div class="card">
+                        <div class="card-header fw-bold">
+                            Product List
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="text" class="form-control" id="searchProduct" placeholder="AF/PAT">
+                                    </div>
+                                </div>
+                                <div style="max-height: 200px; overflow: auto;">
+                                    <table class="table table-hover" id="productListTable">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center align-middle"></th>
+                                                <th class="text-center align-middle">AF</th>
+                                                <th class="text-center align-middle">PAT</th>
+                                                <th class="text-center align-middle">Qty</th>
+                                                <th class="text-center align-middle">Data Vencimento</th>
+                                                <th class="text-center align-middle"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="caList" style="max-height: 150px; overflow: auto; display:none;">
+                    <div class="card">
+                        <div class="card-header fw-bold">
+                            CA List
+                        </div>
+                        <div class="card-body" id="caListBody">
+                        </div>
+                        <div class="invalid-feedback" id="caListFeedback">
+                            Please select CA.
+                        </div>
+                    </div>
+                </div>
+
+                <div id="productInformation">
+                    <div class="card mt-3">
+                        <div class="card-header fw-bold">
+                            Selected Product Information
+                        </div>
+                        <form class="needs-validation" id="processReservationForm">
+                            <div class="card-body">
+                                <div class="col-12">
+                                    <div id="hiddenInputsContainerReservation">
+                                    </div>
+                                    <div class="row mb-1">
+                                        <input type="hidden" id="idProdutoHidden" name="IdProduto" />
+                                        <label class="col-2 col-form-label text-end fw-bold">AF:</label>
+                                        <label class="col-4 col-form-label" id="afLabel"> </label>
+                                        <label class="col-2 col-form-label text-end fw-bold">PAT:</label>
+                                        <label class="col-3 col-form-label" id="patLabel"> </label>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-2 col-form-label text-end fw-bold">Qtd:</label>
+                                        <label class="col-4 col-form-label" id="qtyLabel"></label>
+                                        <label class="col-2 col-form-label text-end fw-bold">Data Vencimento:</label>
+                                        <label class="col-4 col-form-label" id="dataVencimentoLabel"> </label>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-2 col-form-label text-end fw-bold">Data Prevista Devolucao:</label>
+                                        <div class="col-4">
+                                            <input class="form-control" type="date" id="dataPrevistaInput" name="dataPrevista">
+                                            <div class="invalid-feedback" id="dataPrevistaFeedback">
+                                                Data Prevista Devolucao cannot be less than the date today.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label class="col-2 col-form-label text-end fw-bold">Observação:</label>
+                                        <div class="col-8">
+                                            <textarea class="form-control" id="observacaoTextarea" name="observacao"></textarea>
+                                            <div class="row m-2 d-flex justify-content-end">
+                                                <div class="col-2">
+                                                    <button type="submit" class="btn btn-info text-white">Processar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @* <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="d-flex justify-content-end me-2">
+        <button class="btn btn-secondary me-2" id="GoBackToIndex" type="button" onclick="goBackToIndex()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+            </svg>
+            Voltar
+        </button>
+    </div>
+</div>
+
+
+@if (ViewBag?.itemList != null)
+{
+    <form asp-action="PrepareAction" id="formPrepareAction">
+        <div class="container-fluid">
+            <input type="hidden" name="Id" value="@ViewBag?.itemList?.ControlId">
+            <input type="hidden" name="RegisteredDate" value="@ViewBag?.itemList?.RegisteredDate">
+            <input type="hidden" name="ExpiryDate" value="@ViewBag?.itemList?.ExpiryDateString">
+            <div class="row mb-3">
+                <table class="table table-hover w-100">
+                    <thead>
+                        <tr>
+                            <th class="text-center align-middle">
+                                <input class="form-check-input" type="checkbox" id="checkAllCheckboxes" onclick="toggleCheckboxes(this)">
+                            </th>
+                            <th class="text-center align-middle">Classe</th>
+                            <th class="text-center align-middle">Tipo</th>
+                            <th class="text-center align-middle">Codigo</th>
+                            <th class="text-center align-middle" style="width: 30%;">Nome</th>
+                            <th class="text-center align-middle">Qtd</th>
+                            <th class="text-center align-middle">Sol. Chapa</th>
+                            <th class="text-center align-middle">Sol. Nome</th>
+                            <th class="text-center align-middle">Lib. Chapa</th>
+                            <th class="text-center align-middle">Lib. Nome</th>
+                            <th class="text-center align-middle">Obra</th>
+                            <th class="text-center align-middle">Data Registro</th>
+                            <th class="text-center align-middle">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (var i = 0; i < ViewBag?.itemList.items.Count; i++)
+                        {
+                            ItemReservationDetailModel value = ViewBag.itemList.items[i];
+
+                            <tr class="@(value.intStatus == 7 ? "table-danger" : "")">
+                                <td class="text-center align-middle">
+                                    @*    <input class="form-check-input" type="checkbox"> *@
+                                    @if (value.Status == "Registrado")
+                                    {
+                                        <input class="form-check-input itemCheckbox" type="checkbox" name="selectedItems[@i].IsSelected" value="true" @(value.IsSelected == true ? "checked" : "")>
+                                    }
+
+                                    <input type="hidden" name="selectedItems[@i].IdReservation" value="@value.IdReservation">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value.Classe
+                                    <input type="hidden" name="selectedItems[@i].Classe" value="@value.Classe">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value.Type
+                                    <input type="hidden" name="selectedItems[@i].Type" value="@value.Type">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value.Codigo
+                                    <input type="hidden" name="selectedItems[@i].Codigo" value="@value.Codigo">
+                                </td>
+                                <td class="text-center align-middle" style="width: 20%;">
+                                    @value.itemNome
+                                    <input type="hidden" name="selectedItems[@i].itemNome" value="@value.itemNome">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value.QuantidadeResquested
+                                    <input type="hidden" name="selectedItems[@i].QuantidadeResquested" value="@value.QuantidadeResquested">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.MemberInfo?.Chapa
+                                    <input type="hidden" name="selectedItems[@i].MemberInfo.Chapa" value="@value?.MemberInfo?.Chapa">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.MemberInfo?.Nome
+                                    <input type="hidden" name="selectedItems[@i].MemberInfo.Nome" value="@value?.MemberInfo?.Nome">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.LeaderInfo?.Chapa
+                                    <input type="hidden" name="selectedItems[@i].LeaderInfo.Chapa" value="@value?.LeaderInfo?.Chapa">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.LeaderInfo?.Nome
+                                    <input type="hidden" name="selectedItems[@i].LeaderInfo.Nome" value="@value?.LeaderInfo?.Nome">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.ObraName
+                                    <input type="hidden" name="selectedItems[@i].ObraName" value="@value?.ObraName">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.DataRegistro
+                                    <input type="hidden" name="selectedItems[@i].DataRegistro" value="@value?.DataRegistro">
+                                </td>
+                                <td class="text-center align-middle">
+                                    @value?.Status
+                                    <input type="hidden" name="selectedItems[@i].Status" value="@value?.Status">
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button class="btn btn-info text-white" id="ProcessSubmitBtn" type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16" id="btnImage">
+                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
+            </svg>
+
+            <span class="spinner-border spinner-border-sm me-1 visually-hidden" id="loadingConfirmation"></span>
+
+            Imprimir
+            
+        </button>
+    </form>
+}
+
+
+@if (ViewBag?.ReceiptHtml != null)
+{
+    <script type="text/javascript">
+        console.log("open");
+
+        // Escape the HTML content before passing it to the JavaScript
+        var receiptHtml = '@Html.Raw(HttpUtility.JavaScriptStringEncode(ViewBag.ReceiptHtml))';
+
+        // Automatically open and print the receipt after the view loads
+        openReceiptWindow(receiptHtml);
+
+        function openReceiptWindow(receiptHtml) {
+            console.log("Receipt Window Opening...");
+
+            // Open a new window
+            var receiptWindow = window.open('', '_blank', 'width=400,height=600');
+
+            // Write the receipt content to the new window
+            receiptWindow.document.write(receiptHtml);
+
+            // Close the document to finish rendering
+            receiptWindow.document.close();
+
+            // Automatically trigger the print dialog
+            receiptWindow.print();
+        }
+    </script>
+}
+
+<script>
+    let ItemList = @Html.Raw(Json.Serialize(ViewBag?.itemList)) || null;
+</script>
+
+<script src="~/views_js/reservations/prepareitemsjs.js"></script>

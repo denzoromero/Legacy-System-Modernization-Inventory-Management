@@ -1,0 +1,117 @@
+﻿@model FerramentariaTest.Entities.VW_Usuario_New
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>VW_Usuario_New</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CodPessoa" class="control-label"></label>
+                <input asp-for="CodPessoa" class="form-control" />
+                <span asp-validation-for="CodPessoa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodColigada" class="control-label"></label>
+                <input asp-for="CodColigada" class="form-control" />
+                <span asp-validation-for="CodColigada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Chapa" class="control-label"></label>
+                <input asp-for="Chapa" class="form-control" />
+                <span asp-validation-for="Chapa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReinicializarSenha" class="control-label"></label>
+                <input asp-for="ReinicializarSenha" class="form-control" />
+                <span asp-validation-for="ReinicializarSenha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataRegistro" class="control-label"></label>
+                <input asp-for="DataRegistro" class="form-control" />
+                <span asp-validation-for="DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ativo" class="control-label"></label>
+                <input asp-for="Ativo" class="form-control" />
+                <span asp-validation-for="Ativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Departamento" class="control-label"></label>
+                <input asp-for="Departamento" class="form-control" />
+                <span asp-validation-for="Departamento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodSecao" class="control-label"></label>
+                <input asp-for="CodSecao" class="form-control" />
+                <span asp-validation-for="CodSecao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Secao" class="control-label"></label>
+                <input asp-for="Secao" class="form-control" />
+                <span asp-validation-for="Secao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodSecaoAnterior" class="control-label"></label>
+                <input asp-for="CodSecaoAnterior" class="form-control" />
+                <span asp-validation-for="CodSecaoAnterior" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecaoAnterior" class="control-label"></label>
+                <input asp-for="SecaoAnterior" class="form-control" />
+                <span asp-validation-for="SecaoAnterior" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodFuncao" class="control-label"></label>
+                <input asp-for="CodFuncao" class="form-control" />
+                <span asp-validation-for="CodFuncao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Funcao" class="control-label"></label>
+                <input asp-for="Funcao" class="form-control" />
+                <span asp-validation-for="Funcao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodSituacao" class="control-label"></label>
+                <input asp-for="CodSituacao" class="form-control" />
+                <span asp-validation-for="CodSituacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FimProgFerias1" class="control-label"></label>
+                <input asp-for="FimProgFerias1" class="form-control" />
+                <span asp-validation-for="FimProgFerias1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

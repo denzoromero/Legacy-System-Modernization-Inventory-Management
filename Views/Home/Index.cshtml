@@ -1,0 +1,48 @@
+﻿@model FerramentariaTest.Models.VW_Usuario_NewViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    
+}
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel"> <img src="~/img/exclamation-triangle-fill.svg" /> Alert!</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @* @if (Model != null && Model.Retorno != null)
+                {
+                    <p>@Model.Retorno</p>
+                } *@
+                @if (ViewBag.ErrorHandlerReturn != null)
+                {
+                    <p>@ViewBag.ErrorHandlerReturn</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="text-center">
+    <h2 class="display-4">Welcome @Html.DisplayFor(model => model.Nome) </h2>
+    @*<h1 class="display-4">Welcome @Html.DisplayFor(model => model.Id) </h1>*@
+</div>
+
+
+@if (ViewBag.ErrorHandlerReturn != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('staticBackdrop');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}

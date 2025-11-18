@@ -1,0 +1,81 @@
+2025-11-17 13:56:30.340 -03:00 [Information]
+UserId: 1
+TransactionId: 40d3b12b-1297-4a5d-bbc2-4a09258a1540
+Action: FinalizeHandoutReservation
+Outcome: Success
+TraceId: f0c2e347947369e747ee0b88ebe1cab9
+TraceIdGuid: 94b6bf8a-32e8-4e80-98e3-0cbc1a7064fa
+Message: User:admin.demo successfully handedout 1 Reserved Item/s with TransactionId: 40d3b12b-1297-4a5d-bbc2-4a09258a1540 .
+----------------------------------------
+2025-11-17 14:14:15.952 -03:00 [Information]
+UserId: 1
+TransactionId: 8651c775-062d-4b5f-8bbc-918c2718c83f
+Action: AddTermsControl
+Outcome: Success
+TraceId: 230a31945983950e915b8df649b3e0fb
+TraceIdGuid: 3b7940ce-2403-4d5b-8a28-9d076e819036
+Message: Employee:Sakura Le sserafim successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:8651c775-062d-4b5f-8bbc-918c2718c83f .
+----------------------------------------
+2025-11-17 14:16:27.549 -03:00 [Information]
+UserId: 1
+TransactionId: da4b9c49-ad9f-4c29-a796-193728195331
+Action: AddTermsControl
+Outcome: Success
+TraceId: 4618bc5f2d191b0f5721efa8d8030213
+TraceIdGuid: 568152ac-6713-40d6-b4de-9d9701a2c803
+Message: Employee:Sakura Le sserafim successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:da4b9c49-ad9f-4c29-a796-193728195331 .
+----------------------------------------
+2025-11-17 14:16:35.779 -03:00 [Information]
+UserId: 1
+TransactionId: ca89d110-1a06-4349-a284-c2070ff9311e
+Action: CancelRetirada
+Outcome: Success
+TraceId: 5c7a02f74c9ce7fa3ee15b173d0dad3d
+TraceIdGuid: 6ab137d7-ec26-4389-a2c6-273a2c3c69ad
+Message: User:admin.demo successfully Cancelled Retirada Id: 2 - Reason: asd with TransactionId: ca89d110-1a06-4349-a284-c2070ff9311e .
+----------------------------------------
+2025-11-17 14:17:34.263 -03:00 [Information]
+UserId: 1
+TransactionId: 7323c052-5b2d-462a-92cd-9ece0cf5e460
+Action: AddTermsControl
+Outcome: Success
+TraceId: 750b8f69174d606bfeffe3ad53211e3b
+TraceIdGuid: fc656697-f0d3-437c-8017-e049a5918f26
+Message: Employee:Sakura Le sserafim successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:7323c052-5b2d-462a-92cd-9ece0cf5e460 .
+----------------------------------------
+2025-11-17 14:17:46.776 -03:00 [Information]
+UserId: 1
+TransactionId: eeb2badb-9595-408f-a5af-8cc5ad212a05
+Action: FinalizeHandoutRetirada
+Outcome: Success
+TraceId: f3e0b757e7b95445f2d5ffe8fca546e8
+TraceIdGuid: 4351ca3a-3b37-40f9-963a-a4270ccde4b8
+Message: User:admin.demo successfully handedout 1 Retirada Item/s with TransactionId: eeb2badb-9595-408f-a5af-8cc5ad212a05 .
+----------------------------------------
+2025-11-17 14:33:48.006 -03:00 [Information]
+UserId: 1
+TransactionId: 52c63ca1-0c71-4254-a9c2-ec1f76ae4129
+Action: AddTermsControl
+Outcome: Success
+TraceId: 2ca99071b660af338076e6409bcc4e4e
+TraceIdGuid: 182f0d61-96a4-432a-a08c-33f489bd2215
+Message: Employee:Sakura Le sserafim successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:52c63ca1-0c71-4254-a9c2-ec1f76ae4129 .
+----------------------------------------
+2025-11-17 14:33:50.708 -03:00 [Information]
+UserId: 1
+TransactionId: 3c09fa42-cfb9-4a5c-a1cc-a84d4a117872
+Action: FinalizeHandoutRetirada
+Outcome: Success
+TraceId: 07d707440e259e8625c3b66c0b1946cc
+TraceIdGuid: 035383c7-89bd-4e2b-b895-18ac8abd2c1c
+Message: User:admin.demo successfully handedout 1 Retirada Item/s with TransactionId: 3c09fa42-cfb9-4a5c-a1cc-a84d4a117872 .
+----------------------------------------
+2025-11-17 14:35:25.053 -03:00 [Information]
+UserId: 1
+TransactionId: f877fe8f-6d16-49e0-b1dd-48da1f3bdc9a
+Action: AddTermsControl
+Outcome: Success
+TraceId: ddcf0988aca7126c2cc4dab399f19289
+TraceIdGuid: 5b15e723-93eb-4616-83ca-0a0678d4011e
+Message: Employee:Sakura Le sserafim successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:f877fe8f-6d16-49e0-b1dd-48da1f3bdc9a .
+----------------------------------------

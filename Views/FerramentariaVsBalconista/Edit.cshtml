@@ -1,0 +1,135 @@
+﻿@model FerramentariaTest.Entities.VW_Usuario_New
+
+@{
+    ViewData["Title"] = "Edit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>RELACIONAR</h1>
+
+<h4> @Html.DisplayFor(modelItem => modelItem.Nome)</h4>
+<hr />
+
+@*<div id="myAlert" class="alert alert-warning" role="alert" style="@(ViewBag.ShowAlert == true ? "display: block;" : "display: none;")">
+    A simple primary alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+</div>*@
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}*@
+
+<div class="containerfer">
+<div class="left">
+ <p>Disponivels</p>
+   <form id="myForm" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+<table>  
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th><input class="form-check-input" type="checkbox" onclick="toggle(this);" id="selectAll"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.FerramentariaList)
+        {
+            <tr>
+                    <td>@item.Id  &nbsp;</td>
+                    <td>@item.Nome</td>
+                            <td> <input class="form-check-input insert" type="checkbox" name="selectedIds" value="@item.Id" id="flexCheckDefault"></td>
+            </tr>
+        }
+    </tbody>
+</table>
+        </form>
+</div>
+
+<div class="content">
+ 
+        <br />
+        <br />
+        <button type="button" class="btn btn-outline-warning loadingButton" onclick="submitForm()"><img src="~/img/arrow-right.svg" /> </button>
+        <br />
+       @* <br />
+        <button type="button" class="btn btn-outline-warning"><img src="~/img/arrow-left.svg" /> </button>*@
+    
+</div>
+
+
+<div class="content">
+
+        <br />
+         <br />
+        <button type="button" class="btn btn-outline-warning loadingButton" onclick="DeleteForm()"><img src="~/img/arrow-left.svg" /> </button>
+
+</div>
+
+
+<div class="right">
+        <p>Atribuidas</p>
+          <form id="deleteForm" asp-action="Delete">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+<table>  
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th><input class="form-check-input" type="checkbox" onclick="Delete(this);" id="selectAll"></th>
+        </tr>
+    </thead>
+    <tbody>
+                @foreach (var item in ViewBag.TakenList)
+                {
+                    <tr>
+                            <td>@item.Id  &nbsp;</td>
+                             <td>@item.Nome</td>
+                             <td> <input class="form-check-input delete" type="checkbox" name="ToDeleteIds" value="@item.Id" id="flexCheckDefault"></td>
+                    </tr>
+                }
+    </tbody>
+</table>
+</form>
+</div>
+
+</div>
+
+
+<a asp-action="Index">
+    <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" />Back </button>
+</a>
+
+<script>
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].insert');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function Delete(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].delete');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function submitForm() {
+        // Simulate form submission
+        document.getElementById("myForm").submit();
+    }
+
+    function DeleteForm() {
+        // Simulate form submission
+        document.getElementById("deleteForm").submit();
+    }
+
+</script>

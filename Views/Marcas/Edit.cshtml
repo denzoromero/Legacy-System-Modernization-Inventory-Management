@@ -1,0 +1,84 @@
+﻿@model FerramentariaTest.Models.MarcaViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    //Layout = "~/Views/Marca/Index.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Marca</h4>
+<hr />
+
+
+
+@*<div id="myAlert" class="alert alert-danger" role="alert" style="@(ViewBag.ShowAlertDanger == true ? "display: block;" : "display: none;")">
+    <img src="~/img/exclamation-triangle.svg" />  A simple danger alert—check it out!
+</div>
+
+<div id="myAlert" class="alert alert-warning" role="alert" style="@(ViewBag.ShowAlertWarning == true ? "display: block;" : "display: none;")">
+    <img src="~/img/exclamation-triangle.svg" />   A simple warning alert—check it out!
+</div>*@
+
+
+<form method="post" action="/Marcas/Edit">
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-3">
+        <div class="row mb-2">
+            <label asp-for="Nome" class="col-sm-3 col-form-label col-form-label-sm">Nome</label>
+            <div class="col-sm-7">
+                @Html.TextBoxFor(model => model.Nome, new { @class = "form-control form-control-sm", id = "floatingInputGroup1" })
+            </div>
+        </div>
+            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+    </div>
+
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="ativo" value="@Model.Ativo" />
+
+
+<br />
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;"/>Back </button>
+    </a>
+
+    <button type="submit" class="btn btn-warning">
+        <img src="~/img/pencil-square.svg" /> Edit
+    </button>
+</div>
+
+</form>
+
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataRegistro" class="control-label"></label>
+                <input asp-for="DataRegistro" class="form-control" />
+                <span asp-validation-for="DataRegistro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ativo" class="control-label"></label>
+                <input asp-for="Ativo" class="form-control" />
+                <span asp-validation-for="Ativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+
+@*<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+

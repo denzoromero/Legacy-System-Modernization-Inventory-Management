@@ -1,0 +1,3476 @@
+﻿@*@model FerramentariaTest.Models.FuncionarioViewModel*@
+@using FerramentariaTest.Entities;
+@model List<FerramentariaTest.Models.EmprestimoViewModel>
+@{
+    ViewData["Title"] = "Emprestimo";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4> Emprestimo </h4>
+
+@await Component.InvokeAsync("ValuePartial")
+
+
+@if (ViewBag.ErrorList != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach (var error in ViewBag.ErrorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (ViewBag.ErrorForBloqueio != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @Html.Raw(ViewBag.ErrorForBloqueio)
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="modal fade" id="BlockMessage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Bloqueio Emprestimo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>@ViewBag.BlockMessage</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ListOfUsers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> List of Employees </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable4">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chapa
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                CodSituacao
+                            </th>
+                            <th>
+                                Secao
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (ViewBag.ListOfEmployees != null)
+                        {
+                            @foreach (var item in ViewBag.ListOfEmployees)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Chapa
+                                    </td>
+                                    <td>
+                                        @item.Nome
+                                    </td>
+                                    <td>
+                                        @item.CodSituacao
+                                    </td>
+                                    <td>
+                                        @item.Secao
+                                    </td>
+                                    <td>
+                                        <a asp-action="SelectedUser" asp-route-chapa="@item.Chapa">Select</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ListOfLiberador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> List of Employees </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left light-dark-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chapa
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                CodSituacao
+                            </th>
+                            <th>
+                                Secao
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (ViewBag.ListOfLiberador != null)
+                        {
+                            @foreach (var item in ViewBag.ListOfLiberador)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Chapa
+                                    </td>
+                                    <td>
+                                        @item.Nome
+                                    </td>
+                                    <td>
+                                        @item.CodSituacao
+                                    </td>
+                                    <td>
+                                        @item.Secao
+                                    </td>
+                                    <td>
+                                        <a asp-action="SelectedLiberador" asp-route-chapa="@item.Chapa">Select</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ListOfMessages" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Mensagem </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable5">
+                    <tbody>
+                        @if (ViewBag.Messages != null)
+                        {
+                            @foreach (var item in ViewBag.Messages)
+                            {
+                                <tr>
+                                    <td>
+                                        <span><b>Postado Por:</b></span>@item.Username
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span><b>Texto:</b></span> @item.Mensagem
+                                        @if (item.Fixar != 1)
+                                        {
+                                            <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                        }
+                                        else
+                                        {
+                                            @*  if (item.IdUsuario_Adicionou == item.LoggedUserId)
+                                {
+                                <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                } *@
+
+                                            if (item.allowdelete == true)
+                                            {
+                                                <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tablemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Search</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable2">
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo
+                            </th>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                AF/Serial
+                            </th>
+                            <th>
+                                PAT
+                            </th>
+                            <th>
+                                QTD
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Emprestimo != null)
+                        {
+                            @foreach (var item in (List<EmprestimoViewModel>)ViewBag.Emprestimo)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Codigo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NomeCatalogo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AF)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PAT)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Quantidade)
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="AddToCart" asp-route-produtoid="@item.IdProduto" class="load-partial-view">
+                                            <img src="~/img/plus-circle-fill.svg" />
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                @*    <a asp-action="CloseModal">*@
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @*   </a>*@
+                @* <button type="submit" class="btn btn-primary"> <img src="~/img/search.svg" /> Search </button>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form id="finalizecart" asp-action="FinalizeCart" method="get">
+    <div class="modal fade" id="AddToCartModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Add To Cart</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <table class="table table-sm align-left light-dark-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Item
+                                </th>
+                                <th>
+                                    AF/Serial
+                                </th>
+                                <th>
+                                    PAT
+                                </th>
+                                <th>
+                                    Observação
+                                </th>
+                                <th>
+                                    QTD
+                                </th>
+                                <th>
+                                    Qtd. Emp
+                                </th>
+
+                                <th>
+                                    Data Retorno
+                                </th>
+
+                                @if (ViewBag.ProductDetails != null)
+                                {
+                                    EmprestimoViewModel? productoDetails = ViewBag.ProductDetails as EmprestimoViewModel;
+                                    if (productoDetails.ControleCAList.Count > 0)
+                                    {
+                                        <th>
+                                            ControleCA
+                                        </th>
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.ProductDetails != null)
+                            {
+                                EmprestimoViewModel? productoDetails = ViewBag.ProductDetails as EmprestimoViewModel;
+                                <tr>
+
+                                    <td>
+                                        @productoDetails.Codigo
+                                    </td>
+                                    <td>
+                                        @productoDetails.NomeCatalogo
+                                    </td>
+                                    <td>
+                                        @productoDetails.AF
+                                    </td>
+                                    <td>
+                                        @productoDetails.PAT
+                                    </td>
+                                    <td>
+                                        <input name="Observacao" id="ProductDetailObservacao" />
+                                    </td>
+                                    <td>
+                                        @productoDetails.Quantidade
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="IdProduto" value="@productoDetails.IdProduto" />
+                                        @if (productoDetails.PorAferido == 1 || productoDetails.PorSerial == 1)
+                                        {
+                                            <input value="@productoDetails.QuantidadeMinima" style="width: 40px" name="Quantity" disabled />
+                                            <input type="hidden" value="@productoDetails.QuantidadeMinima" name="Quantity" />
+                                        }
+                                        else
+                                        {
+                                            <input value="@productoDetails.QuantityFrontEnd" name="Quantity" style="width: 40px" oninput="checkQuantity(this)" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (productoDetails.Classe == 2)
+                                        {
+                                            if (productoDetails.DataDeRetornoAutomatico != 0)
+                                            {
+                                                if (productoDetails.DataEmprestimoFrontEnd.HasValue)
+                                                {
+                                                    <input type="date" style="width: 150px" name="DataRetorno" value="@productoDetails.DataEmprestimoFrontEnd.Value.ToString("yyyy-MM-dd")" disabled />
+                                                    <input name="DataRetorno" type="hidden" value="@productoDetails.DataEmprestimoFrontEnd.Value.ToString("yyyy-MM-dd")" />
+                                                }
+                                            }
+
+
+                                        }
+                                        else if (productoDetails.Classe == 1)
+                                        {
+                                            @if (productoDetails.PorAferido == 1 && productoDetails.DataVencimento.HasValue)
+                                            {
+                                                <input type="date" style="width: 150px" value="@productoDetails.DataVencimento.Value.ToString("yyyy-MM-dd")" name="DataRetorno" />
+                                            }
+                                            else if (productoDetails.IdCategoriaPai == 1384)
+                                            {
+                                                <input type="date" style="width: 150px" value="@(productoDetails.DataEmprestimoFrontEnd.HasValue == true ? productoDetails.DataEmprestimoFrontEnd.Value.ToString("yyyy-MM-dd") : "")" name="DataRetorno" />
+                                            }
+                                            else
+                                            {
+                                                <input type="date" style="width: 150px" name="DataRetorno" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <input type="date" style="width: 150px" disabled name="DataRetorno" />
+                                        }
+                                    </td>
+
+
+
+                                    @if (productoDetails.ControleCAList.Count > 0)
+                                    {
+                                        var firstItemId = productoDetails.ControleCAList.FirstOrDefault()?.Id;
+
+                                        <td style="width: 20%;">
+                                            @foreach (ControleCA? item in productoDetails.ControleCAList)
+                                            {
+
+                                                string? labelname = $"{item?.NumeroCA}-{item?.Validade.Value.ToString("dd/MM/yyyy")}";
+                                                <div class="inline-checkbox">
+                                                    <input class="form-check-input" type="radio" value="@item?.Id" id="controleCA" name="IdControleCA" @(item?.Id == firstItemId ? "checked" : "")>
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        @labelname
+                                                    </label>
+                                                </div>
+
+                                            }
+                                        </td>
+                                    }
+
+
+
+
+                                    <td>
+                                        @*   <a href="#" onclick="document.getElementById('finalizecart').submit(); return false;">
+                                    <img src="~/img/plus-circle-fill.svg" alt="Submit">
+                                    </a> *@
+                                        <button type="submit" class="btn btn-warning"> <img src="~/img/plus-lg.svg" />  </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="modal-footer">
+                    @*    <a asp-action="CloseModal">*@
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    @*   </a>*@
+                    @* <button type="submit" class="btn btn-primary"> <img src="~/img/search.svg" /> Search </button>*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="modal fade" id="blockMessageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Bloqueio Emprestimo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="blockMessageModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mensagemSolicitanteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Mensagem </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table" id="mensagemSolicitanteTable">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="listOfEmployeesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> List of Employees </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="listOfEmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chapa
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                CodSituacao
+                            </th>
+                            <th>
+                                Secao
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productWithCAModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Product With CA </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table align-left light-dark-table" id="productCATable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo
+                            </th>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                AF/Serial
+                            </th>
+                            <th>
+                                PAT
+                            </th>
+                            <th>
+                                Observação
+                            </th>
+                            <th>
+                                QTD
+                            </th>
+                            <th>
+                                Qtd. Emp
+                            </th>
+
+                            <th>
+                                Data Retorno
+                            </th>
+                            <th>
+                                ControleCA
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="multipleProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Search</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <table class="table align-left" id="multipleProductTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Codigo
+                            </th>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                AF/Serial
+                            </th>
+                            <th>
+                                PAT
+                            </th>
+                            <th>
+                                QTD
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+
+            <div id="Solicitante">
+                <div class="row">
+                    <label class="col-12 col-form-label d-flex align-content-center justify-content-center"> <b> Solicitante: </b> </label>
+                </div>
+                @*   <form asp-action="SearchSolicitante" method="get"> *@
+                <div class="row mb-3">
+                    <label class="col-4 col-form-label fw-bold"> Matricula / Nome: </label>
+                    <div class="col-5">
+                        <input name="IdSolicitante" class="form-control" id="solicitante" tabindex="1">
+                    </div>
+                    @*     <div class="col-3">
+                    <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                    <img src="~/img/search.svg" />
+                    </button>
+                    </div> *@
+                </div>
+                @*   </form> *@
+
+
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="d-flex align-items-start">
+                            <div class="col-3 d-flex align-content-center justify-content-center border border-primary">
+                                <img src="~/img/image-not-available.jpg" class="rounded img-cover" alt="..." id="imgSolicitante" />
+                            </div>
+                            <div class="col-9">
+                                <div>
+                                    <label class="col-form-label fw-bold">Chapa:</label>
+                                    <label class="col-form-label" id="chapaLabelSolicitante"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Nome:</label>
+                                    <label class="col-form-label" id="nomeLabelSolicitante"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Cod Situação:</label>
+                                    <label class="col-form-label" id="situacaoLabelSolicitante"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Empressa:</label>
+                                    <label class="col-form-label" id="empressaLabelSolicitante"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Função:</label>
+                                    <label class="col-form-label" id="funcaoLabelSolicitante"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Seção:</label>
+                                    <label class="col-form-label" id="secaoLabelSolicitante"></label>
+                                </div>
+                                <div style="display:none;">
+                                    <label class="col-form-label fw-bold">CodColigada:</label>
+                                    <label class="col-form-label" id="codColigadaLabelSolicitante"></label>
+                                </div>
+                                <div style="display:none;">
+                                    <label class="col-form-label fw-bold">IdTerceiro:</label>
+                                    <label class="col-form-label" id="idTerceiroLabelSolicitante"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="col-6">
+            <div id="Liberador">
+                <div class="row">
+                    <label class="col-12 col-form-label d-flex align-content-center justify-content-center"> <b> Liberador: </b> </label>
+                </div>
+
+                @*  <form asp-action="SearchLiberador" method="get"> *@
+                <div class="row mb-3">
+                    <label class="col-4 col-form-label fw-bold"> Matricula / Nome: </label>
+                    <div class="col-5">
+                        <input name="IdLiberador" class="form-control" id="liberador" tabindex="2">
+                    </div>
+                    @*      <div class="col-3">
+                    <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                    <img src="~/img/search.svg" />
+                    </button>
+                    </div> *@
+                </div>
+                @*  </form> *@
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex align-items-start">
+                            <div class="col-3 d-flex align-content-center justify-content-center border border-primary">
+                                <img src="~/img/image-not-available.jpg" class="rounded img-cover" alt="..." id="imgLiberador" />
+                            </div>
+                            <div class="col-9">
+                                <div>
+                                    <label class="col-form-label fw-bold">Chapa:</label>
+                                    <label class="col-form-label" id="chapaLabelLiberador"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Nome:</label>
+                                    <label class="col-form-label" id="nomeLabelLiberador"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Cod Situação:</label>
+                                    <label class="col-form-label" id="situacaoLabelLiberador"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Empressa:</label>
+                                    <label class="col-form-label" id="empressaLabelLiberador"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Função:</label>
+                                    <label class="col-form-label" id="funcaoLabelLiberador"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Seção:</label>
+                                    <label class="col-form-label" id="secaoLabelLiberador"></label>
+                                </div>
+                                <div style="display:none;">
+                                    <label class="col-form-label fw-bold">CodColigada:</label>
+                                    <label class="col-form-label" id="codColigadaLabelLiberador"></label>
+                                </div>
+                                <div style="display:none;">
+                                    <label class="col-form-label fw-bold">IdTerceiro:</label>
+                                    <label class="col-form-label" id="idTerceiroLabelLiberador"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<br />
+
+
+<div>
+
+    <div class="container">
+        @*  <form asp-action="SearchProduct" method="get"> *@
+        <div class="row header">
+
+            <div class="col">
+                <input type="search" name="CodigoEmprestimo" class="form-control" placeholder="Codigo" aria-label="Codigo" id="codigo" oninput="formataCodigoProduto(this, event);" maxlength="14" tabindex="3">
+            </div>
+            <div class="col">
+                <input type="search" name="ItemEmprestimo" class="form-control" placeholder="Item" aria-label="Item" id="itemInput" tabindex="4">
+            </div>
+            <div class="col">
+                <input type="search" name="AFEmprestimo" class="form-control" placeholder="AF/Serial" aria-label="AF/Serial" id="AFinput" tabindex="5">
+            </div>
+            <div class="col">
+                <input type="search" name="PATEmprestimo" class="form-control" placeholder="PAT" aria-label="PAT" oninput="SomenteNumeros(this, event);" id="PATinput" tabindex="6">
+            </div>
+            @*       <div class="col">
+            <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+            <img src="~/img/search.svg" />
+            </button>
+            </div> *@
+        </div>
+        @* </form> *@
+    </div>
+
+    <form method="post" id="itemsToBorrow" asp-action="submitTransaction">
+        @Html.AntiForgeryToken()
+
+        <div class="table-container">
+            <table class="table align-left" id="emprestimoProductTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Cod. Produto
+                        </th>
+                        <th>
+                            Produto
+                        </th>
+                        <th>
+                            C.A
+                        </th>
+                        <th>
+                            AF/Serial
+                        </th>
+                        <th>
+                            PAT
+                        </th>
+                        <th>
+                            Observação
+                        </th>
+                        <th>
+                            Qtd Est.
+                        </th>
+                        <th class="widthadjust">
+                            Qtd. Emp.
+                        </th>
+                        <th>
+                            Data Retorno
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="hiddenInputsContainer"></div>
+
+        <div id="SolicitanteLiberadorInformation"></div>
+
+        <div class="row justify-content-center" id="ObraButtonDiv" style="display:none;">
+            <div class="col-md-3">
+                <input type="hidden" name="formToken" value="@ViewBag.FormToken" />
+                <select name="ObraEmprestimo" class="form-select" aria-label="Small select example" id="ObraSelect">
+                    <option>Select...</option>
+                    @if (ViewBag.Obra != null)
+                    {
+                        @foreach (var item in ViewBag.Obra)
+                        {
+                            <option value="@item.Id">@item.Codigo @item.Nome</option>
+                        }
+                    }
+
+                </select>
+            </div>
+            <div class="col-md-6">
+
+                <button type="submit" class="btn btn-primary position-relative loadingButton">
+                    <img src="~/img/plus-lg.svg" alt="Plus Icon"> Finalizar Empréstimo
+                    <span id="sumBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        checkFocus();
+
+    });
+
+    // document.getElementById("solicitante").addEventListener("blur", function () {
+    //     handleSolicitanteEvent();
+    // });
+
+    document.getElementById("solicitante").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            handleSolicitanteEvent();
+            cleanupTables();
+        }
+    });
+
+    function handleSolicitanteEvent() {
+        let inputSolicitante = document.getElementById("solicitante").value;
+        console.log(inputSolicitante);
+
+        if (inputSolicitante !== null && inputSolicitante !== "") {
+            turnOnLoader();
+            GetEmployeeSolicitante(inputSolicitante);
+            // checkFocus();
+        }
+        // else {
+        //     checkFocus();
+        // }
+    }
+
+    // document.getElementById("solicitante").addEventListener("blur", function () {
+    //     let inputSolicitante = document.getElementById("solicitante").value;
+    //     console.log(inputSolicitante);
+
+    //     if (inputSolicitante !== null && inputSolicitante !== "") {
+    //         turnOnLoader();
+    //         GetEmployeeSolicitante(inputSolicitante);
+    //         checkFocus();
+    //     }
+    //     // else {
+    //     //     checkFocus();
+    //     // }
+
+    // });
+
+    // document.getElementById("liberador").addEventListener("blur", function () {
+    //     handleLiberadorEvent();
+    // });
+
+    document.getElementById("liberador").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            handleLiberadorEvent();
+            cleanupTables();
+        }
+    });
+
+    function handleLiberadorEvent() {
+        let inputLiberador = document.getElementById("liberador").value;
+        console.log(inputLiberador);
+
+        if (inputLiberador !== null && inputLiberador !== "") {
+            turnOnLoader();
+            GetEmployeeLiberador(inputLiberador);
+            // checkFocus();
+        }
+        // else {
+        //     checkFocus();
+        // }
+    }
+
+    // document.getElementById("liberador").addEventListener("blur", function () {
+    //     let inputLiberador = document.getElementById("liberador").value;
+    //     console.log(inputLiberador);
+
+    //     if (inputLiberador !== null && inputLiberador !== "") {
+    //         turnOnLoader();
+    //         GetEmployeeLiberador(inputLiberador);
+    //         checkFocus();
+    //     }
+    //     // else {
+    //     //     checkFocus();
+    //     // }
+    // });
+
+    // document.getElementById("codigo").addEventListener("blur", function () {
+
+    //     let inputCodigo = document.getElementById("codigo").value;
+    //     let inputItem = document.getElementById("itemInput").value;
+    //     let inputAf = document.getElementById("AFinput").value;
+    //     let inputPat = document.getElementById("PATinput").value;
+
+    //     console.log(inputCodigo);
+
+    //     if (inputCodigo !== null && inputCodigo !== "") {
+    //         turnOnLoader();
+    //         getItemDetail(inputCodigo, inputItem, inputAf, inputPat);
+    //         checkFocus();
+    //     } else {
+    //         checkFocus();
+    //     }
+
+    // });
+
+    function handleBlur(event) {
+        let solicitanteChapa = document.getElementById("chapaLabelSolicitante").innerText;
+        let solicitanteCodColigada = document.getElementById("codColigadaLabelSolicitante").innerText;
+        let liberadorChapa = document.getElementById("chapaLabelLiberador").innerText;
+
+        let inputCodigo = document.getElementById("codigo").value;
+        let inputItem = document.getElementById("itemInput").value;
+        let inputAf = document.getElementById("AFinput").value;
+        let inputPat = document.getElementById("PATinput").value;
+
+        console.log(event.target.id + ': ' + event.target.value);
+
+        if (solicitanteChapa !== "" || liberadorChapa !== "") {
+            if (inputCodigo !== "" || inputItem !== "" || inputAf !== "" || inputPat !== "") {
+                if (event.target.value !== event.target.defaultValue) { // Check if the value has changed
+                    turnOnLoader();
+                    getItemDetail(inputCodigo, inputItem, inputAf, inputPat, solicitanteChapa, solicitanteCodColigada);
+                }
+                checkFocus();
+            }
+            // else {
+            //     checkFocus();
+            // }
+        } else {
+            appendAlert('Por favor, insira solicitante e liberador primeiro', 'warning');
+            cleanupfields();
+            checkFocus();
+        }
+    }
+
+    function handleKeyDown(event) {
+        if (event.key === "Enter") {
+            handleBlur(event);
+        }
+    }
+
+    // document.getElementById("codigo").addEventListener("blur", handleBlur);
+    document.getElementById("codigo").addEventListener("keydown", handleKeyDown);
+    // document.getElementById("itemInput").addEventListener("blur", handleBlur);
+    document.getElementById("itemInput").addEventListener("keydown", handleKeyDown);
+    // document.getElementById("AFinput").addEventListener("blur", handleBlur);
+    document.getElementById("AFinput").addEventListener("keydown", handleKeyDown);
+    // document.getElementById("PATinput").addEventListener("blur", handleBlur);
+    document.getElementById("PATinput").addEventListener("keydown", handleKeyDown);
+
+    // function handleBlur(event) {
+    //     let solicitanteChapa = document.getElementById("chapaLabelSolicitante").innerText;
+    //     let solicitanteCodColigada = document.getElementById("codColigadaLabelSolicitante").innerText;
+    //     let liberadorChapa = document.getElementById("chapaLabelLiberador").innerText;
+
+    //     let inputCodigo = document.getElementById("codigo").value;
+    //     let inputItem = document.getElementById("itemInput").value;
+    //     let inputAf = document.getElementById("AFinput").value;
+    //     let inputPat = document.getElementById("PATinput").value;
+
+    //     console.log(event.target.id + ': ' + event.target.value);
+
+    //     if (solicitanteChapa !== "" || liberadorChapa !== "") {
+    //         if (inputCodigo !== "" || inputItem !== "" || inputAf !== "" || inputPat !== "") {
+    //             if (event.target.value !== event.target.defaultValue) { // Check if the value has changed
+    //                 turnOnLoader();
+    //                 getItemDetail(inputCodigo, inputItem, inputAf, inputPat, solicitanteChapa, solicitanteCodColigada);
+    //             }
+    //             checkFocus();
+    //         }
+    //         // else {
+    //         //     checkFocus();
+    //         // }
+    //     } else {
+    //         appendAlert('Por favor, insira solicitante e liberador primeiro', 'warning');
+    //         cleanupfields();
+    //         checkFocus();
+    //     }
+    // }
+
+    // document.getElementById("codigo").addEventListener("blur", handleBlur);
+    // document.getElementById("itemInput").addEventListener("blur", handleBlur);
+    // document.getElementById("AFinput").addEventListener("blur", handleBlur);
+    // document.getElementById("PATinput").addEventListener("blur", handleBlur);
+
+    function cleanupTables() {
+        const tableBody = document.getElementById("emprestimoProductTable").querySelector("tbody");
+        tableBody.innerHTML = ""; // This will remove all rows and content from the table
+        updateQtyStock();
+    }
+
+    function cleanupfields() {
+        document.getElementById("codigo").value = "";
+        document.getElementById("itemInput").value = "";
+        document.getElementById("AFinput").value = "";
+        document.getElementById("PATinput").value = "";
+        document.getElementById("solicitante").value = "";
+        document.getElementById("liberador").value = "";
+    }
+
+    function GetEmployeeSolicitante(inputSolicitante) {
+
+        $.ajax({
+            url: '/Emprestimo/GetEmployeeInformation',
+            type: 'POST',
+            data: { givenInfo: inputSolicitante },
+            success: function (data) {
+
+                if (data.success) {
+                    if (data.entity) {
+                        console.log('Single entity found');
+                        console.log(data.entity);
+
+                        if (data.entity.imagebase64 !== null) {
+                            document.getElementById("imgSolicitante").src = data.entity.imagebase64;
+                        } else {
+                            document.getElementById("imgSolicitante").src = "/img/image-not-available.jpg";
+                        }
+
+
+                        document.getElementById("chapaLabelSolicitante").innerText = data.entity.chapa;
+                        document.getElementById("nomeLabelSolicitante").innerText = data.entity.nome;
+
+                        if (data.entity.codSituacao === "A") {
+                            document.getElementById("situacaoLabelSolicitante").innerText = data.entity.codSituacao;
+                            // document.getElementById("chapaLabelSolicitante").style.color = "black";
+                            // document.getElementById("nomeLabelSolicitante").style.color = "black";
+                            // document.getElementById("situacaoLabelSolicitante").style.color = "black";
+
+                            document.getElementById("chapaLabelSolicitante").classList.remove("text-danger");
+                            document.getElementById("nomeLabelSolicitante").classList.remove("text-danger");
+                            document.getElementById("situacaoLabelSolicitante").classList.remove("text-danger");
+
+                        } else if (data.entity.codSituacao === "D") {
+                            // Format the date to dd/mm/yyyy
+                            let demissaoDate = new Date(data.entity.dataDemissao);
+                            let formattedDate = demissaoDate.toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+
+                            // Set the text and apply red color
+                            let situacaoLabel = document.getElementById("situacaoLabelSolicitante");
+                            situacaoLabel.innerText = `${data.entity.codSituacao} - ${formattedDate}`;
+                            situacaoLabel.classList.add("text-danger");
+                            // situacaoLabel.style.color = "red";
+                            // document.getElementById("chapaLabelSolicitante").style.color = "red";
+                            // document.getElementById("nomeLabelSolicitante").style.color = "red";
+
+                            document.getElementById("chapaLabelSolicitante").classList.add("text-danger");
+                            document.getElementById("nomeLabelSolicitante").classList.add("text-danger");
+
+
+                        } else {
+                            document.getElementById("situacaoLabelSolicitante").innerText = data.entity.codSituacao;
+                            // document.getElementById("chapaLabelSolicitante").style.color = "black";
+                            // document.getElementById("nomeLabelSolicitante").style.color = "black";
+                            // document.getElementById("situacaoLabelSolicitante").style.color = "black";
+
+                            document.getElementById("chapaLabelSolicitante").classList.remove("text-danger");
+                            document.getElementById("nomeLabelSolicitante").classList.remove("text-danger");
+                            document.getElementById("situacaoLabelSolicitante").classList.remove("text-danger");
+                        }
+
+                        if (data.entity.codColigada === 2) {
+                            document.getElementById("empressaLabelSolicitante").innerText = "BrasFELS";
+                        } else {
+                            document.getElementById("empressaLabelSolicitante").innerText = "";
+                        }
+
+                        document.getElementById("funcaoLabelSolicitante").innerText = data.entity.funcao;
+                        document.getElementById("secaoLabelSolicitante").innerText = data.entity.secao;
+
+                        document.getElementById("codColigadaLabelSolicitante").innerText = data.entity.codColigada;
+                        document.getElementById("idTerceiroLabelSolicitante").innerText = data.entity.idTerceiro;
+
+                        if (data.entity.blockMessage.length > 0) {
+                            console.log('multiple message');
+
+                            // Select the table body
+                            let tableBody = document.getElementById("mensagemSolicitanteTable").querySelector("tbody");
+
+                            // Clear any existing rows
+                            tableBody.innerHTML = "";
+
+                            // Loop through the messages and create table rows
+                            data.entity.blockMessage.forEach(message => {
+                                let row = document.createElement("tr");
+                                row.setAttribute("data-id", message.id);
+                                let cell = document.createElement("td");
+                                cell.innerHTML = `<b>Postado Por:</b> ${message.username}`;
+                                row.appendChild(cell);
+
+                                let row2 = document.createElement("tr");
+                                row2.setAttribute("data-id", message.id);
+                                let cell2 = document.createElement("td");
+                                cell2.innerHTML = `<b>Texto:</b> ${message.mensagem}`;
+
+                                if (message.fixar !== 1) {
+                                    let deleteLink = document.createElement("a");
+                                    deleteLink.href = "#";
+                                    deleteLink.innerText = "Apagar";
+                                    deleteLink.onclick = function () {
+                                        deleteMessage(message.id); // Assuming message.id is the identifier
+                                    };
+
+                                    // Append the delete link to cell2
+                                    cell2.appendChild(document.createTextNode(" "));
+                                    cell2.appendChild(deleteLink);
+                                } else {
+                                    if (message.allowdelete === true) {
+                                        // Create the delete link
+                                        let deleteLink = document.createElement("a");
+                                        deleteLink.href = "#";
+                                        deleteLink.innerText = "Apagar";
+                                        deleteLink.onclick = function () {
+                                            deleteMessage(message.id); // Assuming message.id is the identifier
+                                        };
+
+                                        // Append the delete link to cell2
+                                        cell2.appendChild(document.createTextNode(" "));
+                                        cell2.appendChild(deleteLink);
+                                    }
+                                }
+
+                                row2.appendChild(cell2);
+
+                                tableBody.appendChild(row);
+                                tableBody.appendChild(row2);
+                            });
+
+                            var modal = document.getElementById('mensagemSolicitanteModal');
+                            var modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+
+                        }
+
+                        if (data.entity.blockSolicitanteMessage !== null) {
+                            let modalblock = document.getElementById("blockMessageModal");
+
+                            // Correct the selector to include the dot for the class name
+                            let modalBody = modalblock.querySelector(".modal-body");
+                            modalBody.innerHTML = "";
+
+                            modalBody.innerHTML = data.entity.blockSolicitanteMessage;
+
+                            var modalInstanceblock = new bootstrap.Modal(modalblock);
+                            modalInstanceblock.show();
+                        }
+
+                        document.getElementById("solicitante").value = "";
+
+
+
+
+                    } else if (data.totalResult) {
+
+                        console.log('Multiple entities found');
+                        console.log(data.totalResult.length);
+
+                        // Select the table body
+                        let tableBody = document.getElementById("listOfEmployeesTable").querySelector("tbody");
+
+                        // Clear any existing rows
+                        tableBody.innerHTML = "";
+
+                        data.totalResult.forEach(employee => {
+                            let row = document.createElement("tr");
+                            let chapaCell = document.createElement("td");
+                            let nomeCell = document.createElement("td");
+                            let situacaoCell = document.createElement("td");
+                            let secaoCell = document.createElement("td");
+                            let blankCell = document.createElement("td");
+
+                            chapaCell.innerHTML = employee.chapa;
+                            nomeCell.innerHTML = employee.nome;
+                            situacaoCell.innerHTML = employee.codSituacao;
+                            secaoCell.innerHTML = employee.secao;
+
+                            let selectLink = document.createElement("a");
+                            selectLink.href = "#";
+                            selectLink.innerText = "selecionar";
+                            selectLink.onclick = function () {
+                                selectEmployee(employee.chapa); // Assuming message.id is the identifier
+                            };
+                            blankCell.appendChild(selectLink);
+
+
+                            row.appendChild(chapaCell);
+                            row.appendChild(nomeCell);
+                            row.appendChild(situacaoCell);
+                            row.appendChild(secaoCell);
+                            row.appendChild(blankCell);
+                            tableBody.appendChild(row);
+                        });
+
+                        var modal = document.getElementById('listOfEmployeesModal');
+                        var modalInstance = new bootstrap.Modal(modal);
+                        modal.setAttribute('data-bs-instance', modalInstance); // Store the instance in a data attribute
+                        modalInstance.show();
+
+
+                    }
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+                turnOffLoader();
+                checkFocus();
+            },
+            error: function (error) {
+
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+                turnOffLoader();
+
+            }
+        });
+    }
+
+    function GetEmployeeLiberador(inputLiberador) {
+
+        $.ajax({
+            url: '/Emprestimo/GetEmployeeInformation',
+            type: 'POST',
+            data: { givenInfo: inputLiberador },
+            success: function (data) {
+
+                if (data.success) {
+                    if (data.entity) {
+                        console.log('Single entity found');
+                        console.log(data.entity);
+
+                        if (data.entity.imagebase64 !== null) {
+                            document.getElementById("imgLiberador").src = data.entity.imagebase64;
+                        } else {
+                            document.getElementById("imgLiberador").src = "/img/image-not-available.jpg";
+                        }
+
+
+                        document.getElementById("chapaLabelLiberador").innerText = data.entity.chapa;
+                        document.getElementById("nomeLabelLiberador").innerText = data.entity.nome;
+
+                        if (data.entity.codSituacao === "A") {
+                            document.getElementById("situacaoLabelLiberador").innerText = data.entity.codSituacao;
+                            // document.getElementById("situacaoLabelLiberador").style.color = "black";
+                            // document.getElementById("chapaLabelLiberador").style.color = "black";
+                            // document.getElementById("nomeLabelLiberador").style.color = "black";
+
+                            document.getElementById("situacaoLabelLiberador").classList.remove("text-danger");
+                            document.getElementById("chapaLabelLiberador").classList.remove("text-danger");
+                            document.getElementById("nomeLabelLiberador").classList.remove("text-danger");
+                        } else if (data.entity.codSituacao === "D") {
+                            // Format the date to dd/mm/yyyy
+                            let demissaoDate = new Date(data.entity.dataDemissao);
+                            let formattedDate = demissaoDate.toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+
+                            // Set the text and apply red color
+                            let situacaoLabel = document.getElementById("situacaoLabelLiberador");
+                            situacaoLabel.innerText = `${data.entity.codSituacao} - ${formattedDate}`;
+                            // situacaoLabel.style.color = "red";
+                            situacaoLabel.classList.add("text-danger");
+
+                            // document.getElementById("chapaLabelLiberador").style.color = "red";
+                            // document.getElementById("nomeLabelLiberador").style.color = "red";
+
+
+                            document.getElementById("chapaLabelLiberador").classList.add("text-danger");
+                            document.getElementById("nomeLabelLiberador").classList.add("text-danger");
+
+                        } else {
+                            document.getElementById("situacaoLabelLiberador").innerText = data.entity.codSituacao;
+                            // document.getElementById("situacaoLabelLiberador").style.color = "black";
+                            // document.getElementById("chapaLabelLiberador").style.color = "black";
+                            // document.getElementById("nomeLabelLiberador").style.color = "black";
+
+                            document.getElementById("situacaoLabelLiberador").classList.remove("text-danger");
+                            document.getElementById("chapaLabelLiberador").classList.remove("text-danger");
+                            document.getElementById("nomeLabelLiberador").classList.remove("text-danger");
+                        }
+
+                        if (data.entity.codColigada === 2) {
+                            document.getElementById("empressaLabelLiberador").innerText = "BrasFELS";
+                        } else {
+                            document.getElementById("empressaLabelLiberador").innerText = "";
+                        }
+
+                        document.getElementById("funcaoLabelLiberador").innerText = data.entity.funcao;
+                        document.getElementById("secaoLabelLiberador").innerText = data.entity.secao;
+
+                        document.getElementById("codColigadaLabelLiberador").innerText = data.entity.codColigada;
+                        document.getElementById("idTerceiroLabelLiberador").innerText = data.entity.idTerceiro;
+
+                        document.getElementById("liberador").value = "";
+
+
+                    } else if (data.totalResult) {
+                        console.log('Multiple entities found');
+                        console.log(data.totalResult.length);
+
+                        // Select the table body
+                        let tableBody = document.getElementById("listOfEmployeesTable").querySelector("tbody");
+
+                        // Clear any existing rows
+                        tableBody.innerHTML = "";
+
+                        data.totalResult.forEach(employee => {
+                            let row = document.createElement("tr");
+                            let chapaCell = document.createElement("td");
+                            let nomeCell = document.createElement("td");
+                            let situacaoCell = document.createElement("td");
+                            let secaoCell = document.createElement("td");
+                            let blankCell = document.createElement("td");
+
+                            chapaCell.innerHTML = employee.chapa;
+                            nomeCell.innerHTML = employee.nome;
+                            situacaoCell.innerHTML = employee.codSituacao;
+                            secaoCell.innerHTML = employee.secao;
+
+                            let selectLink = document.createElement("a");
+                            selectLink.href = "#";
+                            selectLink.innerText = "selecionar";
+                            selectLink.onclick = function () {
+                                selectEmployeeLiberador(employee.chapa); // Assuming message.id is the identifier
+                            };
+                            blankCell.appendChild(selectLink);
+
+
+                            row.appendChild(chapaCell);
+                            row.appendChild(nomeCell);
+                            row.appendChild(situacaoCell);
+                            row.appendChild(secaoCell);
+                            row.appendChild(blankCell);
+                            tableBody.appendChild(row);
+                        });
+
+                        var modal = document.getElementById('listOfEmployeesModal');
+                        var modalInstance = new bootstrap.Modal(modal);
+                        modal.setAttribute('data-bs-instance', modalInstance); // Store the instance in a data attribute
+                        modalInstance.show();
+
+                    }
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+                turnOffLoader();
+                checkFocus();
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+    }
+
+    function deleteMessage(id) {
+        $.ajax({
+            url: '/Emprestimo/deleteBlockMessage',
+            type: 'POST',
+            data: { id: id },
+            success: function (data) {
+
+                if (data.success) {
+
+                    let rows = document.querySelectorAll(`tr[data-id='${id}']`);
+                    rows.forEach(row => row.remove());
+
+                    appendAlert(data.message, 'success');
+                    checkFocus();
+
+                } else {
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+    }
+
+    function selectEmployee(chapa) {
+
+        turnOnLoader();
+
+        $.ajax({
+            url: '/Emprestimo/selectedEmployeeInformation',
+            type: 'POST',
+            data: { givenInfo: chapa },
+            success: function (data) {
+
+                if (data.success) {
+                    if (data.entity) {
+                        console.log('Single entity found');
+                        console.log(data.entity);
+
+                        if (data.entity.imagebase64 !== null) {
+                            document.getElementById("imgSolicitante").src = data.entity.imagebase64;
+                        } else {
+                            document.getElementById("imgSolicitante").src = "/img/image-not-available.jpg";
+                        }
+
+
+                        document.getElementById("chapaLabelSolicitante").innerText = data.entity.chapa;
+                        document.getElementById("nomeLabelSolicitante").innerText = data.entity.nome;
+
+                        if (data.entity.codSituacao === "A") {
+                            document.getElementById("situacaoLabelSolicitante").innerText = data.entity.codSituacao;
+                            document.getElementById("situacaoLabelSolicitante").style.color = "black";
+                            document.getElementById("chapaLabelSolicitante").style.color = "black";
+                            document.getElementById("nomeLabelSolicitante").style.color = "black";
+                        } else if (data.entity.codSituacao === "D") {
+                            // Format the date to dd/mm/yyyy
+                            let demissaoDate = new Date(data.entity.dataDemissao);
+                            let formattedDate = demissaoDate.toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+
+                            // Set the text and apply red color
+                            let situacaoLabel = document.getElementById("situacaoLabelSolicitante");
+                            situacaoLabel.innerText = `${data.entity.codSituacao} - ${formattedDate}`;
+                            situacaoLabel.style.color = "red";
+                            document.getElementById("chapaLabelSolicitante").style.color = "red";
+                            document.getElementById("nomeLabelSolicitante").style.color = "red";
+                        } else {
+                            document.getElementById("situacaoLabelSolicitante").innerText = data.entity.codSituacao;
+                            document.getElementById("situacaoLabelSolicitante").style.color = "black";
+                            document.getElementById("chapaLabelSolicitante").style.color = "black";
+                            document.getElementById("nomeLabelSolicitante").style.color = "black";
+                        }
+
+                        if (data.entity.codColigada === 2) {
+                            document.getElementById("empressaLabelSolicitante").innerText = "BrasFELS";
+                        } else {
+                            document.getElementById("empressaLabelSolicitante").innerText = "";
+                        }
+
+                        document.getElementById("funcaoLabelSolicitante").innerText = data.entity.funcao;
+                        document.getElementById("secaoLabelSolicitante").innerText = data.entity.secao;
+
+                        document.getElementById("codColigadaLabelSolicitante").innerText = data.entity.codColigada;
+                        document.getElementById("idTerceiroLabelSolicitante").innerText = data.entity.idTerceiro;
+
+                        if (data.entity.blockMessage.length > 0) {
+                            console.log('multiple message');
+
+                            // Select the table body
+                            let tableBody = document.getElementById("mensagemSolicitanteTable").querySelector("tbody");
+
+                            // Clear any existing rows
+                            tableBody.innerHTML = "";
+
+                            // Loop through the messages and create table rows
+                            data.entity.blockMessage.forEach(message => {
+                                let row = document.createElement("tr");
+                                row.setAttribute("data-id", message.id);
+                                let cell = document.createElement("td");
+                                cell.innerHTML = `<b>Postado Por:</b> ${message.username}`;
+                                row.appendChild(cell);
+
+                                let row2 = document.createElement("tr");
+                                row2.setAttribute("data-id", message.id);
+                                let cell2 = document.createElement("td");
+                                cell2.innerHTML = `<b>Texto:</b> ${message.mensagem}`;
+
+                                if (message.fixar !== 1) {
+                                    let deleteLink = document.createElement("a");
+                                    deleteLink.href = "#";
+                                    deleteLink.innerText = "Apagar";
+                                    deleteLink.onclick = function () {
+                                        deleteMessage(message.id); // Assuming message.id is the identifier
+                                    };
+
+                                    // Append the delete link to cell2
+                                    cell2.appendChild(document.createTextNode(" "));
+                                    cell2.appendChild(deleteLink);
+                                } else {
+                                    if (message.allowdelete === true) {
+                                        // Create the delete link
+                                        let deleteLink = document.createElement("a");
+                                        deleteLink.href = "#";
+                                        deleteLink.innerText = "Apagar";
+                                        deleteLink.onclick = function () {
+                                            deleteMessage(message.id); // Assuming message.id is the identifier
+                                        };
+
+                                        // Append the delete link to cell2
+                                        cell2.appendChild(document.createTextNode(" "));
+                                        cell2.appendChild(deleteLink);
+                                    }
+                                }
+
+                                row2.appendChild(cell2);
+
+                                tableBody.appendChild(row);
+                                tableBody.appendChild(row2);
+                            });
+
+                            var modal = document.getElementById('mensagemSolicitanteModal');
+                            var modalInstance = new bootstrap.Modal(modal);
+                            modalInstance.show();
+
+                        }
+
+                        if (data.entity.blockSolicitanteMessage !== null) {
+                            let modalblock = document.getElementById("blockMessageModal");
+
+                            // Correct the selector to include the dot for the class name
+                            let modalBody = modalblock.querySelector(".modal-body");
+                            modalBody.innerHTML = "";
+
+                            modalBody.innerHTML = data.entity.blockSolicitanteMessage;
+
+                            var modalInstanceblock = new bootstrap.Modal(modalblock);
+                            modalInstanceblock.show();
+                        }
+
+
+                        var modal = document.getElementById('listOfEmployeesModal');
+                        var modalInstance = bootstrap.Modal.getInstance(modal); // Retrieve the instance from the data attribute
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+
+                        document.getElementById("solicitante").value = "";
+
+                    }
+
+                } else {
+                    console.log(data.message);
+                }
+
+                turnOffLoader();
+                checkFocus();
+            },
+            error: function (error) {
+
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+                turnOffLoader();
+
+            }
+        });
+    }
+
+    function selectEmployeeLiberador(chapa) {
+
+        turnOnLoader();
+
+        $.ajax({
+            url: '/Emprestimo/selectedEmployeeInformation',
+            type: 'POST',
+            data: { givenInfo: chapa },
+            success: function (data) {
+
+                if (data.success) {
+                    if (data.entity) {
+                        console.log('Single entity found');
+                        console.log(data.entity);
+
+                        if (data.entity.imagebase64 !== null) {
+                            document.getElementById("imgLiberador").src = data.entity.imagebase64;
+                        } else {
+                            document.getElementById("imgLiberador").src = "/img/image-not-available.jpg";
+                        }
+
+
+                        document.getElementById("chapaLabelLiberador").innerText = data.entity.chapa;
+                        document.getElementById("nomeLabelLiberador").innerText = data.entity.nome;
+
+                        if (data.entity.codSituacao === "A") {
+                            document.getElementById("situacaoLabelLiberador").innerText = data.entity.codSituacao;
+                            document.getElementById("chapaLabelLiberador").style.color = "black";
+                            document.getElementById("nomeLabelLiberador").style.color = "black";
+                            document.getElementById("situacaoLabelLiberador").style.color = "black";
+                        } else if (data.entity.codSituacao === "D") {
+                            // Format the date to dd/mm/yyyy
+                            let demissaoDate = new Date(data.entity.dataDemissao);
+                            let formattedDate = demissaoDate.toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+
+                            // Set the text and apply red color
+                            let situacaoLabel = document.getElementById("situacaoLabelLiberador");
+                            situacaoLabel.innerText = `${data.entity.codSituacao} - ${formattedDate}`;
+                            situacaoLabel.style.color = "red";
+                            document.getElementById("chapaLabelLiberador").style.color = "red";
+                            document.getElementById("nomeLabelLiberador").style.color = "red";
+                        } else {
+                            document.getElementById("situacaoLabelLiberador").innerText = data.entity.codSituacao;
+                            document.getElementById("chapaLabelLiberador").style.color = "black";
+                            document.getElementById("nomeLabelLiberador").style.color = "black";
+                            document.getElementById("situacaoLabelLiberador").style.color = "black";
+                        }
+
+                        if (data.entity.codColigada === 2) {
+                            document.getElementById("empressaLabelLiberador").innerText = "BrasFELS";
+                        } else {
+                            document.getElementById("empressaLabelLiberador").innerText = "";
+                        }
+
+                        document.getElementById("funcaoLabelLiberador").innerText = data.entity.funcao;
+                        document.getElementById("secaoLabelLiberador").innerText = data.entity.secao;
+
+                        document.getElementById("codColigadaLabelLiberador").innerText = data.entity.codColigada;
+                        document.getElementById("idTerceiroLabelLiberador").innerText = data.entity.idTerceiro;
+
+                        var modal = document.getElementById('listOfEmployeesModal');
+                        var modalInstance = bootstrap.Modal.getInstance(modal); // Retrieve the instance from the data attribute
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+
+                        document.getElementById("liberador").value = "";
+                    }
+
+                } else {
+                    console.log(data.message);
+                }
+
+                turnOffLoader();
+                checkFocus();
+            },
+            error: function (error) {
+
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+                turnOffLoader();
+
+            }
+        });
+    }
+
+    function getItemDetail(codigo, item, af, pat, chapa, coligada) {
+
+        $.ajax({
+            url: '/Emprestimo/GetProductInfo',
+            type: 'POST',
+            data: { codigo: codigo, item: item, af: af, pat: pat, chapa: chapa, coligada: coligada },
+            success: function (data) {
+
+                if (data.success) {
+
+                    console.log(data.finalproduct);
+
+                    if (data.finalproduct) {
+
+                        console.log(data.finalproduct.controleCAList.length);
+                        if (data.finalproduct.controleCAList.length > 0) {
+                            productWithCA(data.finalproduct);
+                        } else {
+                            addToProductTable(data.finalproduct);
+                            cleanupfields();
+                        }
+
+                    } else if (data.productlist) {
+                        console.log(data.productlist.length);
+
+                        multipleProductFound(data.productlist);
+
+                    }
+
+
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+                turnOffLoader();
+                checkFocus();
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+
+    }
+
+    function multipleProductFound(productlist) {
+
+        var modal = document.getElementById('multipleProductModal');
+        var modalInstance = new bootstrap.Modal(modal);
+        modal.setAttribute('data-bs-instance', modalInstance); // Store the instance in a data attribute
+
+        const tableBody = document.getElementById("multipleProductTable").querySelector("tbody");
+
+        // Clear any existing rows
+        tableBody.innerHTML = "";
+
+        productlist.forEach(item => {
+
+            const row = document.createElement("tr");
+            row.id = item.idProduto;
+
+            const codigoCell = document.createElement("td");
+            codigoCell.innerHTML = item.codigo || "";
+
+            const produtoCell = document.createElement("td");
+            produtoCell.innerHTML = item.nomeCatalogo || "";
+
+            const afCell = document.createElement("td");
+            afCell.innerHTML = item.af || "";
+
+            const patCell = document.createElement("td");
+            patCell.innerHTML = item.pat || "";
+
+            const qtyStockCell = document.createElement("td");
+            qtyStockCell.innerHTML = item.quantidade || "";
+
+            const blankCell = document.createElement("td");
+            const img1 = document.createElement('img');
+            img1.src = '/img/plus-circle-fill.svg';
+            img1.className = 'SwitchingIcons';
+            img1.alt = 'Minus Icon';
+
+            let deleteLink = document.createElement("a");
+            deleteLink.href = "#";
+            deleteLink.appendChild(img1);
+
+
+
+            if (item.controleCAList > 1) {
+                qtyStockCell.innerHTML = "2";
+            } else if (item.controleCAList == 1) {
+                qtyStockCell.innerHTML = "1";
+            } else {
+                deleteLink.onclick = function () {
+                    addToProductTableAndBackEndCart(item); // Assuming message.id is the identifier
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+
+                };
+            }
+
+            blankCell.appendChild(deleteLink);
+
+            row.appendChild(codigoCell);
+            row.appendChild(produtoCell);
+            row.appendChild(afCell);
+            row.appendChild(patCell);
+            row.appendChild(qtyStockCell);
+            row.appendChild(blankCell);
+            tableBody.appendChild(row);
+
+        });
+
+
+        modalInstance.show();
+
+    }
+
+    function productWithCA(item) {
+        // Select the table body
+        const tableBody = document.getElementById("productCATable").querySelector("tbody");
+
+        // Clear any existing rows
+        tableBody.innerHTML = "";
+
+        const row = document.createElement("tr");
+        row.id = item.idProduto;
+
+        const codigoCell = document.createElement("td");
+        const produtoCell = document.createElement("td");
+        const afCell = document.createElement("td");
+        const patCell = document.createElement("td");
+        const observacaoCell = document.createElement("td");
+        const qtyStockCell = document.createElement("td");
+        const qtyRequestCell = document.createElement("td");
+        qtyRequestCell.className = 'widthadjust';
+        const dateCell = document.createElement("td");
+        const blankCell = document.createElement("td");
+        const caSelectCell = document.createElement("td");
+
+        codigoCell.innerHTML = item.codigo || "";
+        produtoCell.innerHTML = item.nomeCatalogo || "";
+        afCell.innerHTML = item.af || "";
+        patCell.innerHTML = item.pat || "";
+
+        const inputObservacao = document.createElement('input');
+        inputObservacao.type = 'text';
+        inputObservacao.className = 'form-control';
+        observacaoCell.appendChild(inputObservacao);
+
+        qtyStockCell.innerHTML = item.quantidade || "";
+
+        const inputGroupContainer = document.createElement('div');
+        const inputGroup = document.createElement('div');
+        inputGroup.className = 'input-group';
+
+        const img1 = document.createElement('img');
+        img1.src = '/img/dash.svg';
+        img1.className = 'SwitchingIcons';
+        img1.alt = 'Minus Icon';
+
+        const button1 = document.createElement('button');
+        button1.className = 'btn btn-outline-secondary btn-sm btn-lg';
+        button1.type = 'button';
+        button1.appendChild(img1);
+
+
+
+        const inputQtdRequest = document.createElement('input');
+        inputQtdRequest.type = 'text';
+        inputQtdRequest.className = 'form-control';
+        inputQtdRequest.value = '1';
+        inputQtdRequest.setAttribute('data-poraferido', item.porAferido);
+        inputQtdRequest.setAttribute('data-porserial', item.porSerial);
+        inputQtdRequest.setAttribute('data-classe', item.classe);
+        inputQtdRequest.setAttribute('data-datavencimento', item.dataVencimento);
+        inputQtdRequest.setAttribute('data-dataemprestimo', item.dataEmprestimoFrontEnd);
+        // inputQtdRequest.addEventListener('input', restrictDigitsOnly);
+
+        const img2 = document.createElement('img');
+        img2.src = '/img/plus-lg.svg';
+        img2.className = 'SwitchingIcons';
+        img2.alt = 'Plus Icon';
+
+        const button2 = document.createElement('button');
+        button2.className = 'btn btn-outline-secondary btn-sm btn-lg';
+        button2.type = 'button';
+        button2.appendChild(img2);
+
+        button1.addEventListener('click', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            if (currentValue > 1) {
+                inputQtdRequest.value = currentValue - 1;
+            }
+        });
+
+        button2.addEventListener('click', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            inputQtdRequest.value = currentValue + 1;
+        });
+
+        inputQtdRequest.addEventListener('blur', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            let stockValue = parseInt(item.quantidade, 10);
+
+            if (isNaN(currentValue) || currentValue < 1) {
+                inputQtdRequest.value = 1;
+                currentValue = 1; // Ensure currentValue is set to 1
+            } else if (currentValue > stockValue) {
+                // checkQuantity(inputQtdRequest);
+                appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                inputQtdRequest.value = 1;
+                updateQtyStock();
+            } else if (currentValue >= 99) {
+                checkQuantity(inputQtdRequest);
+                updateQtyStock();
+            }
+        });
+
+        if (item.porAferido === 1 || item.porSerial === 1) {
+
+            button1.style.display = 'none';
+            button1.disabled = true;
+
+            button2.style.display = 'none';
+            button2.disabled = true;
+
+            inputQtdRequest.disabled = true;
+
+        }
+
+        inputGroup.appendChild(button1);
+        inputGroup.appendChild(inputQtdRequest);
+        inputGroup.appendChild(button2);
+        inputGroupContainer.appendChild(inputGroup);
+        qtyRequestCell.appendChild(inputGroupContainer);
+
+        const inputDate = document.createElement('input');
+        inputDate.type = 'date';
+        inputDate.className = 'form-control';
+
+        if (item.classe === 2) {
+            if (item.dataEmprestimoFrontEnd !== null || item.dataEmprestimoFrontEnd !== "") {
+                inputDate.value = formatDateForInput(item.dataEmprestimoFrontEnd);
+                inputDate.disabled = true;
+            }
+        } else if (item.classe == 1) {
+            if (item.porAferido === 1 && item.dataVencimento !== null) {
+                inputDate.value = formatDateForInput(item.dataVencimento);
+            } else {
+                if (item.dataEmprestimoFrontEnd !== null || item.dataEmprestimoFrontEnd !== "") {
+                    inputDate.value = formatDateForInput(item.dataEmprestimoFrontEnd);
+                }
+            }
+        } else {
+            inputDate.disabled = true;
+        }
+
+        dateCell.appendChild(inputDate);
+
+        let isFirst = true;
+
+        item.controleCAList.forEach(ca => {
+            const caGroup = document.createElement('div');
+            caGroup.className = 'inline-checkbox';
+
+            const input = document.createElement('input');
+            input.className = 'form-check-input';
+            input.type = 'radio';
+            input.value = ca.id;
+            input.setAttribute('data-cavalue', ca.numeroCA);
+            input.setAttribute('data-cavalidade', ca.validade);
+            input.name = 'IdControleCA';
+
+            // Check if it's the first item or if it matches the firstItemId
+            if (isFirst) {
+                input.checked = true;
+                isFirst = false; // Set the flag to false after the first iteration
+            }
+
+            const label = document.createElement('label');
+            label.className = 'form-check-label';
+            label.htmlFor = 'flexCheckDefault';
+            label.textContent = `${ca.numeroCA} - ${formatDateToDDMMYYYY(ca.validade)}`;
+
+            caGroup.appendChild(input);
+            caGroup.appendChild(label);
+
+            // Append caGroup to the desired parent element
+            caSelectCell.appendChild(caGroup);
+        });
+
+        const button3 = document.createElement('button');
+        button3.className = 'btn btn-warning';
+        button3.type = 'button';
+        button3.appendChild(img2);
+        blankCell.appendChild(button3);
+
+        button3.addEventListener('click', () => {
+            pushtoProductTable(row);
+        });
+
+        row.appendChild(codigoCell);
+        row.appendChild(produtoCell);
+        row.appendChild(afCell);
+        row.appendChild(patCell);
+        row.appendChild(observacaoCell);
+        row.appendChild(qtyStockCell);
+        row.appendChild(qtyRequestCell);
+        row.appendChild(dateCell);
+        row.appendChild(caSelectCell);
+        row.appendChild(blankCell);
+        tableBody.appendChild(row);
+
+        var modal = document.getElementById('productWithCAModal');
+        var modalInstance = new bootstrap.Modal(modal);
+        modal.setAttribute('data-bs-instance', modalInstance); // Store the instance in a data attribute
+        modalInstance.show();
+
+
+
+        modal.addEventListener('keydown', handleEnterKey);
+
+
+
+        // document.addEventListener('keydown', (event) => {
+        //     if (event.key === 'Enter') {
+        //         pushtoProductTable(row);
+        //     }
+        // });
+
+
+    }
+
+
+    function handleEnterKey(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default form submission
+            const row = document.querySelector('#productCATable tbody tr');
+            pushtoProductTable(row);
+        }
+    }
+
+
+    function pushtoProductTable(row) {
+
+        const codigovalue = row.querySelector('td:nth-child(1)').innerHTML;
+        console.log(codigovalue);
+
+        const rowId = parseInt(row.id, 10); // Assuming the row has an ID attribute
+        console.log('Row ID:', rowId);
+
+        $.ajax({
+            url: '/Emprestimo/addToSessionKeyEmprestimoCart',
+            type: 'POST',
+            data: { codigo: codigovalue, idproduto: rowId },
+            success: function (data) {
+
+                if (data.success) {
+
+                    // Create a new row for the target table
+                    const newRow = document.createElement('tr');
+                    newRow.id = row.id;
+
+                    const newCodigoCell = document.createElement('td');
+                    newCodigoCell.innerHTML = row.querySelector('td:nth-child(1)').innerHTML;
+
+                    const newProdutoCell = document.createElement('td');
+                    newProdutoCell.innerHTML = row.querySelector('td:nth-child(2)').innerHTML;
+
+                    const newCaCell = document.createElement('td');
+                    const selectedCAInput = row.querySelector('input[name="IdControleCA"]:checked');
+                    // const selectedCA = selectedCAInput ? selectedCAInput.value : 'No CA selected';
+                    const selectedCA = selectedCAInput.dataset.cavalue;
+                    const selectedCADataVencimento = formatDateToDDMMYYYY(selectedCAInput.dataset.cavalidade);
+                    // newCaCell.innerHTML = selectedCA;
+
+                    const popoverLink = document.createElement("a");
+                    popoverLink.setAttribute("href", "#"); // Avoid jumping to top of page
+                    popoverLink.className = 'controleCA';
+                    popoverLink.setAttribute("data-bs-toggle", "popover");
+                    popoverLink.setAttribute("data-bs-placement", "right");
+                    popoverLink.setAttribute("data-bs-title", "CA Data");
+                    popoverLink.setAttribute("data-bs-trigger", "hover");
+                    popoverLink.setAttribute("data-bs-content", selectedCADataVencimento);
+                    popoverLink.setAttribute("data-idCA", selectedCAInput.value);
+                    popoverLink.textContent = selectedCA;
+
+                    // Append to the new cell
+                    newCaCell.appendChild(popoverLink);
+
+                    // Initialize the popover manually
+                    const popover = new bootstrap.Popover(popoverLink, {
+                        trigger: "hover",
+                        placement: "right"
+                    });
+
+
+
+                    const newAfCell = document.createElement('td');
+                    newAfCell.innerHTML = row.querySelector('td:nth-child(3)').innerHTML;
+
+                    const newPatCell = document.createElement('td');
+                    newPatCell.innerHTML = row.querySelector('td:nth-child(4)').innerHTML;
+
+                    const newObservacaoCell = document.createElement('td');
+                    const inputObservacao = document.createElement('input');
+                    inputObservacao.type = 'text';
+                    inputObservacao.className = 'form-control Observacao';
+                    inputObservacao.value = row.querySelector('td:nth-child(5) input').value;
+                    console.log(row.querySelector('td:nth-child(5) input').value);
+                    newObservacaoCell.appendChild(inputObservacao);
+                    // newObservacaoCell.innerHTML = row.querySelector('td:nth-child(5) input').value;
+
+                    const newQtyStockCell = document.createElement('td');
+                    newQtyStockCell.className = 'qtyStock';
+                    newQtyStockCell.textContent = row.querySelector('td:nth-child(6)').innerHTML;
+
+                    const newQtyRequestCell = document.createElement('td');
+
+                    const inputGroupContainer = document.createElement('div');
+                    const inputGroup = document.createElement('div');
+                    inputGroup.className = 'input-group';
+
+                    const img1 = document.createElement('img');
+                    img1.src = '/img/dash.svg';
+                    img1.className = 'SwitchingIcons';
+                    img1.alt = 'Minus Icon';
+
+                    const button1 = document.createElement('button');
+                    button1.className = 'btn btn-outline-secondary btn-sm btn-lg';
+                    button1.type = 'button';
+                    button1.appendChild(img1);
+
+                    const inputQtdRequest = document.createElement('input');
+                    inputQtdRequest.type = 'text';
+                    inputQtdRequest.className = 'form-control QtdRequest';
+                    inputQtdRequest.value = row.querySelector('td:nth-child(7) input').value;
+
+
+                    const qtyInput = row.querySelector('td:nth-child(7) input');
+                    const porAferidoValue = parseInt(qtyInput.dataset.poraferido, 10);
+                    const porSerialValue = parseInt(qtyInput.dataset.porserial, 10);
+                    const classeValue = parseInt(qtyInput.dataset.classe, 10);
+                    const vencimentoValue = qtyInput.dataset.datavencimento;
+                    const emprestimodateValue = qtyInput.dataset.dataemprestimo;
+
+                    inputQtdRequest.setAttribute('data-classe', classeValue);
+
+                    console.log('aferido', porAferidoValue);
+                    console.log('serial', porSerialValue);
+                    console.log('classe', classeValue);
+                    console.log('vencimentoValue', vencimentoValue);
+                    console.log('emprestimodateValue', emprestimodateValue);
+
+                    // inputQtdRequest.addEventListener('input', restrictDigitsOnly);
+
+                    const img2 = document.createElement('img');
+                    img2.src = '/img/plus-lg.svg';
+                    img2.className = 'SwitchingIcons';
+                    img2.alt = 'Plus Icon';
+
+                    const button2 = document.createElement('button');
+                    button2.className = 'btn btn-outline-secondary btn-sm btn-lg';
+                    button2.type = 'button';
+                    button2.appendChild(img2);
+
+                    button1.addEventListener('click', () => {
+                        let currentValue = parseInt(inputQtdRequest.value, 10);
+                        if (currentValue > 1) {
+                            inputQtdRequest.value = currentValue - 1;
+                            updateQtyStock();
+                        }
+                    });
+
+                    // button2.addEventListener('click', () => {
+                    //     let currentValue = parseInt(inputQtdRequest.value, 10);
+                    //     inputQtdRequest.value = currentValue + 1;
+                    // });
+
+                    inputQtdRequest.addEventListener('blur', () => {
+                        let currentValue = parseInt(inputQtdRequest.value, 10);
+                        let stockValue = parseInt(row.querySelector('td:nth-child(6)').innerHTML, 10);
+
+                        if (isNaN(currentValue) || currentValue < 1) {
+                            inputQtdRequest.value = 1;
+                            currentValue = 1; // Ensure currentValue is set to 1
+                        } else if (currentValue > stockValue) {
+                            // checkQuantity(inputQtdRequest);
+                            appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                            inputQtdRequest.value = 1;
+                            updateQtyStock();
+                        } else if (currentValue >= 99) {
+                            checkQuantity(inputQtdRequest);
+                            updateQtyStock();
+                        }
+                    });
+
+                    button2.addEventListener('click', () => {
+                        let currentValue = parseInt(inputQtdRequest.value, 10);
+                        let stockQuantity = parseInt(newQtyStockCell.textContent, 10);
+
+                        // Check if the requested quantity exceeds the stock quantity
+                        if (currentValue + 1 <= stockQuantity) {
+                            inputQtdRequest.value = currentValue + 1;
+                            updateQtyStock();
+                        } else {
+                            appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                        }
+                    });
+
+                    if (porAferidoValue === 1 || porSerialValue === 1) {
+
+                        button1.style.display = 'none';
+                        button1.disabled = true;
+
+                        button2.style.display = 'none';
+                        button2.disabled = true;
+
+                        inputQtdRequest.disabled = true;
+
+                    }
+
+                    inputGroup.appendChild(button1);
+                    inputGroup.appendChild(inputQtdRequest);
+                    inputGroup.appendChild(button2);
+                    inputGroupContainer.appendChild(inputGroup);
+                    // qtyRequestCell.appendChild(inputGroupContainer);
+
+
+                    newQtyRequestCell.className = 'widthadjust';
+                    newQtyRequestCell.appendChild(inputGroupContainer);
+                    // newQtyRequestCell.innerHTML = row.querySelector('td:nth-child(7) input').value;
+
+                    const newDateCell = document.createElement('td');
+                    // newDateCell.innerHTML = row.querySelector('td:nth-child(8) input').value;
+
+                    const inputDate = document.createElement('input');
+                    inputDate.type = 'date';
+                    inputDate.className = 'form-control inputDate';
+                    // inputDate.value = formatDateForInput(row.querySelector('td:nth-child(8) input').value);
+                    if (classeValue === 2) {
+                        console.log('call classe2')
+                        // inputDate.value = formatDateForInput(row.querySelector('td:nth-child(8) input').value);
+                        // inputDate.disabled = true;
+
+                        if (row.querySelector('td:nth-child(8) input').value !== null) {
+                            inputDate.value = formatDateForInput(row.querySelector('td:nth-child(8) input').value);
+                            inputDate.disabled = true;
+                        }
+                        else {
+                            inputDate.disabled = true;
+                        }
+
+                    } else if (classeValue == 1) {
+                        if (porAferidoValue === 1 && vencimentoValue !== null) {
+                            inputDate.value = formatDateForInput(vencimentoValue);
+                            console.log('aferido with vencimento');
+                        } else {
+                            if (emprestimodateValue !== null && emprestimodateValue !== "") {
+                                inputDate.value = formatDateForInput(emprestimodateValue);
+                                console.log('dataemprestimofrontend');
+                                console.log(emprestimodateValue);
+                            }
+                            console.log('none');
+                        }
+                    } else {
+                        inputDate.disabled = true;
+                    }
+
+                    inputDate.addEventListener('change', () => {
+                        const inputDateValue = new Date(inputDate.value);
+                        const today = new Date();
+
+                        // Set the time of today's date to midnight to compare only the date part
+                        today.setHours(0, 0, 0, 0);
+
+                        if (inputDateValue < today) {
+                            alert("A data inserida não deve ser menor que a data de hoje.");
+                            inputDate.value = '';
+                        }
+                    });
+
+                    newDateCell.appendChild(inputDate);
+
+                    const img3 = document.createElement('img');
+                    img3.src = '/img/x-circle-fill.svg';
+                    img3.className = 'SwitchingIcons';
+                    img3.alt = 'x Icon';
+
+                    const newBlankCell = document.createElement('td');
+                    const deleteLink = document.createElement("a");
+                    deleteLink.href = "#";
+                    deleteLink.className = "exclude-button";
+                    deleteLink.appendChild(img3);
+                    deleteLink.onclick = function () {
+                        deleteProduct(rowId); // Assuming message.id is the identifier
+                    };
+                    newBlankCell.appendChild(deleteLink);
+
+
+                    // Append cells to the new row
+                    newRow.appendChild(newCodigoCell);
+                    newRow.appendChild(newProdutoCell);
+                    newRow.appendChild(newCaCell);
+                    newRow.appendChild(newAfCell);
+                    newRow.appendChild(newPatCell);
+                    newRow.appendChild(newObservacaoCell);
+                    newRow.appendChild(newQtyStockCell);
+                    newRow.appendChild(newQtyRequestCell);
+                    newRow.appendChild(newDateCell);
+                    newRow.appendChild(newBlankCell);
+
+                    // Append the new row to the target table body
+                    const targetTableBody = document.getElementById("emprestimoProductTable").querySelector("tbody");
+                    targetTableBody.appendChild(newRow);
+
+                    var modal = document.getElementById('productWithCAModal');
+                    var modalInstance = bootstrap.Modal.getInstance(modal); // Retrieve the instance from the data attribute
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+
+                    let inputCodigo = document.getElementById("codigo");
+                    inputCodigo.value = "";
+
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+                turnOffLoader();
+                checkFocus();
+                updateQtyStock();
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+    }
+
+    function updateQtyStock() {
+        // Get all inputs with the class QtdRequest
+        const inputs = document.querySelectorAll('.QtdRequest');
+        let total = 0;
+
+        // Sum up the values of the inputs
+        inputs.forEach(input => {
+            total += parseInt(input.value, 10) || 0; // Use 0 if the input value is not a number
+        });
+
+        // Update the sumBadge element with the total
+        const sumBadge = document.getElementById('sumBadge');
+        sumBadge.textContent = total;
+
+        const obraButtonDiv = document.getElementById('ObraButtonDiv');
+        if (total === 0) {
+            obraButtonDiv.style.display = 'none';
+        } else {
+            obraButtonDiv.style.display = 'flex';
+        }
+
+
+    }
+
+    function deleteProduct(rowId) {
+        console.log(rowId);
+        $.ajax({
+            url: '/Emprestimo/removeToSessionKeyEmprestimoCart',
+            type: 'POST',
+            data: { productId: rowId },
+            // data: JSON.stringify({ productId: rowId }),
+            success: function (data) {
+
+                if (data.success) {
+
+                    // Find the table row with the matching productId and remove it
+                    const table = document.getElementById("emprestimoProductTable").querySelector("tbody");
+                    const rows = table.getElementsByTagName("tr");
+                    for (let i = 0; i < rows.length; i++) {
+                        if (rows[i].id == rowId) {
+                            table.deleteRow(i);
+                            break;
+                        }
+                    }
+
+                    updateQtyStock();
+
+                    appendAlert('removido com sucesso', 'success');
+
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+    }
+
+     function addToProductTableAndBackEndCart(item){
+
+        console.log(item);
+        const codigo = item.codigo;
+        const idProduto = item.idProduto;
+        const idCatalogo = item.idCatalogo;
+        const classe = item.classe;
+
+        $.ajax({
+            url: '/Emprestimo/checkAndToSessionKeyEmprestimoCart',
+            type: 'POST',
+            data: { codigo: codigo, idProduto: idProduto, idCatalogo: idCatalogo, classe: classe },
+            success: function (data) {
+
+                if (data.success) {
+
+                    if (data.productinfo) {
+                        if (data.productinfo.controleCAList.length > 0) {
+                            productWithCA(data.productinfo);
+                        }
+                    } else {
+                        // Select the table body
+                        const tableBody = document.getElementById("emprestimoProductTable").querySelector("tbody");
+
+                        // Clear any existing rows
+                        // tableBody.innerHTML = "";
+
+                        const dataemprestimofrontend = data.emprestimoDate || null;
+
+                        console.log(dataemprestimofrontend);
+
+                        const row = document.createElement("tr");
+                        row.id = item.idProduto;
+
+                        const codigoCell = document.createElement("td");
+                        const produtoCell = document.createElement("td");
+                        const caCell = document.createElement("td");
+                        const afCell = document.createElement("td");
+                        const patCell = document.createElement("td");
+                        const observacaoCell = document.createElement("td");
+                        const qtyStockCell = document.createElement("td");
+                        const qtyRequestCell = document.createElement("td");
+                        qtyRequestCell.className = 'widthadjust';
+                        const dateCell = document.createElement("td");
+                        const blankCell = document.createElement("td");
+
+                        codigoCell.innerHTML = item.codigo || "";
+                        produtoCell.innerHTML = item.nomeCatalogo || "";
+                        // caCell.innerHTML = item.controleCA || "";
+
+                        if (item.controleCA !== null || item.controleCA !== "") {
+                            const popoverLink = document.createElement("a");
+                            popoverLink.setAttribute("href", "#"); // Avoid jumping to top of page
+                            popoverLink.className = 'controleCA';
+                            popoverLink.setAttribute("data-bs-toggle", "popover");
+                            popoverLink.setAttribute("data-bs-placement", "right");
+                            popoverLink.setAttribute("data-bs-title", "CA Data");
+                            popoverLink.setAttribute("data-bs-trigger", "hover");
+                            popoverLink.setAttribute("data-bs-content", formatDateToDDMMYYYY(item.dataVencimento));
+                            popoverLink.textContent = item.controleCA;
+
+                            caCell.appendChild(popoverLink);
+
+                            const popover = new bootstrap.Popover(popoverLink, {
+                                trigger: "hover",
+                                placement: "right"
+                            });
+                        }
+
+
+                        afCell.innerHTML = item.af || "";
+                        patCell.innerHTML = item.pat || "";
+
+                        const inputObservacao = document.createElement('input');
+                        inputObservacao.type = 'text';
+                        inputObservacao.className = 'form-control Observacao';
+                        observacaoCell.appendChild(inputObservacao);
+
+                        qtyStockCell.className = 'qtyStock';
+                        qtyStockCell.textContent = item.quantidade || "";
+
+                        const inputGroupContainer = document.createElement('div');
+                        const inputGroup = document.createElement('div');
+                        inputGroup.className = 'input-group';
+
+                        const img1 = document.createElement('img');
+                        img1.src = '/img/dash.svg';
+                        img1.className = 'SwitchingIcons';
+                        img1.alt = 'Minus Icon';
+
+                        const button1 = document.createElement('button');
+                        button1.className = 'btn btn-outline-secondary btn-sm btn-lg';
+                        button1.type = 'button';
+                        button1.appendChild(img1);
+
+                        const inputQtdRequest = document.createElement('input');
+                        inputQtdRequest.type = 'text';
+                        inputQtdRequest.className = 'form-control QtdRequest';
+                        inputQtdRequest.value = '1';
+                        inputQtdRequest.setAttribute('data-classe', item.classe);
+                        // inputQtdRequest.addEventListener('input', restrictDigitsOnly);
+
+                        const img2 = document.createElement('img');
+                        img2.src = '/img/plus-lg.svg';
+                        img2.className = 'SwitchingIcons';
+                        img2.alt = 'Plus Icon';
+
+                        const button2 = document.createElement('button');
+                        button2.className = 'btn btn-outline-secondary btn-sm btn-lg';
+                        button2.type = 'button';
+                        button2.appendChild(img2);
+
+                        button1.addEventListener('click', () => {
+                            let currentValue = parseInt(inputQtdRequest.value, 10);
+                            if (currentValue > 1) {
+                                inputQtdRequest.value = currentValue - 1;
+                                updateQtyStock();
+                            }
+                        });
+
+                        inputQtdRequest.addEventListener('blur', () => {
+                            let currentValue = parseInt(inputQtdRequest.value, 10);
+                            let stockValue = parseInt(item.quantidade, 10);
+
+                            if (isNaN(currentValue) || currentValue < 1) {
+                                inputQtdRequest.value = 1;
+                                currentValue = 1; // Ensure currentValue is set to 1
+                            } else if (currentValue > stockValue) {
+                                // checkQuantity(inputQtdRequest);
+                                appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                                inputQtdRequest.value = 1;
+                                updateQtyStock();
+                            } else if (currentValue >= 99) {
+                                checkQuantity(inputQtdRequest);
+                                updateQtyStock();
+                            }
+                        });
+                        // button2.addEventListener('click', () => {
+                        //     let currentValue = parseInt(inputQtdRequest.value, 10);
+                        //     inputQtdRequest.value = currentValue + 1;
+                        // });
+
+
+                        button2.addEventListener('click', () => {
+                            let currentValue = parseInt(inputQtdRequest.value, 10);
+                            let stockQuantity = parseInt(qtyStockCell.textContent, 10);
+
+                            // Check if the requested quantity exceeds the stock quantity
+                            if (currentValue + 1 <= stockQuantity) {
+                                inputQtdRequest.value = currentValue + 1;
+                                updateQtyStock();
+                            } else {
+                                appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                            }
+                        });
+
+                        if (item.porAferido === 1 || item.porSerial === 1) {
+
+                            button1.style.display = 'none';
+                            button1.disabled = true;
+
+                            button2.style.display = 'none';
+                            button2.disabled = true;
+
+                            inputQtdRequest.disabled = true;
+
+                        }
+
+                        inputGroup.appendChild(button1);
+                        inputGroup.appendChild(inputQtdRequest);
+                        inputGroup.appendChild(button2);
+                        inputGroupContainer.appendChild(inputGroup);
+                        qtyRequestCell.appendChild(inputGroupContainer);
+
+                        const inputDate = document.createElement('input');
+                        inputDate.type = 'date';
+                        inputDate.className = 'form-control inputDate';
+
+                        if (item.classe === 2) {
+                            if (dataemprestimofrontend !== null) {
+                                inputDate.value = formatDateForInput(dataemprestimofrontend);
+                                inputDate.disabled = true;
+                            }
+                            else {
+                                inputDate.disabled = true;
+                            }
+                        } else if (item.classe === 1) {
+                            if (item.porAferido === 1 && item.dataVencimento !== null) {
+                                inputDate.value = formatDateForInput(item.dataVencimento);
+                                console.log('aferido with vencimento');
+                            } else {
+                                if (item.dataEmprestimoFrontEnd !== null && item.dataEmprestimoFrontEnd !== "") {
+                                    inputDate.value = formatDateForInput(item.dataEmprestimoFrontEnd);
+                                    console.log('dataemprestimofrontend');
+                                }
+                                console.log('none');
+                            }
+                        } else {
+                            inputDate.disabled = true;
+                        }
+
+                        inputDate.addEventListener('change', () => {
+                            const inputDateValue = new Date(inputDate.value);
+                            const today = new Date();
+
+                            // Set the time of today's date to midnight to compare only the date part
+                            today.setHours(0, 0, 0, 0);
+
+                            if (inputDateValue < today) {
+                                alert("A data inserida não deve ser menor que a data de hoje.");
+                                inputDate.value = '';
+                            }
+                        });
+
+                        dateCell.appendChild(inputDate);
+
+                        const img3 = document.createElement('img');
+                        img3.src = '/img/x-circle-fill.svg';
+                        img3.className = 'SwitchingIcons';
+                        img3.alt = 'x Icon';
+
+                        const deleteLink = document.createElement("a");
+                        deleteLink.href = "#";
+                        deleteLink.className = "exclude-button";
+                        deleteLink.appendChild(img3);
+                        deleteLink.onclick = function () {
+                            deleteProduct(item.idProduto); // Assuming message.id is the identifier
+                        };
+                        blankCell.appendChild(deleteLink);
+
+                        row.appendChild(codigoCell);
+                        row.appendChild(produtoCell);
+                        row.appendChild(caCell);
+                        row.appendChild(afCell);
+                        row.appendChild(patCell);
+                        row.appendChild(observacaoCell);
+                        row.appendChild(qtyStockCell);
+                        row.appendChild(qtyRequestCell);
+                        row.appendChild(dateCell);
+                        row.appendChild(blankCell);
+                        tableBody.appendChild(row);
+
+                        let inputCodigo = document.getElementById("codigo");
+                        inputCodigo.value = "";
+                    }
+
+                 
+                                 
+
+                } else {
+                    console.log(data.message);
+                    appendAlertWithoutAnimation(data.message, 'danger');
+                }
+
+                turnOffLoader();
+                checkFocus();
+                updateQtyStock();
+            },
+            error: function (error) {
+                turnOffLoader();
+                console.error('Error fetching items:', error);
+                appendAlertWithoutAnimation(error, 'danger');
+
+            }
+        });
+     }
+
+    function addToProductTable(item) {
+
+
+        // Select the table body
+        const tableBody = document.getElementById("emprestimoProductTable").querySelector("tbody");
+
+        // Clear any existing rows
+        // tableBody.innerHTML = "";
+
+        const row = document.createElement("tr");
+        row.id = item.idProduto;
+
+        const codigoCell = document.createElement("td");
+        const produtoCell = document.createElement("td");
+        const caCell = document.createElement("td");
+        const afCell = document.createElement("td");
+        const patCell = document.createElement("td");
+        const observacaoCell = document.createElement("td");
+        const qtyStockCell = document.createElement("td");
+        const qtyRequestCell = document.createElement("td");
+        qtyRequestCell.className = 'widthadjust';
+        const dateCell = document.createElement("td");
+        const blankCell = document.createElement("td");
+
+        codigoCell.innerHTML = item.codigo || "";
+        produtoCell.innerHTML = item.nomeCatalogo || "";
+        // caCell.innerHTML = item.controleCA || "";
+
+        if (item.controleCA !== null || item.controleCA !== "") {
+            const popoverLink = document.createElement("a");
+            popoverLink.setAttribute("href", "#"); // Avoid jumping to top of page
+            popoverLink.className = 'controleCA';
+            popoverLink.setAttribute("data-bs-toggle", "popover");
+            popoverLink.setAttribute("data-bs-placement", "right");
+            popoverLink.setAttribute("data-bs-title", "CA Data");
+            popoverLink.setAttribute("data-bs-trigger", "hover");
+            popoverLink.setAttribute("data-bs-content", formatDateToDDMMYYYY(item.dataVencimento));
+            popoverLink.textContent = item.controleCA;
+
+            caCell.appendChild(popoverLink);
+
+            const popover = new bootstrap.Popover(popoverLink, {
+                trigger: "hover",
+                placement: "right"
+            });
+        }
+
+
+        afCell.innerHTML = item.af || "";
+        patCell.innerHTML = item.pat || "";
+
+        const inputObservacao = document.createElement('input');
+        inputObservacao.type = 'text';
+        inputObservacao.className = 'form-control Observacao';
+        observacaoCell.appendChild(inputObservacao);
+
+        qtyStockCell.className = 'qtyStock';
+        qtyStockCell.textContent = item.quantidade || "";
+
+        const inputGroupContainer = document.createElement('div');
+        const inputGroup = document.createElement('div');
+        inputGroup.className = 'input-group';
+
+        const img1 = document.createElement('img');
+        img1.src = '/img/dash.svg';
+        img1.className = 'SwitchingIcons';
+        img1.alt = 'Minus Icon';
+
+        const button1 = document.createElement('button');
+        button1.className = 'btn btn-outline-secondary btn-sm btn-lg';
+        button1.type = 'button';
+        button1.appendChild(img1);
+
+        const inputQtdRequest = document.createElement('input');
+        inputQtdRequest.type = 'text';
+        inputQtdRequest.className = 'form-control QtdRequest';
+        inputQtdRequest.value = '1';
+        inputQtdRequest.setAttribute('data-classe', item.classe);
+        // inputQtdRequest.addEventListener('input', restrictDigitsOnly);
+
+        const img2 = document.createElement('img');
+        img2.src = '/img/plus-lg.svg';
+        img2.className = 'SwitchingIcons';
+        img2.alt = 'Plus Icon';
+
+        const button2 = document.createElement('button');
+        button2.className = 'btn btn-outline-secondary btn-sm btn-lg';
+        button2.type = 'button';
+        button2.appendChild(img2);
+
+        button1.addEventListener('click', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            if (currentValue > 1) {
+                inputQtdRequest.value = currentValue - 1;
+                updateQtyStock();
+            }
+        });
+
+        inputQtdRequest.addEventListener('blur', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            let stockValue = parseInt(item.quantidade, 10);
+
+            if (isNaN(currentValue) || currentValue < 1) {
+                inputQtdRequest.value = 1;
+                currentValue = 1; // Ensure currentValue is set to 1
+            } else if (currentValue > stockValue) {
+                // checkQuantity(inputQtdRequest);
+                appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+                inputQtdRequest.value = 1;
+                updateQtyStock();
+            } else if (currentValue >= 99) {
+                checkQuantity(inputQtdRequest);
+                updateQtyStock();
+            }
+        });
+        // button2.addEventListener('click', () => {
+        //     let currentValue = parseInt(inputQtdRequest.value, 10);
+        //     inputQtdRequest.value = currentValue + 1;
+        // });
+
+
+        button2.addEventListener('click', () => {
+            let currentValue = parseInt(inputQtdRequest.value, 10);
+            let stockQuantity = parseInt(qtyStockCell.textContent, 10);
+
+            // Check if the requested quantity exceeds the stock quantity
+            if (currentValue + 1 <= stockQuantity) {
+                inputQtdRequest.value = currentValue + 1;
+                updateQtyStock();
+            } else {
+                appendAlert('A quantidade solicitada excede a quantidade em estoque!', 'warning');
+            }
+        });
+
+        if (item.porAferido === 1 || item.porSerial === 1) {
+
+            button1.style.display = 'none';
+            button1.disabled = true;
+
+            button2.style.display = 'none';
+            button2.disabled = true;
+
+            inputQtdRequest.disabled = true;
+
+        }
+
+        inputGroup.appendChild(button1);
+        inputGroup.appendChild(inputQtdRequest);
+        inputGroup.appendChild(button2);
+        inputGroupContainer.appendChild(inputGroup);
+        qtyRequestCell.appendChild(inputGroupContainer);
+
+        const inputDate = document.createElement('input');
+        inputDate.type = 'date';
+        inputDate.className = 'form-control inputDate';
+
+        if (item.classe === 2) {
+            if (item.dataEmprestimoFrontEnd !== null) {
+                inputDate.value = formatDateForInput(item.dataEmprestimoFrontEnd);
+                inputDate.disabled = true;
+            }
+            else {
+                inputDate.disabled = true;
+            }
+        } else if (item.classe === 1) {
+            if (item.porAferido === 1 && item.dataVencimento !== null) {
+                inputDate.value = formatDateForInput(item.dataVencimento);
+                console.log('aferido with vencimento');
+            } else {
+                if (item.dataEmprestimoFrontEnd !== null && item.dataEmprestimoFrontEnd !== "") {
+                    inputDate.value = formatDateForInput(item.dataEmprestimoFrontEnd);
+                    console.log('dataemprestimofrontend');
+                }
+                console.log('none');
+            }
+        } else {
+            inputDate.disabled = true;
+        }
+
+        inputDate.addEventListener('change', () => {
+            const inputDateValue = new Date(inputDate.value);
+            const today = new Date();
+
+            // Set the time of today's date to midnight to compare only the date part
+            today.setHours(0, 0, 0, 0);
+
+            if (inputDateValue < today) {
+                alert("A data inserida não deve ser menor que a data de hoje.");
+                inputDate.value = '';
+            }
+        });
+
+        dateCell.appendChild(inputDate);
+
+        const img3 = document.createElement('img');
+        img3.src = '/img/x-circle-fill.svg';
+        img3.className = 'SwitchingIcons';
+        img3.alt = 'x Icon';
+
+        const deleteLink = document.createElement("a");
+        deleteLink.href = "#";
+        deleteLink.className = "exclude-button";
+        deleteLink.appendChild(img3);
+        deleteLink.onclick = function () {
+            deleteProduct(item.idProduto); // Assuming message.id is the identifier
+        };
+        blankCell.appendChild(deleteLink);
+
+        row.appendChild(codigoCell);
+        row.appendChild(produtoCell);
+        row.appendChild(caCell);
+        row.appendChild(afCell);
+        row.appendChild(patCell);
+        row.appendChild(observacaoCell);
+        row.appendChild(qtyStockCell);
+        row.appendChild(qtyRequestCell);
+        row.appendChild(dateCell);
+        row.appendChild(blankCell);
+        tableBody.appendChild(row);
+
+        let inputCodigo = document.getElementById("codigo");
+        inputCodigo.value = "";
+
+        updateQtyStock();
+    }
+
+    function checkQuantity(input) {
+        var value = parseInt(input.value, 10);
+        if (value >= 99) {
+            alert("Quantidade declarada para emprestimo maior que 99 itens. Deseja manter esse valor?");
+        }
+    }
+
+    function formatDateToDDMMYYYY(dateString) {
+        const date = new Date(dateString);
+
+        // Extract the date components
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const year = date.getFullYear();
+
+        // Format the date as dd-mm-yyyy
+        return `${day}-${month}-${year}`;
+    }
+
+
+    function formatDateForInput(dateString) {
+        const date = new Date(dateString);
+
+        // Extract the date components
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const day = date.getDate().toString().padStart(2, '0');
+
+        // Format the date as yyyy-mm-dd
+        return `${year}-${month}-${day}`;
+    }
+
+    function checkFocus() {
+
+        let solicitanteChapa = document.getElementById("chapaLabelSolicitante").innerText;
+        let liberadorChapa = document.getElementById("chapaLabelLiberador").innerText;
+
+        let inputSolicitante = document.getElementById("solicitante");
+        let inputLiberador = document.getElementById("liberador");
+        let inputCodigo = document.getElementById("codigo");
+
+        if (solicitanteChapa === null || solicitanteChapa === "") {
+            console.log('inputSolicitante focus');
+            inputSolicitante.focus();
+        } else if (liberadorChapa === null || liberadorChapa === "") {
+            inputLiberador.focus();
+            console.log('inputLiberador focus');
+        } else if (inputCodigo.value === null || inputCodigo.value === "") {
+            inputCodigo.focus();
+            console.log('inputCodigo focus');
+        }
+    }
+
+    function turnOnLoader() {
+        let loadingAnimation = document.querySelector(".loadingIndicator");
+        let bodyContainer = document.getElementById("container");
+        loadingAnimation.classList.add("show");
+        bodyContainer.classList.add("blurred");
+
+        console.log('turnOnLoader');
+    }
+
+    function turnOffLoader() {
+        let loadingAnimation = document.querySelector(".loadingIndicator");
+        let bodyContainer = document.getElementById("container");
+        loadingAnimation.classList.remove("show");
+        bodyContainer.classList.remove("blurred");
+
+        console.log('turnOffLoader');
+    }
+
+    document.getElementById('itemsToBorrow').addEventListener('submit', function (event) {
+        let solicitanteChapa = document.getElementById("chapaLabelSolicitante").innerText;
+        let solicitanteCodColigada = document.getElementById("codColigadaLabelSolicitante").innerText;
+        let solicitanteidTerceiro = document.getElementById("idTerceiroLabelSolicitante").innerText;
+        let solicitanteSituation = document.getElementById("situacaoLabelSolicitante").innerText;
+
+        let liberadorChapa = document.getElementById("chapaLabelLiberador").innerText;
+        let liberadorCodColigada = document.getElementById("codColigadaLabelLiberador").innerText;
+        let liberadoridTerceiro = document.getElementById("idTerceiroLabelLiberador").innerText;
+        let liberadorSituation = document.getElementById("situacaoLabelLiberador").innerText;
+
+        let selectedObra = document.getElementById("ObraSelect").value;
+
+        console.log("Solicitante Chapa:", solicitanteChapa);
+        console.log("Liberador Chapa:", liberadorChapa);
+        console.log("Selected Obra:", selectedObra);
+
+        console.log("Selected Obra:", solicitanteSituation);
+
+        // Check if any required fields are null or empty
+        if (!solicitanteChapa) {
+            alert("Solicitante Chapa is empty.");
+            event.preventDefault();
+            turnOffLoader();
+            return;
+        }
+
+        if (solicitanteSituation.startsWith("D")) {
+            console.log("Solicitante situation is D.");
+            alert("Solicitante com cod. situação diferente de admitido.");
+            event.preventDefault();
+            turnOffLoader();
+        }
+
+        if (!liberadorChapa) {
+            alert("Liberador Chapa is empty.");
+            event.preventDefault();
+            turnOffLoader();
+            return;
+        }
+
+        if (liberadorSituation.startsWith("D")) {
+            console.log("Solicitante situation is D.");
+            alert("Liberador com cod. situação diferente de admitido.");
+            event.preventDefault();
+            turnOffLoader();
+        }
+
+        if (!selectedObra || selectedObra === "Select...") {
+            alert("Selecione obra.");
+            console.log("Preventing form submission: Selected Obra empty");
+            event.preventDefault();
+            turnOffLoader();
+            return;
+        }
+
+
+        const SolicitanteLiberadorInformationContainer = document.getElementById('SolicitanteLiberadorInformation');
+        SolicitanteLiberadorInformationContainer.innerHTML = '';
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`chapaSolicitante`, solicitanteChapa));
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`codColigadaSolicitante`, solicitanteCodColigada));
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`idSolicitanteTerceiro`, solicitanteidTerceiro));
+
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`chapaLiberador`, liberadorChapa));
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`codcoligadaLiberador`, liberadorCodColigada));
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`idLiberadorTerceiro`, liberadoridTerceiro));
+
+        SolicitanteLiberadorInformationContainer.appendChild(createHiddenInput(`ObraEmprestimo`, selectedObra));
+
+
+        const hiddenInputsContainer = document.getElementById('hiddenInputsContainer');
+        hiddenInputsContainer.innerHTML = ''; // Clear previous inputs
+
+        const rows = document.querySelectorAll('#emprestimoProductTable tbody tr');
+
+        rows.forEach((row, index) => {
+            const idProduto = row.id;
+            const codigoProduto = row.querySelector('td:nth-child(1)').innerHTML
+            const idControleCA = row.querySelector('.controleCA').getAttribute('data-idCA');
+            const quantidade = row.querySelector('.QtdRequest').value;
+            const itemClasse = row.querySelector('.QtdRequest').dataset.classe;
+            const dataPrevistaDevolucao = row.querySelector('.inputDate').value;
+            const observacao = row.querySelector('.Observacao').value;
+
+            console.log(itemClasse);
+            console.log(codigoProduto);
+
+            // Check if itemClasse == 2 before inserting hidden inputs
+            if (itemClasse == "2") {
+                if (idControleCA) { // Check if idControleCA is not empty
+                    if (!dataPrevistaDevolucao) {
+                        appendAlertWithoutAnimation(`${codigoProduto} - DATA PREVISTA DE RETORNO não pode ser vazio.`, 'warning');
+                        row.classList.add("invalid-row");
+                        return; // Stop processing this row
+                    }
+
+                    // Convert to Date object for comparison
+                    const inputDate = new Date(dataPrevistaDevolucao);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Reset today's time to midnight for accurate comparison
+
+                    if (inputDate < today) {
+                        appendAlertWithoutAnimation(`${codigoProduto} - DATA PREVISTA DE RETORNO não pode ser inferior a data de hoje.`, 'warning');
+                        row.classList.add("invalid-row");
+                        return; // Stop processing this row
+                    }
+                }
+            }
+
+            hiddenInputsContainer.appendChild(createHiddenInput(`emprestimoList[${index}].IdProduto`, idProduto));
+            hiddenInputsContainer.appendChild(createHiddenInput(`emprestimoList[${index}].IdControleCA`, idControleCA));
+            hiddenInputsContainer.appendChild(createHiddenInput(`emprestimoList[${index}].Quantidade`, quantidade));
+            hiddenInputsContainer.appendChild(createHiddenInput(`emprestimoList[${index}].DataPrevistaDevolucao`, dataPrevistaDevolucao));
+            hiddenInputsContainer.appendChild(createHiddenInput(`emprestimoList[${index}].Observacao`, observacao));
+
+        });
+    });
+
+    function createHiddenInput(name, value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        return input;
+    }
+
+</script>
+
+
+
+<script>
+    document.addEventListener("keydown", function (e) {
+        // Prevent F5
+        if ((e.key === "F5") || (e.ctrlKey && e.key === "r")) {
+            e.preventDefault();
+            alert("Refresh is disabled on this page.");
+        }
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".exclude-button").click(function (e) {
+            e.preventDefault(); // Prevent the default behavior of the link click
+
+            var itemId = $(this).data("id");
+            var $tableRow = $(this).closest("tr");
+            var rowIndex = $(this).data("index"); // Get the index of the row to be excluded
+
+            console.log("Row index:", rowIndex);
+
+            // Send an AJAX request to the server to exclude the item
+            $.ajax({
+                type: "POST",
+                url: "/Emprestimo/Exclude",
+                data: { id: itemId },
+                success: function () {
+                    // Remove the corresponding row from the table
+                    $tableRow.remove();
+
+                    updateSum()
+                },
+                error: function () {
+                    console.log("Error occurred while excluding the item.");
+                }
+            });
+        });
+    });
+</script>
+
+@if (ViewBag.BlockMessage != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('BlockMessage');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+@if (ViewBag.Emprestimo != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('tablemodal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+@if (ViewBag.UserTest != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('othermodal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ProductDetails != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('AddToCartModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+
+            modal.addEventListener('shown.bs.modal', function () {
+                var observacaoInput = document.getElementById('ProductDetailObservacao');
+                if (observacaoInput) {
+                    observacaoInput.focus();
+                }
+            });
+        });
+    </script>
+}
+
+<script>
+
+    function ddlFerramentariaChanged(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Emprestimo/ChooseFerramentaria",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                window.location.href = '/Emprestimo/Index';
+            }
+        });
+    }
+
+
+</script>
+
+<script>
+    // Get all decrement buttons
+    const decrementButtons = document.querySelectorAll(".decrement-btn");
+
+    // Add click event listeners to each decrement button
+    decrementButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const inputId = button.getAttribute("data-input");
+            const inputField = document.getElementById(inputId);
+            const currentValue = parseInt(inputField.value, 10) || 0;
+
+            if (currentValue > 0) {
+                inputField.value = currentValue - 1;
+                updateSum(); // Update sum after decrement
+            }
+        });
+    });
+
+    // Get all increment buttons
+    const incrementButtons = document.querySelectorAll(".increment-btn");
+
+    // Add click event listeners to each increment button
+    incrementButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const inputId = button.getAttribute("data-input");
+            const inputField = document.getElementById(inputId);
+            const currentValue = parseInt(inputField.value, 10) || 0;
+
+            inputField.value = currentValue + 1;
+            updateSum(); // Update sum after increment
+        });
+    });
+
+    function updateSum() {
+        var sum = 0;
+        var inputFields = document.querySelectorAll('input[id^="qtdmincod-"]');
+
+        inputFields.forEach(function (inputField) {
+            var value = parseFloat(inputField.value) || 0;
+            sum += value;
+        });
+
+        var sumBadge = document.getElementById("sumBadge");
+
+        // Check if sumBadge exists before updating its content
+        if (sumBadge) {
+            sumBadge.textContent = sum; // Format the sum as needed
+        }
+    }
+
+    // Call the function to update the sum when the page loads
+    updateSum();
+
+    // Add event listeners to the input fields to update the sum when their values change
+    var inputFields = document.querySelectorAll('input[id^="qtdmincod-"]');
+    inputFields.forEach(function (inputField) {
+        inputField.addEventListener('input', updateSum);
+    });
+</script>
+
+<script>
+    function checkQuantity(input) {
+        var value = parseInt(input.value, 10);
+        if (value >= 99) {
+            alert("Quantidade declarada para emprestimo maior que 99 itens. Deseja manter esse valor?");
+        }
+    }
+</script>
+
+
+<script>
+    var inputFields = document.querySelectorAll('input[name^="qtdmincod-"]');
+
+    inputFields.forEach(function (inputField) {
+        inputField.addEventListener('change', function () {
+            var value = parseFloat(inputField.value) || 0;
+            if (value > 99) {
+                var confirmation = confirm("Quantidade declarada para emprestimo maior que 99 itens. Deseja manter esse valor?");
+                if (!confirmation) {
+                    inputField.value = 0; // Reset the value to 0
+                }
+            }
+        });
+    });
+</script>
+
+@* <script>
+    $(document).ready(function () {
+        // Always set focus on #solicitante by default
+
+        $('#solicitante').focus();
+
+        // Check for other conditions if needed
+        @if (ViewBag.Solicitante?.Chapa != null)
+        {
+            @if (ViewBag.Liberador?.Chapa != null)
+            {
+                <text>
+                        console.log('Focused on #codigo');
+                    $('#codigo').focus();
+                </text>
+            }
+            else
+            {
+                <text>
+                        console.log('Focused on #liberador');
+                    $('#liberador').focus();
+                </text>
+            }
+
+        }
+        });
+</script> *@
+
+
+<script>
+    $(document).ready(function () {
+        console.log("jQuery is working!");
+    });
+</script>
+
+@if (ViewBag.ListOfEmployees != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfUsers');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ListOfLiberador != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfLiberador');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.Messages != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfMessages');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+
+
+
+
+
+

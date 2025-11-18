@@ -1,0 +1,119 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model CompleteReservationPageModel
+
+<div class="modal fade" id="popoverModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalEmployeeTitle">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="d-flex align-items-start">
+                            @*  <div class="col-3 d-flex align-content-center justify-content-center border border-primary">
+                            <img src="~/img/image-not-available.jpg" class="rounded img-cover" alt="..." id="imgEmployee" />
+                            </div> *@
+                            <div class="col-9">
+                                <div>
+                                    <label class="col-form-label fw-bold">Chapa:</label>
+                                    <label class="col-form-label" id="chapaLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Nome:</label>
+                                    <label class="col-form-label" id="nomeLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Cod Situação:</label>
+                                    <label class="col-form-label" id="situacaoLabel"></label>
+                                </div>
+                            @*     <div>
+                                <label class="col-form-label fw-bold">Empressa:</label>
+                                <label class="col-form-label" id="empressaLabel"></label>
+                                </div> *@
+                                <div>
+                                    <label class="col-form-label fw-bold">Função:</label>
+                                    <label class="col-form-label" id="funcaoLabel"></label>
+                                </div>
+                                <div>
+                                    <label class="col-form-label fw-bold">Seção:</label>
+                                    <label class="col-form-label" id="secaoLabel"></label>
+                                </div>
+                            @*     <div style="display:none;">
+                                <label class="col-form-label fw-bold">CodColigada:</label>
+                                <label class="col-form-label" id="codColigadaLabel"></label>
+                                </div>
+                                <div style="display:none;">
+                                <label class="col-form-label fw-bold">IdTerceiro:</label>
+                                <label class="col-form-label" id="idTerceiroLabel"></label>
+                                </div> *@
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="d-flex justify-content-end me-2">
+        <button class="btn btn-secondary me-2" id="GoBackToIndex" type="button" onclick="goBackToIndex()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5" />
+            </svg>
+            Voltar
+        </button>
+    </div>
+</div>
+
+<form asp-action="FinalizeHandoutReservation" method="post" id="FormFinalizeReservation">
+    <input type="hidden" value="@Model.TransactionId" name="TransactionId" />
+<div class="row mb-3">
+    <table class="table" id="ReservationTable">
+        <thead>
+            <tr>
+                <th class="text-center align-middle">Order</th>
+                <th class="text-center align-middle">Classe</th>
+                <th class="text-center align-middle">Type</th>
+                <th class="text-center align-middle">Codigo</th>
+                <th class="text-center align-middle">Produto</th>               
+                <th class="text-center align-middle">Qtd</th>
+                <th class="text-center align-middle">Data Retorno</th>
+                <th class="text-center align-middle">Solicitante</th>
+                <th class="text-center align-middle">Liberador</th>
+                <th class="text-center align-middle">Observação</th>
+                <th class="text-center align-middle"></th>
+            </tr>
+        </thead>
+        <tbody id="ReservationBody">
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="d-flex justify-content-end align-items-center">
+            <label class="col-form-label col-2 text-end fw-bold me-2">Cracha:</label>
+            <span class="spinner-border me-2 visually-hidden" id="loadingConfirmation"></span>
+            <div class="col-4 ">
+                <input type="text" id="finalRfid" class="form-control" name="CrachaNumber" autocomplete="off" inputmode="numeric" style="-webkit-text-security: disc;">
+            </div>
+    </div>
+</div>
+</form>
+
+
+<script>
+    let ReservationList = @Html.Raw(Json.Serialize(Model.FinalOrder)) || null;
+</script>
+<script src="~/views_js/universalhelper.js"></script>
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/handout/completereservationpagejs.js"></script>

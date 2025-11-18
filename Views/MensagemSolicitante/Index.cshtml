@@ -1,0 +1,299 @@
+﻿@*@model FerramentariaTest.Models.FuncionarioViewModel*@
+@model FerramentariaTest.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "MensagemSolicitante";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Mensagem Solicitante</h4>
+
+@*@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (ViewBag.ShowSuccessAlert != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+}*@
+
+<div class="modal fade" id="ListOfUsers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> List of Employees </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable4">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chapa
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                CodSituacao
+                            </th>
+                            <th>
+                                Secao
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (ViewBag.ListOfEmployees != null)
+                        {
+                            @foreach (var item in ViewBag.ListOfEmployees)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Chapa
+                                    </td>
+                                    <td>
+                                        @item.Nome
+                                    </td>
+                                    <td>
+                                        @item.CodSituacao
+                                    </td>
+                                    <td>
+                                        @item.Secao
+                                    </td>
+                                    <td>
+                                        <a asp-action="SelectedUser" asp-route-chapa="@item.Chapa">Select</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ListOfMessages" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Mensagem </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable5">
+                    <tbody>
+                        @if (ViewBag.Messages != null)
+                        {
+                            @foreach (var item in ViewBag.Messages)
+                            {
+                                <tr>
+                                    <td>
+                                        <span><b>Postado Por:</b></span>@item.Username
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span><b>Texto:</b></span> @item.Mensagem
+                                        @if (item.Fixar != 1)
+                                        {
+                                            <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                        }                                      
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<form asp-action="Index" method="get">*@
+<form asp-action="SearchEmployee" method="get">
+    <div class="row mb-3">
+        <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"> Matricula / Nome: </label>
+        <div class="col-sm-2">
+            <input name="IdNumber" class="form-control form-control-sm" id="colFormLabelSm">
+        </div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                <img src="~/img/search.svg" /> Search
+            </button>
+        </div>
+    </div>
+
+</form>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post" id="createForm">
+
+            <div class="d-flex align-items-start">
+
+
+
+                @*@if (ViewData["Base64Image"] == null)*@
+                @if (Model.Image == null)
+                {
+                    <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                }
+                else
+                {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                }
+
+                <div class="ms-2">
+                    <div>
+                        <label for="colFormLabelSm">Chapa:</label>
+                        <span> @Model.Chapa </span>
+                        <input name="chapa" type="hidden" value="@Model.Chapa" />
+                    </div>
+                    <div class="mt-1">
+                        <!-- Add margin-top for spacing -->
+                        <label for="colFormLabelSm"> Nome:</label>
+                        <span> @Model.Nome </span>
+                    </div>
+
+                    @if (@Model.CodSituacao != "D")
+                    {
+                        <div class="mt-1">
+                            <!-- Add margin-top for spacing -->
+                            <label for="colFormLabelSm"> Cod Situação:</label>
+                            <span> @Model.CodSituacao </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mt-1">
+                            <!-- Add margin-top for spacing -->
+                            <label for="colFormLabelSm"> Cod Situação:</label>
+                            <span> <font color="red"> @Model.CodSituacao </font> </span>
+                        </div>
+                        <div class="mt-1">
+                            <!-- Add margin-top for spacing -->
+                            <label for="colFormLabelSm"> Date Demissão:</label>
+                            <span> <font color="red">   @(((DateTime)Model.DataDemissao).ToString("dd/MM/yyyy")) </font> </span>
+                            @*@Model.DataDemissao.ToString("dd/MM/yyyy")*@
+                        </div>
+
+                    }
+
+                    <input name="coligada" type="hidden" value="@Model.CodColigada" />
+
+                    @if (Model.CodColigada == 2)
+                    {
+
+                        <div class="mt-1">
+                            <!-- Add margin-top for spacing -->
+                            <label for="colFormLabelSm"> Empressa:</label>
+                            <span> BrasFELS </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mt-1">
+                            <!-- Add margin-top for spacing -->
+                            <label for="colFormLabelSm"> Empressa:</label>
+                            <span>  </span>
+                        </div>
+                    }
+
+                    <div class="mt-1">
+                        <!-- Add margin-top for spacing -->
+                        <label for="colFormLabelSm"> Função:</label>
+                        <span> @Model.Funcao </span>
+                    </div>
+                    <div class="mt-1">
+                        <!-- Add margin-top for spacing -->
+                        <label for="colFormLabelSm"> Seção:</label>
+                        <span> @Model.Secao </span>
+                    </div>
+                    @* <div>
+                    <span>Another Span Text</span>
+                    </div>*@
+                </div>
+            </div>
+            <br />
+
+
+            <div class="col-md-8">
+
+                <label class="col-sm-2 col-form-label col-form-label-sm">Mensagem:</label>
+                <div class="row mb-3">
+
+                    <div class="col-sm-10">
+                        <textarea name="mensagem" class="form-control" id="floatingTextarea2" style="height: 80px"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" name="fix" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Fixar Mensagem
+                    </label>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="salvarButton">
+                <img src="~/img/plus-lg.svg" alt="Plus Icon"> Salvar
+            </button>
+
+          
+
+        </form>
+    </div>
+</div>
+
+@if (ViewBag.ListOfEmployees != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfUsers');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.Messages != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfMessages');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}

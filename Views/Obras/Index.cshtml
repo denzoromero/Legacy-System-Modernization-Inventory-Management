@@ -1,0 +1,250 @@
+﻿@*@model IPagedList<FerramentariaTest.Models.ObraViewModel>*@
+@* @model FerramentariaTest.Models.ObraViewModelSearch *@
+
+@model NewObraModel
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    int pageSize = Model?.Pagination ?? 10;
+    int pageNumber = Model?.PageNumber ?? 1;
+
+    IPagedList<ReservationObraModel> pagedList = null;
+
+    @if (Model?.ReservationObraModel != null)
+    {
+        pagedList = Model.ReservationObraModel.ToPagedList(pageNumber, pageSize);
+    }
+
+}
+
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Obra</h1>
+
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+<!-- Modal -->
+<div class="modal fade" id="CreateObra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Obra</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <label class="col-3 col-form-label">Codigo</label>
+                        <div class="col-7">
+                            <input class="form-control" id="colFormLabelSm">
+                        </div>
+                       @*  <span asp-validation-for="Codigo" class="text-danger"></span> *@
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <label class="col-3 col-form-label">Nome</label>
+                        <div class="col-7">
+                            <input class="form-control" id="colFormLabelSm">
+                        </div>
+                        @* <span asp-validation-for="Nome" class="text-danger"></span> *@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="row mb-2">
+    <div class="col-6">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CreateObra">
+            <img src="~/img/plus-lg.svg" alt="Plus Icon"> ADD
+        </button>
+    </div>
+</div>
+
+@*<a asp-action="Create">
+    <button type="button" class="btn btn-primary loadingButton">
+   
+    </button>
+</a>*@
+
+<form asp-action="SearchObra" method="get">
+    <div class="input-group mb-3">
+        <input class="form-control rounded" name="filter" placeholder="Search">
+        <button type="submit" class="btn btn-primary loadingButton">Search</button>
+    </div>
+
+
+    <label class="form-check-label" for="inlineRadio1">Status do Registro &nbsp;</label>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="status" id="Ativo" value="1" @(Model?.Ativo == 1 ? "checked" : "")>
+        <label class="form-check-label" for="Ativo">Ativo</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="status" id="Inativo" value="0" @(Model?.Ativo == 0 ? "checked" : "")>
+        <label class="form-check-label" for="Inativo">Inativo</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="status" id="Todos" @(Model?.Ativo == null ? "checked" : "")>
+        <label class="form-check-label" for="Todos">Todos</label>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination10" value="10" checked>
+                <label class="form-check-label" for="pagination10">10</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination30" value="30">
+                <label class="form-check-label" for="pagination30">30</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination50" value="50">
+                <label class="form-check-label" for="pagination50">50</label>
+            </div>
+        </div>
+    </div>
+@*}*@
+</form>
+
+<br />
+
+<table class="table align-middle mb-0" id="myTable">
+    <thead class="bg-light">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Nome
+            </th>
+            <th>
+                Ativo
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+       @*  @if (Model != null && Model.ObraPagedList != null) *@
+        @if (pagedList != null)
+        {
+            @foreach (var item in pagedList)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                        @* @Html.DisplayFor(modelItem => item.Id) *@
+                    </td>
+                    <td>
+                        @item.Codigo
+                        @* @Html.DisplayFor(modelItem => item.Codigo) *@
+                    </td>
+                    <td>
+                        @item.Nome
+                        @* @Html.DisplayFor(modelItem => item.Nome) *@
+                    </td>
+                    <td>
+                        @if (item.Ativo == 1)
+                        {
+                            <span>Ativo</span>
+                        }
+                        else
+                        {
+                            <span>Inativo</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-warning">
+                                <img src="~/img/pencil-square.svg" /> Edit
+                            </button>
+                        </a>
+                        @if (item.Ativo == 1)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <button type="button" class="btn btn-danger">
+                                     Inativar
+                                </button>
+                            </a>
+
+                            @if (item.IdExcluded == null)
+                            {
+                                <a class="btn btn-info" asp-action="AddToExcludedReservation" asp-route-id="@item.Id">
+                                    Exclude Reservation
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-danger opacity-50" asp-action="RemoveToExcludedReservation" asp-route-id="@item.Id">
+                                    Include Reservation
+                                </a>
+                            }
+                        }
+                      
+                    </td>
+                </tr>
+            }
+        }      
+    </tbody>
+</table>
+
+@if (pagedList != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(pagedList, page => Url.Action("TestPage", new { page, pageSize, filter = Model?.ObraFilter, ativo = Model?.Ativo }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
+}
+
+@if (ViewBag.OpenForError != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('CreateObra');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+@*<script>
+    $(document).ready(function () {
+        $(".loadingButton").on("click", function () {
+            // Add the 'show' class to display the loader
+            $(".loadingIndicator").addClass("show");
+
+            //// You may want to perform your search logic or submit the form here
+            //// For demonstration purposes, let's simulate a delay using setTimeout
+            //setTimeout(function () {
+            //    // Remove the 'show' class to hide the loader after a delay (simulating search completion)
+            //    $(".loadingIndicator").removeClass("show");
+            //}, 2000); // Adjust the delay as needed
+        });
+    });
+</script>*@
+
+@*<script>
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popoverdd"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>*@

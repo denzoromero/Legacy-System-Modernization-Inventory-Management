@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4> Alerta automático de Vencimento de C.A </h4>
+<br />
+
+@await Component.InvokeAsync("ValuePartial")
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}*@
+
+
+<form id="yourFormId" action="@Url.Action("yourFormAction", "AlertaVencimentoCA")" method="post">
+    <div class="row mb-3">
+        <label for="colFormLabelSm" class="col-sm-5 col-form-label col-form-label-sm">Ativar alerta automático de vencimento de C.A</label>
+        <div class="col-sm-3">
+
+            <input class="form-check-input" type="checkbox" id="Alerta" name="AlertaValue" value="@ViewBag.Result" @(ViewBag.Result == 1 ? "checked" : "")>
+            <input type="hidden" name="AlertaValueTest" value="@ViewBag.Result" />
+
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkbox = document.getElementById('Alerta');
+        var form = document.getElementById('yourFormId');
+
+        checkbox.addEventListener('change', function () {
+            // Set the value explicitly before submitting the form
+            checkbox.value = checkbox.checked ? '1' : '0';
+
+            form.submit();
+        });
+    });
+</script>
+

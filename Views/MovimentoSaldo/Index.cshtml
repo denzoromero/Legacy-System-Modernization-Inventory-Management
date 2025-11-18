@@ -1,0 +1,740 @@
+﻿@model IPagedList<FerramentariaTest.Models.LogProdutoViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Movimento de Saldo</h4>
+<br />
+
+@*@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}*@
+
+@{
+    var produtoList = ViewBag.ProdutoList as IPagedList<ProdutoList>;
+}
+
+<form asp-action="GetProduto" method="Get">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Search</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="row mb-2">
+                            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Catalogo</label>
+                            <div class="col-sm-8">
+                                <select name="CategoriaClasse" id="ddlCatalogo" onchange="ddlCatalogoChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Selecionar..</option>
+                                    <option value="1">Ferramenta</option>
+                                    <option value="2">EPI</option>
+                                    <option value="3">Consumiveis</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Classe</label>
+                            <div class="col-sm-8">
+                                <select name="IdCategoria" id="ddlClasse" onchange="ddlClasseChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Open this select menu</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tipo</label>
+                            <div class="col-sm-8">
+                                <select name="Tipo" id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Codigo</label>
+                            <div class="col-sm-8">
+                                <input name="Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Item</label>
+                            <div class="col-sm-8">
+                                <input name="Item" class="form-control form-control-sm" id="colFormLabelSm">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">AF/Serial</label>
+                            <div class="col-sm-8">
+                                <input name="AF" class="form-control form-control-sm" id="colFormLabelSm">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PAT</label>
+                            <div class="col-sm-8">
+                                <input name="PAT" class="form-control form-control-sm" id="colFormLabelSm">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Numero Serie</label>
+                            <div class="col-sm-8">
+                                <input name="NumeroSerie" class="form-control form-control-sm" id="colFormLabelSm">
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <div class="col-md-8">
+                        <div class="row mb-2">
+                            <table class="table table-sm align-left" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Id
+                                    </th>
+                                    <th>
+                                        Codigo
+                                    </th>
+                                    <th>
+                                        Item
+                                    </th>
+                                    <th>
+                                        AF/Serial
+                                    </th>
+                                    <th>
+                                        PAT
+                                    </th>
+                                    <th>
+                                        Controle Por
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.ProdutoList != null)
+                                {
+                                        @foreach (var item in ViewBag.ProdutoList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @item.Id                                              
+                                            </td>
+                                            <td>
+                                                @item.Codigo
+                                            </td>
+                                            <td>
+                                                @item.Item
+                                            </td>
+                                            <td>
+                                                @item.AF
+                                            </td>
+                                            <td>
+                                                @item.PAT
+                                            </td>
+                                            <td>
+                                                    @if (item.PorMetro == 1)
+                                                    {
+                                                        <span>Metro</span>
+                                                    }
+                                                    else if (item.PorAferido == 1)
+                                                    {
+                                                        <span>Aferido</span>
+                                                    }
+                                                    else if (item.PorSerial == 1)
+                                                    {
+                                                        <span>Serial</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Quantidade</span>
+                                                    }
+                                            </td>
+                                            <td>
+                                                    <a asp-action="SelectProduto" asp-route-id="@item.Id"> Select </a>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                }
+                                else
+                                {
+
+                                }
+                            </tbody>
+                                    @if (produtoList != null)
+                                    {
+                                        @Html.PagedListPager(produtoList, page => Url.Action("ProdutoPager", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+                                    }                                   
+                            </table>
+                        </div>                
+                    </div>
+                </div>      
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary"> <img src="~/img/search.svg" /> Search </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</form>
+
+<form asp-action="GetCatalogo" method="Get">
+<div class="modal fade" id="CatalogModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> Buscar Por Codigo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="row mb-2">
+                            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Catalogo</label>
+                            <div class="col-sm-8">
+                                <select name="CategoriaClasse" id="ddlCatalogoOther" onchange="ddlCatalogoChangedOther(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Selecionar..</option>
+                                    <option value="1">Ferramenta</option>
+                                    <option value="2">EPI</option>
+                                    <option value="3">Consumiveis</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Classe</label>
+                            <div class="col-sm-8">
+                                <select name="IdCategoria" id="ddlClasseOther" onchange="ddlClasseChangedOther(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Open this select menu</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tipo</label>
+                            <div class="col-sm-8">
+                                <select name="Tipo" id="ddlTipoOther" class="form-select form-select-sm" aria-label="Small select example">
+                                    <option selected>Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Codigo</label>
+                            <div class="col-sm-8">
+                                <input name="Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Item</label>
+                            <div class="col-sm-8">
+                                <input name="Item" class="form-control form-control-sm" id="colFormLabelSm">
+                            </div>
+                        </div>
+                    
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="row mb-2">
+                            <table class="table table-sm align-left" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Id
+                                        </th>
+                                        <th>
+                                            Codigo
+                                        </th>
+                                        <th>
+                                            Item
+                                        </th>                                  
+                                        <th>
+                                            Controle Por
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.CatalogList != null)
+                                    {
+                                        @foreach (var item in ViewBag.CatalogList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Id
+                                                </td>
+                                                <td>
+                                                    @item.Codigo
+                                                </td>
+                                                <td>
+                                                    @item.Nome
+                                                </td>
+                                                <td>
+                                                    @if (item.PorMetro == 1)
+                                                    {
+                                                        <span>Metro</span>
+                                                    }
+                                                    else if (item.PorAferido == 1)
+                                                    {
+                                                        <span>Aferido</span>
+                                                    }
+                                                    else if (item.PorSerial == 1)
+                                                    {
+                                                        <span>Serial</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Quantidade</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                        <a asp-action="SelectCatalog" asp-route-id="@item.Id"> Select </a>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                </tbody>
+                                @Html.PagedListPager(produtoList, page => Url.Action("ProdutoPager", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary"> <img src="~/img/search.svg" /> Search </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+</form>
+
+<form asp-action="GetLog" method="post">
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="row mb-2">
+            <div class="col-sm-3"> Usuário</div>
+            <div class="col-sm-5">
+                <select name="Usuario" id="ddlUsuario" class="form-select form-select-sm" aria-label="Small select example">
+                    <option selected>Selecionar...</option>
+                    @foreach (var item in ViewBag.UsuarioRelatorio)
+                    {
+                        <option value="@item.Id">@item.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3"> RFM/Nota Fiscal</div>
+            <div class="col-sm-5">
+                <input name="RFM" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Transacoes </label>
+            <div class="col-sm-4">
+                De <input name="De" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+            <div class="col-sm-4">
+                Ate <input name="Ate" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-9">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Pagination" id="pagination10" value="10" checked>
+                        <label class="form-check-label" for="pagination10">10</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Pagination" id="pagination30" value="30">
+                        <label class="form-check-label" for="pagination30">30</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Pagination" id="pagination50" value="50">
+                        <label class="form-check-label" for="pagination50">50</label>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+        <div class="col-md-4">
+            @if (ViewBag.SelectedProduto != null)
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-2">Id:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedProduto.Id
+                        <input type="hidden" value="@ViewBag.SelectedProduto.Id" name="IdProdutoSelected">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Codigo:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedProduto.Codigo
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Item:</div>
+                    <div class="col-sm-10">
+                        @ViewBag.SelectedProduto.Item
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">AF/Serial:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedProduto.AF
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">PAT:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedProduto.PAT
+                    </div>
+                </div>
+            }
+
+            @if (ViewBag.SelectedCatalog != null)
+            {
+                CatalogoViewModel? valuecatalog = ViewBag.SelectedCatalog as CatalogoViewModel ?? new CatalogoViewModel();
+                <div class="row mb-2">
+                    <div class="col-sm-2">Id:</div>
+                    <div class="col-sm-5">
+                        @valuecatalog.Id
+                        <input type="hidden" value="@valuecatalog.Id" name="IdCatalogoSelected">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Codigo:</div>
+                    <div class="col-sm-5">
+                        @valuecatalog.Codigo
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Item:</div>
+                    <div class="col-sm-10">
+                        @valuecatalog.Nome
+                    </div>
+                </div>
+            }
+
+         @*    @if (ViewBag.SelectedCatalog != null)
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-2">Id:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedCatalog.Id
+                        <input type="hidden" value="@ViewBag.SelectedCatalog.Id" name="IdCatalogoSelected">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Codigo:</div>
+                    <div class="col-sm-5">
+                        @ViewBag.SelectedCatalog.Codigo
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-2">Item:</div>
+                    <div class="col-sm-10">
+                        @ViewBag.Nome.Nome
+                    </div>
+                </div>      
+            } *@
+        </div>
+</div>
+
+<div class="row mb-4">
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-info mr-2" style="color: white;" >
+                <img src="~/img/search.svg" /> Buscar
+            </button>
+        </div>
+
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal" style="color: white;">
+                <img src="~/img/search.svg" /> Buscar Por Produto
+            </button>
+        </div>
+
+        <div class="col-4">
+            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#CatalogModal" style="color: white;">
+                <img src="~/img/search.svg" /> Buscar Por Codigo
+            </button>
+        </div>
+</div>
+</form>
+
+@*<div class="table-container">*@
+<table class="table table-sm align-left light-dark-table">
+        <thead>
+            <tr>
+                <th>
+                    Id Produto
+                </th>
+                <th>
+                    Ferramentaria
+                </th>
+                <th>
+                    Catalogo
+                </th>
+                <th>
+                    Classe
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Codigo
+                </th>
+                <th>
+                    Item
+                </th>
+                <th>
+                    RFM Para
+                </th>
+                <th>
+                    RFM De
+                </th>
+                <th>
+                    RFM Atual
+                </th>
+                <th>
+                    Observacao
+                </th>
+                <th>
+                    AF
+                </th>
+                <th>
+                    PAT
+                </th>
+                <th>
+                    Saldo De
+                </th>
+                <th>
+                    Saldo Para
+                </th>
+                <th>
+                    Usuario
+                </th>
+                <th>
+                    Acao
+                </th>
+                <th>
+                    Data Ocorrencia
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null)
+        {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProduto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ferramentaria)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Catalogo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Classe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Codigo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RfmPara)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RfmDe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RfmAtual)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Observacao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Af)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pat)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SaldoDe)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SaldoPara)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Usuario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Acao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataOcorrencia)
+                        </td>
+                    </tr>
+                   
+                }
+        }
+        else
+        {
+                
+        }
+        </tbody>
+    </table>
+
+@*<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("GetLog", new { page, Usuario = ViewBag.Usuario, De = ViewBag.De, Ate = ViewBag.Ate }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div>*@
+@* <div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div> *@
+@*</div>*@
+
+@if (Model != null)
+{
+    
+    <form asp-action="ExportToExcel">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-auto d-flex align-items-center">
+                <div class="mt-1">
+                    @Html.PagedListPager(Model, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+                </div>
+                <button type="submit" class="btn btn-success ms-4 mb-3 d-flex align-items-center"> Exportar</button>
+            </div>
+        </div>
+    </form>
+}
+
+
+@if (ViewBag.ProdutoList != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('exampleModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.CatalogList != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('CatalogModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    function ddlCatalogoChangedOther(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $("#ddlClasseOther").empty();
+        $("#ddlTipoOther").empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadClasse",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlClasseOther").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));
+                $.each(data, function (index, item) {
+                    $("#ddlClasseOther").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function ddlClasseChangedOther(selectElement) {
+        var selectedValue = selectElement.value;
+        console.log("Selected value:", selectedValue);
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadTipo",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlTipoOther").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));
+                $.each(data, function (index, item) {
+                    $("#ddlTipoOther").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+</script>

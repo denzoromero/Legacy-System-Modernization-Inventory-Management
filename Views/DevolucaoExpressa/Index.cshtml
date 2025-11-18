@@ -1,0 +1,494 @@
+﻿@model List<DevolucaoExpressaViewModel?>? 
+@{
+    ViewData["Title"] = "DevolucaoExpressa";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>DevolucaoExpressa</h4>
+<br />
+
+@await Component.InvokeAsync("ValuePartial")
+
+
+
+@*modal for Solicitante*@
+<div class="modal fade" id="SolicitanteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Solicitante </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-15">
+                        <div class="d-flex align-items-start">
+                            @if (ViewData["Base64ImageBalc"] == null)
+                            {
+                                <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            else
+                            {
+                                <img src="data:image/jpeg;base64,@ViewData["Base64ImageBalc"]" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            <div class="ms-2">
+
+                                @if (ViewBag.SolicitanteChapa != null)
+                                {
+                                    <div>
+                                        <label for="colFormLabelSm">Chapa:</label>
+                                        <span> @ViewBag.SolicitanteChapa </span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label for="colFormLabelSm"> Nome:</label>
+                                        <span> @ViewBag.SolicitanteNome </span>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*modal for Liberador*@
+<div class="modal fade" id="LiberadorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Liberador </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-15">
+                        <div class="d-flex align-items-start">
+                            @if (ViewData["Base64ImageBalc"] == null)
+                            {
+                                <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            else
+                            {
+                                <img src="data:image/jpeg;base64,@ViewData["Base64ImageBalc"]" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            <div class="ms-2">
+
+                                @if (ViewBag.LiberadorChapa != null)
+                                {
+                                    <div>
+                                        <label for="colFormLabelSm">Chapa:</label>
+                                        <span> @ViewBag.LiberadorChapa </span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label for="colFormLabelSm"> Nome:</label>
+                                        <span> @ViewBag.LiberadorNome </span>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*modal for Balconista*@
+<div class="modal fade" id="BalconistaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Balconista </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-15">
+                        <div class="d-flex align-items-start">
+                            @if (ViewData["Base64ImageBalc"] == null)
+                            {
+                                <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            else
+                            {
+                                <img src="data:image/jpeg;base64,@ViewData["Base64ImageBalc"]" class="rounded" alt="..." height="160px" width="130px" />
+                            }
+                            <div class="ms-2">
+
+                                @if (ViewBag.BalconistaChapa != null)
+                                {
+                                    <div>
+                                        <label for="colFormLabelSm">Chapa:</label>
+                                        <span> @ViewBag.BalconistaChapa </span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label for="colFormLabelSm"> Nome:</label>
+                                        <span> @ViewBag.BalconistaNome </span>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*modal for obs*@
+<div class="modal fade" id="obsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Observação </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.Observacao != null)
+                {
+                    <p>@ViewBag.Codigo</p>
+                    <p>@ViewBag.Observacao</p>
+                }
+                else
+                {
+
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form asp-action="SearchProductForDevolucaoExpressa" method="get">
+<div class="col-md-3">
+
+    <div class="row mb-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="visibleCheckbox" name="PrintCheck" value="1" @(ViewBag.PrintTicket != null && ViewBag.PrintTicket == 1 ? "checked" : "")>
+                <label class="form-check-label" for="visibleCheckbox">
+                    Habilitar Impressão Ticket
+                </label>
+            </div>
+    </div>  
+
+    <div class="row mb-2">
+        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">AF/Serial</label>
+        <div class="col-sm-7">
+            <input name="AFSerialDevolucaoExpressa" class="form-control form-control-sm" id="colFormLabelSm">
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">PAT</label>
+        <div class="col-sm-7">
+                <input name="PATDevolucaoExpressa" class="form-control form-control-sm" id="colFormLabelSm" oninput="SomenteNumeros(this, event);">
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+          <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info mr-2 loadingButton" style="color: white;">
+                        <img src="~/img/search.svg" /> Localizar Item
+                    </button>
+                    <a href="@Url.Action("Limpar")" class="btn btn-info" style="color: white;">
+                        <img src="~/img/eraser.svg" /> Limpar
+                    </a>
+                 
+                    @if (ViewBag.Result != null)
+                    {
+                        <label for="colFormLabelSm" class=" col-form-label"> O item pesquisado não se encontra emprestado no momento, se encontra no estoque <strong>@ViewBag.Result</strong></label>
+                    }
+                </div>
+        
+            <div>
+                <label for="colFormLabelSm" class="col-form-label Devolucao-Extraviado"> Item Extraviado </label>
+            </div>
+          </div>
+    </div>
+</div>
+
+</form>
+
+
+
+<form asp-action="ExecuteActionDevolver" method="post" id="SearchDevolucaoExpressa">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="PrintTicket" id="hiddenCheckbox" value="1" />
+<div class="table-container">
+        <table class="table table-sm align-left light-dark-table">
+        <thead>
+            <tr>
+                <th>
+                    Chapa
+                </th>
+                <th>
+                    Codigo
+                </th>
+                <th>
+                    Produto
+                </th>
+                <th>
+                    AF/Serial
+                </th>
+                <th>
+                    PAT
+                </th>
+                <th>
+                    Ferr. de Origem
+                </th>
+                <th>
+                    Qtd. Emp.
+                </th>
+                <th>
+                    Qtd. Devolver
+                </th>
+                <th>
+                    Data do Emprestimo
+                </th>
+                <th>
+                    Data Prevista Devolução
+                </th>
+                <th>
+                    Obs
+                </th>
+                <th>
+                    Lib.
+                </th>
+                <th>
+                    Balc. Empr.
+                </th>
+                <th>
+                    Ferr. Devolução
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                  
+                        var item = Model[i];
+                        <tr style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                            <input type="hidden" name="IdProduto" value="@item.IdProduto" />
+                            <input type="hidden" name="IdProdutoAlocado" value="@item.IdProdutoAlocado" />
+
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                <a asp-action="GetSolicitante" asp-route-id="@item.Solicitante_Chapa"> @item.Solicitante_Chapa </a>
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.CodigoCatalogo
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.NomeCatalogo
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.AFProduto
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.PATProduto
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.NomeFerramentaria
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.Quantidade
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @if (@item.Quantidade > 1)
+                                {
+                                    <input name="QuantidadeInput" value="@item.Quantidade" style="width: 50px;" />
+                                }
+                                else
+                                {
+                                   @* <input value="@item.Quantidade" style="width: 50px;" disabled />*@
+                                    <input name="QuantidadeInput" value="@item.Quantidade" style="width: 50px;" disabled/>
+                                    <input type="hidden" name="QuantidadeInput" value="@item.Quantidade" />
+                                }
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @* @item.DataEmprestimo*@
+                                @if (item.DataEmprestimo.HasValue)
+                                {
+                                    <span>@item.DataEmprestimo.Value.ToString("dd/MM/yyyy HH:mm ")</span>
+                                }
+                                else
+                                {
+                                    <span>---</span>
+                                }
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @*  @item.DataPrevistaDevolucao*@
+                                @if (item.DataPrevistaDevolucao != null)
+                                {
+                                    <span>@item.DataPrevistaDevolucao.Value.ToString("dd/MM/yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span>---</span>
+                                }
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @if (!string.IsNullOrEmpty(item.Observacao))
+                                {
+                                    @*  <a asp-action="GetObservacao" asp-route-id="@item.IdProdutoAlocado"> <img src="~/img/chat-dots.svg" /> </a>*@
+                                    <a data-bs-toggle="popoverdd" data-bs-placement="right"
+                                       data-bs-title="Observacao"
+                                       data-bs-trigger="hover"
+                                       data-bs-content="@item.Observacao"> <img src="~/img/chat-dots.svg" /> </a>
+                                }
+                                else
+                                {
+
+                                }
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                <a asp-action="GetLiberador" asp-route-id="@item.Liberador_Chapa"> @item.Liberador_Chapa </a>
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                <a asp-action="GetBalconista" asp-route-id="@item.Balconista_Chapa"> @item.Balconista_Chapa </a>
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @item.NomeFerramentaria
+                                <input type="hidden" name="FerramentariaReturnId" value="@item.IdFerramentaria" />
+                            </td>
+                            <td style="@(item.QuantidadeExtraviada != 0 ? "background-color: #FF3048;" : "")">
+                                @if (item.QuantidadeExtraviada != 0)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    @if (item.LoggedFerramentariaId == item.IdFerramentaria)
+                                    {
+                                        <input type="radio" name="selectedItem" value="@item.IdProdutoAlocado" />
+                                    }
+                                    else
+                                    {
+
+                                    }
+                                }                                                  
+                            </td>
+                        </tr>
+                    }            
+            }
+            else
+            {
+                
+            }
+        </tbody>
+    </table>
+</div>
+
+    @if (Model != null)
+    {
+        <div class="row mb-4">
+            <div class="col-sm-12 d-flex justify-content-end">
+
+                <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                    Executar Devolução
+                </button>
+
+            </div>
+        </div>
+    }
+
+</form>
+
+
+<script>
+    // Add an event listener to the visible checkbox
+    document.getElementById('visibleCheckbox').addEventListener('change', function () {
+        // Update the value of the hidden input based on the visible checkbox state
+        document.getElementById('hiddenCheckbox').value = this.checked ? '1' : '0';
+    });
+</script>
+
+<script>
+    function submitForm() {
+        document.getElementById('SearchDevolucaoExpressa').submit();
+    }
+</script>
+
+@if (ViewBag.OpenSolicitanteModal != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('SolicitanteModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenLiberadorModal != null && (bool)ViewBag.OpenLiberadorModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('LiberadorModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenBalconistaModal != null && (bool)ViewBag.OpenBalconistaModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('BalconistaModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenObsModal != null && (bool)ViewBag.OpenObsModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('obsModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+

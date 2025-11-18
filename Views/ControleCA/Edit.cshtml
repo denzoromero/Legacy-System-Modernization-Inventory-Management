@@ -1,0 +1,214 @@
+﻿@model FerramentariaTest.Models.CatalogoViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Edit</h3>
+
+<hr />
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}
+
+@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}*@
+
+<form method="post" asp-action="Edit">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Id Catalogo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Id</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Catalogo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1" name="classe">@Model.CategoriaClasse</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Classe:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.CategoriaNome</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Tipo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.CategoriaNomePai</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Codigo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Codigo</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Item:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Nome   </span>
+                </div>
+            </div>
+
+            @if (Model.PorMetro == 1)
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Controle:</div>
+                    <div class="col-sm-8">
+                        <span class="p-1"> Metro </span>
+                    </div>
+                </div>
+            }
+            else if (Model.PorAferido == 1)
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Controle:</div>
+                    <div class="col-sm-8">
+                        <span class="p-1"> Aferido </span>
+                    </div>
+                </div>
+            }
+            else if (Model.PorSerial == 1)
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Controle:</div>
+                    <div class="col-sm-8">
+                        <span class="p-1"> Serial </span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row mb-2">
+                    <div class="col-sm-3 fw-bold">Controle:</div>
+                    <div class="col-sm-8">
+                        <span class="p-1"> Quantidade </span>
+                    </div>
+                </div>
+            }
+
+            <hr />
+
+            <input type="hidden" name="EditId" value="@ViewBag.EditId" />
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label col-form-label-sm">Numero da C.A:</label>
+                <div class="col-sm-3">
+                    <input name="EditNumeroCA" class="form-control form-control-sm" value="@ViewBag.EditNumeroCA">
+                </div>
+                <label class="col-sm-1 col-form-label col-form-label-sm">Validade:</label>
+                <div class="col-sm-3">
+                    <input name="EditValidade" class="form-control form-control-sm" type="date" value="@(((DateTime)ViewBag.EditValidade).ToString("yyyy-MM-dd"))">
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-warning">
+                <img src="~/img/pencil-square.svg" /> Edit
+            </button>
+
+
+            <a asp-action="Index">
+                <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" /> Back </button>
+            </a>
+
+        </div>
+    </div>
+
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Data do Registro
+            </th>
+            <th>
+                Responsavel
+            </th>
+            <th>
+                Numero C.A
+            </th>
+            <th>
+                Validade
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < ViewBag.ControlCA.Count; i++)
+        {
+            <tr>
+                <!-- Add a row element for each item -->
+                <td>
+
+                    @if (i == 0)
+                    {
+                        <text>C.A. Vigente</text>
+                    }
+
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].DataRegistro
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].Responsavel
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].NumeroCA
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].Validade.ToString("dd-MM-yyyy")
+                </td>
+                <td>
+                 @*   @if (i == 0)
+                    {
+                        <a asp-action="Edit" asp-route-id="@ViewBag.ControlCA[i].Id">
+                            <button type="button" class="btn btn-warning">
+                                <img src="~/img/pencil-square.svg" />
+                            </button>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0);" onclick="confirmDelete(@ViewBag.ControlCA[i].Id);" data-id="@ViewBag.ControlCA[i].Id">
+                        <button type="button" class="btn btn-danger">
+                            <img src="~/img/trash3-fill.svg" />
+                        </button>
+                        </a>
+                    }*@
+                </td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>
+
+
+

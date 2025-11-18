@@ -1,0 +1,279 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="modal fade" id="reservationDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabelTitle"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover" id="reservationCompleteTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center align-middle">
+                                #
+                            </th>
+                            <th class="text-center align-middle">
+                                No. Pedido
+                            </th>
+                            <th class="text-center align-middle">
+                                Mem. Chapa
+                            </th>
+                            <th class="text-center align-middle">
+                                Mem. Nome
+                            </th>
+                            <th class="text-center align-middle">
+                                Mem. Funcao
+                            </th>
+                            <th class="text-center align-middle">
+                                Lid. Chapa
+                            </th>
+                            <th class="text-center align-middle">
+                                Lid. Nome
+                            </th>
+                            <th class="text-center align-middle">
+                                Lid. Funcao
+                            </th>
+                            <th class="text-center align-middle">
+                                Qtd
+                            </th>
+                            <th class="text-center align-middle">
+                                Tipo
+                            </th>
+                            <th class="text-center align-middle">
+                                Status
+                            </th>
+                            <th class="text-center align-middle">
+                                DataRegistro
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationCompleteTableBody">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <form id="formGestorSearch">
+    <div class="d-flex flex-row">
+
+        <div class="col-4">
+            <div class="row mb-3">
+                <label for="ddlCatalogo" class="col-2 col-form-label text-end fw-bold"> Catalogo: </label>
+                <div class="col-6">
+                    <select id="ddlCatalogo" onchange="ddlCatalogoChangedGestor(this)" class="form-select">
+                        <option value="">Selecionar..</option>
+                        <option value="1">Ferramentas</option>
+                        <option value="2">EPI</option>
+                        <option value="3">Consumiveis</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="ddlClasse" class="col-2 col-form-label text-end fw-bold"> Classe: </label>
+                <div class="col-6">
+                    <select id="ddlClasse" onchange="ddlClasseChangedGestor(this)" class="form-select">
+                            <option value="">Open this select menu</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="ddlTipo" class="col-2 col-form-label text-end fw-bold"> Tipo: </label>
+                <div class="col-6">
+                    <select id="ddlTipo" class="form-select">
+                            <option value="">Open this select menu</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row mb-3">
+                <label for="inputCodigo" class="col-2 col-form-label text-end fw-bold"> Codigo: </label>
+                <div class="col-6">
+                    <input class="form-control" id="inputCodigo" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputItem" class="col-2 col-form-label text-end fw-bold"> Item: </label>
+                <div class="col-6">
+                    <input class="form-control" id="inputItem">
+                </div>
+            </div>
+                <div class="row mb-3">
+                    <label class="col-2 col-form-label text-end fw-bold"> </label>
+                    <div class="col-6">
+                        <input type="checkbox" class="btn-check" id="checkReservadoRetirada" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="checkReservadoRetirada">Reservado/Retirada</label>
+                    </div>
+                </div>
+ @*            <div class="row mb-3">
+                <label for="inputAF" class="col-2 col-form-label text-end fw-bold"> AF/Serial: </label>
+                <div class="col-6">
+                    <input class="form-control" id="inputAF">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPAT" class="col-2 col-form-label text-end fw-bold"> PAT: </label>
+                <div class="col-6">
+                    <input class="form-control" id="inputPAT">
+                </div>
+            </div> *@
+        </div>
+@*         <div class="col-4">
+            <div class="row mb-3">
+                <label for="inputPAT" class="col-2 col-form-label text-end fw-bold"> Status: </label>
+                <div class="col-10 align-content-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio1" value="1" @(Model?.SearchGestorModel?.Status == null || Model?.SearchGestorModel?.Status == 1 ? "checked" : "")>
+                        <label class="form-check-label" for="inlineRadio1">Em Estoque</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio2" value="2" @(Model?.SearchGestorModel?.Status == 2 ? "checked" : "")>
+                        <label class="form-check-label" for="inlineRadio2">Emprestado</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio3" value="3" @(Model?.SearchGestorModel?.Status == 3 ? "checked" : "")>
+                        <label class="form-check-label" for="inlineRadio3">Ambos</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputPAT" class="col-2 col-form-label text-end fw-bold"> Saldo: </label>
+                <div class="col-10 align-content-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="radioSaldo1" value="1" @(Model?.SearchGestorModel?.Saldo == 1 ? "checked" : ""))>
+                        <label class="form-check-label" for="radioSaldo1">Zero</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="radioSaldo2" value="2" @(Model?.SearchGestorModel?.Saldo == 2 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSaldo2">Negativo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="radioSaldo3" value="3" checked @(Model?.SearchGestorModel?.Saldo == null || Model?.SearchGestorModel?.Saldo == 3 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSaldo3">Positivo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="radioSaldo4" value="4" @(Model?.SearchGestorModel?.Saldo == 4 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSaldo4">Todas</label>
+                    </div>
+                </div>     
+            </div>
+            <div class="row mb-3">
+                <label for="inputPAT" class="col-2 col-form-label text-end fw-bold"> Situação: </label>
+                <div class="col-10 align-content-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="radioSituacao1" value="1" @(Model?.SearchGestorModel?.Situacao == null || Model?.SearchGestorModel?.Situacao == 1 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSituacao1">Ativo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="radioSituacao0" value="0" @(Model?.SearchGestorModel.Situacao == 0 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSituacao0">Inativo</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="radioSituacao3" value="3" @(Model?.SearchGestorModel.Situacao == 3 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSituacao3">Extraviado</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="radioSituacao2" value="2" @(Model?.SearchGestorModel.Situacao == 2 ? "checked" : "")>
+                        <label class="form-check-label" for="radioSituacao2">Todas</label>
+                    </div>
+                </div>
+            </div>
+        </div> *@
+
+    </div>
+
+ @*    <div class="row mt-4">
+        <div class="col-5 d-flex align-items-center">
+            <label for="inputPAT" class="me-3 fw-bold">Pagination:</label>
+            <div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pagination10" value="10" checked>
+                    <label class="form-check-label" for="pagination10">10</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pagination30" value="30">
+                    <label class="form-check-label" for="pagination30">30</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="pagination50" value="50">
+                    <label class="form-check-label" for="pagination50">50</label>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+    <div class="row mt-4 d-flex justify-content-end align-items-center">
+        <div class="col-5  d-flex justify-content-end me-5">
+            <button type="submit" class="btn btn-info mr-2 col-3" id="btnSearch" style="color: white;">
+                    <span class="spinner-border spinner-border-sm me-2 visually-hidden" id="loadingSpan" aria-hidden="true"></span> <img src="~/img/search.svg" /> Buscar
+            </button>
+            <button type="reset" class="btn btn-danger ms-4 col-3" id="btnReset" style="color: white;">
+                Limpar
+            </button>
+        </div>
+    </div>
+    </form>
+
+    <div class="row table-responsive mt-4">
+        <table class="table table-hover" id="gestorReservaRetiradaTable">
+            <thead>
+                <tr>
+                    <th class="text-center align-middle">
+                        Ferramentaria
+                    </th>
+                    <th class="text-center align-middle">
+                        Catalogo
+                    </th>
+                    <th class="text-center align-middle">
+                        Classe
+                    </th>
+                    <th class="text-center align-middle">
+                        Tipo
+                    </th>
+                    <th class="text-center align-middle">
+                        Codigo
+                    </th>
+                    <th class="text-center align-middle">
+                        Item
+                    </th>
+                    <th class="text-center align-middle">
+                        Saldo
+                    </th>
+                    <th class="text-center align-middle">
+                        Reserva/Retirada
+                    </th>
+                    <th class="text-center align-middle">
+                        Total Available
+                    </th>
+                    <th class="text-center align-middle">
+                        Controle
+                    </th>
+                    <th class="text-center align-middle">
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="gestorRRBody">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/gestorretiradareserva/indexgestorjs.js"></script>

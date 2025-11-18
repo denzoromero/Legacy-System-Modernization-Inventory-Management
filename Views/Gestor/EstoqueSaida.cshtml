@@ -1,0 +1,264 @@
+﻿@model IPagedList<FerramentariaTest.Models.SaidaEstoqueViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "EstoqueSaida";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Saída de Estoque</h4>
+<br />
+
+         <p>
+            Seleciona um item no catalogo para então informar a quantidade de entrada.
+        </p>
+
+<form asp-action="SearchEstoqueSaida" method="get">
+<div class="row">
+    <div class="col-md-3">
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> Catalogo </label>
+                <div class="col-sm-9">
+                    <select name="selectedCatalogo" id="ddlCatalogo" onchange="ddlCatalogoChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                        <option selected>Todos</option>
+                        <option value="1">Ferramentas</option>
+                        <option value="2">EPI</option>
+                        <option value="3">Consumiveis</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> Classe </label>
+            <div class="col-sm-9">
+                <select name="selectedClasse" id="ddlClasse" onchange="ddlClasseChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                    <option selected>Open this select menu</option>
+                </select>
+            </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> Tipo </label>
+                <div class="col-sm-9">
+                    <select name="selectedTipo" id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example">
+                        <option selected>Open this select menu</option>
+                    </select>
+                </div>
+            </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Código</label>
+            <div class="col-sm-9">
+                    <input name="Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14">
+            </div>
+        </div>
+
+          <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                <div class="col-sm-9">
+                    <input name="Item" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+           </div>
+
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-2">
+            <button type="submit" class="btn btn-info mr-2 loadingButton" style="color: white;">
+            <img src="~/img/search.svg" /> Buscar
+        </button>
+    </div>
+    <div class="col-sm-6">
+        <p>
+            <small>
+                *Não é possível efetuar lançamento de saída para item controlado por aferição e serial.
+            </small>
+        </p>
+    </div>
+</div>
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Catálogo
+            </th>
+            <th>
+                Classe
+            </th>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Por Metro
+            </th>
+            <th>
+                Por Aferido
+            </th>
+            <th>
+                Por Serial
+            </th>
+            <th>
+                Por Qtd.
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatalogoId)
+                    </td>
+                    <td>
+                        @switch (item.CategoriaClasse)
+                        {
+                            case 1:
+                                <p>Ferramenta</p>
+                                break;
+                            case 2:
+                                <p>EPI</p>
+                                break;
+                            case 3:
+                                <p>Consumíveis</p>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClasseNome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoriaNome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatalogoCodigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatalogoNome)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.CatalogoPorMetro)*@
+                        @if (item.CatalogoPorMetro == 1)
+                        {
+                            <img src="~/img/check-lg.svg" />
+                        }
+                        else
+                        {
+                            
+                        }
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.CatalogoPorAferido)*@
+                        @if (item.CatalogoPorAferido == 1)
+                        {
+                            <img src="~/img/check-lg.svg" />
+                        }
+                        else
+                        {
+
+                        }
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.CatalogoPorSerial)*@
+                        @if (item.CatalogoPorSerial == 1)
+                        {
+                            <img src="~/img/check-lg.svg" />
+                        }
+                        else
+                        {
+
+                        }
+                    </td>
+                    <td>
+                        @if (item.CatalogoPorMetro == 0 && item.CatalogoPorAferido == 0 && item.CatalogoPorSerial == 0)
+                        {
+                            <img src="~/img/check-lg.svg" />
+                        }
+                        else
+                        {
+
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="FormEstoqueSaida" asp-route-id="@item.CatalogoId"><button type="button" class="btn btn-info">Selecionar</button> </a>
+                    </td>
+                </tr>
+
+            }
+        }
+        else
+        {
+
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("TestPageEstoque", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div>
+
+
+<script>
+    function ddlCatalogoChanged(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Gestor/LoadClasse",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                //$("#ddlClasse").empty();
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlClasse").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function ddlClasseChanged(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Gestor/LoadTipo",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlTipo").empty();
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlTipo").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+</script>

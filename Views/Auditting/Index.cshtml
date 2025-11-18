@@ -1,0 +1,151 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@* <a asp-action="MakeHeader">go to header</a> *@
+
+
+<div class="modal fade" id="multipleEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Employees</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="col-5">
+                            <input class="form-control" placeholder="Chapa/Nome" id="searchChapaName"/>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Chapa</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Secao</th>
+                            <th scope="col">Funcao</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="employeeListBody">
+                        <tr>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex flex-row  mt-4">
+            <div class="col-6">
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        <label for="inputChapaNome" class="col-form-label text-end fw-bold me-3"> Chapa/Nome: </label>
+                        <div class="col-6">
+                            <input class="form-control" id="inputChapaNome">
+                        </div>
+                        <button type="button" class="btn btn-info text-white" id="btnSearchEmployee">
+                            <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSearchEmployee"></span>
+                            <img src="~/img/search.svg" id="searchImg"/>
+                        </button>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="col-5">
+                            <div class="d-flex justify-content-center">
+                             @*    <div class="col-6">
+                                    
+                                </div> *@
+                                <img src="~/img/image-not-available.jpg" class="rounded img-fluid w-50 h-50" alt="..." id="imgEmployee" />
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Chapa:</label>
+                                <label class="col-form-label" id="labelChapa"></label>                           
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Nome:</label>
+                                <label class="col-form-label" id="labelNome"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Cod Situação:</label>
+                                <label class="col-form-label" id="labelSituacao"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Função:</label>
+                                <label class="col-form-label" id="labelFuncao"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Seção:</label>
+                                <label class="col-form-label" id="labelSecao"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+            <div class="col-6">
+                <form asp-action="GenerateReport" id="formGenerateReport">
+                <div class="row mb-5">
+                        <input type="hidden" name="employeeChapa" id="employeeChapa" />
+                        <input type="hidden" name="employeeCodColigada" id="employeeCodColigada" />
+                        <input type="hidden" name="employeeCodPessoa" id="inputCodPessoa" />
+                        <input type="hidden" name="employeeIdTerceiro" id="inputIdTerceiro" />
+                </div>
+                <div class="row">
+                    <label class="col-2 col-form-label text-end fw-bold"> Year: </label>
+                    <div class="col-3">
+                        <select class="form-select" id="selectYear" name="selectedYear">
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <label class="col-2 col-form-label text-end fw-bold"> Catalogo: </label>
+                    <div class="col-3">
+                        <select class="form-select" name="selectedCatalogo" id="selectedCatalogo">
+                            <option>Todos...</option>
+                            <option value="1">Ferramentas</option>
+                            <option value="2">EPI</option>
+                            <option value="3">Consumiveis</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="d-flex justify-content-center align-items-center">
+                            
+                        <button class="btn btn-info text-white align-items-center" type="submit">
+                            <span class="spinner-border spinner-border-sm visually-hidden" id="loadingGeneratePDF"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-printer me-1" viewBox="0 0 16 16" id="svgPrinter">
+                                <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
+                            </svg>
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/audit/indexaudittingjs.js"></script>
+

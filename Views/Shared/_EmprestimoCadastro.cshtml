@@ -1,0 +1,18 @@
+﻿@model EmprestimoViewModel
+
+@if (Model != null)
+{
+    <table class="table table-sm align-left" id="myTable">
+        <thead>
+            <!-- Your table header content -->
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Your table row content -->
+                <td>@Html.DisplayFor(model => model.Codigo)</td>
+                <td>@Html.DisplayFor(model => model.NomeCatalogo)</td>
+                <!-- Include other properties you want to display -->
+            </tr>
+        </tbody>
+    </table>
+}

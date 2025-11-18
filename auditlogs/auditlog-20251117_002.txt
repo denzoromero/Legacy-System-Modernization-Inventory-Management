@@ -1,0 +1,9 @@
+2025-11-17 14:35:27.534 -03:00 [Information]
+UserId: 1
+TransactionId: 854b6a42-fb7e-4922-8b74-dce66988e8b3
+Action: FinalizeHandoutRetirada
+Outcome: Success
+TraceId: c3d877db3b379bab93b95e996eefd7f9
+TraceIdGuid: 84508367-b8da-4fd1-acfb-f026df61ab51
+Message: User:admin.demo successfully handedout 1 Retirada Item/s with TransactionId: 854b6a42-fb7e-4922-8b74-dce66988e8b3 .
+----------------------------------------

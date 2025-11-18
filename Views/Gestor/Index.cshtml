@@ -1,0 +1,1668 @@
+﻿@*@model IPagedList<FerramentariaTest.Models.SP_1600012731_EstoqueViewModel>*@
+@model FerramentariaTest.Models.CombinedGestor
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@inject IHttpContextAccessor httpContexto;
+@using FerramentariaTest.Helpers;
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h4>Gestor</h4>
+<br />
+
+@await Component.InvokeAsync("ValuePartial")
+
+
+@*Modal For ExtraviadoItem*@
+<div class="modal fade" id="ComunicadoExtraviado" tabindex="-1" aria-labelledby="Motivo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ComunicadoExtraviado"> Comunicado Extraviado </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.ComunicadoExtraviado != null)
+                {
+                    ComunicadoExtraviadoModel combinedValuesComunicadoExtraviado = ViewBag.ComunicadoExtraviado as ComunicadoExtraviadoModel;
+
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table light-dark-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Código
+                                        </th>
+                                        <th>
+                                            Produto
+                                        </th>
+                                        <th>
+                                            AF/Serial
+                                        </th>
+                                        <th>
+                                            PAT
+                                        </th>
+                                        <th>
+                                            Ferr.
+                                        </th>
+                                        <th>
+                                            Qtd. Emp.
+                                        </th>
+                                        <th>
+                                            Data do Empréstimo
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.ComunicadoExtraviadoValue.Codigo
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.ComunicadoExtraviadoValue.Item
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.ComunicadoExtraviadoValue.AfSerial
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.ComunicadoExtraviadoValue.PAT
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.ComunicadoExtraviadoValue.Ferramentaria
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.QuantidadeEmprestimo
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoExtraviado.DataEmprestimo.Value.ToString("dd-MM-yyyy")
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-4">
+                            <div>
+                                <label class="BoldThis">Quantidade:</label>
+                                <div class="row mb-2">
+                                    <span> @combinedValuesComunicadoExtraviado.Quantidade </span>
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="col-4">
+                            <div>
+                                <label class="BoldThis">Justificativa:</label>
+                                <div class="row mb-2">
+                                    <span> @combinedValuesComunicadoExtraviado.Justificativa </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div>
+                                <label class="BoldThis">Data de Registro:</label>
+                                <div class="row mb-2">
+                                    <span> @combinedValuesComunicadoExtraviado.DataRegistro.Value.ToString("yyyy-MM-dd HH:mm") </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <label class="BoldThis">Preso na ficha do colaborador</label>
+                            </div>
+                            <div class="d-flex align-items-start">
+
+                                @if (combinedValuesComunicadoExtraviado.Colaborador.Image == null)
+                                {
+                                    <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(combinedValuesComunicadoExtraviado.Colaborador.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                <div class="ms-2">
+                                    <div>
+                                        <label class="BoldThis">Chapa:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Colaborador.Chapa </span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Nome:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Colaborador.Nome </span>
+                                    </div>
+
+                                    @if (combinedValuesComunicadoExtraviado.Colaborador.CodSituacao == "D")
+                                    {
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Cod. Situação:</label>
+                                            <span style="background-color: yellow; color: black;"> @combinedValuesComunicadoExtraviado.Colaborador.CodSituacao </span>
+                                        </div>
+
+                                   
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Data Demissão:</label>
+                                            <span style="background-color: yellow; color: black;"> @combinedValuesComunicadoExtraviado.Colaborador.DataDemissao.Value.ToString("dd-MM-yyyy") </span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Cod. Situação:</label>
+                                            <span> @combinedValuesComunicadoExtraviado.Colaborador.CodSituacao </span>
+                                        </div>
+                                    }
+
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Empresa:</label>
+                                        @* <span> @combinedValuesComunicadoInativo.UsuarioModel.E </span>*@
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Funcao:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Colaborador.Funcao</span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Secao:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Colaborador.Secao </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div>
+                                <label class="BoldThis">Responsável pelo Comunicado</label>
+                            </div>
+                            <div class="d-flex align-items-start">
+
+                                @if (combinedValuesComunicadoExtraviado.Comunicado.Image == null)
+                                {
+                                    <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(combinedValuesComunicadoExtraviado.Comunicado.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                <div class="ms-2">
+                                    <div>
+                                        <label class="BoldThis">Chapa:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Comunicado.Chapa </span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Nome:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Comunicado.Nome </span>
+                                    </div>
+
+                                    @if (combinedValuesComunicadoExtraviado.Comunicado.CodSituacao == "D")
+                                    {
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Cod. Situação:</label>
+                                            <span style="background-color: yellow; color: black;"> @combinedValuesComunicadoExtraviado.Comunicado.CodSituacao </span>
+                                        </div>
+
+
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Data Demissão:</label>
+                                            <span style="background-color: yellow; color: black;"> @combinedValuesComunicadoExtraviado.Comunicado.DataDemissao.Value.ToString("dd-MM-yyyy") </span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Cod. Situação:</label>
+                                            <span> @combinedValuesComunicadoExtraviado.Comunicado.CodSituacao </span>
+                                        </div>
+                                    }
+
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Empresa:</label>
+                                        @* <span> @combinedValuesComunicadoInativo.UsuarioModel.E </span>*@
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Funcao:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Comunicado.Funcao</span>
+                                    </div>
+                                    <div class="mt-1">
+                                        <label class="BoldThis"> Secao:</label>
+                                        <span> @combinedValuesComunicadoExtraviado.Comunicado.Secao </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal for InativoItem*@
+<div class="modal fade" id="ComunicadoInativoModal" tabindex="-1" aria-labelledby="Motivo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ComunicadoInativo"> Comunicado Inativo </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.ComunicadoInativo != null)
+                {
+                    ComunicadoInativoModel combinedValuesComunicadoInativo = ViewBag.ComunicadoInativo as ComunicadoInativoModel;
+
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table light-dark-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Código
+                                    </th>
+                                    <th>
+                                        Produto
+                                    </th>
+                                    <th>
+                                        AF/Serial
+                                    </th>
+                                    <th>
+                                        PAT
+                                    </th>
+                                    <th>
+                                        Ferr.
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                      
+                                    <tr>
+                                        <td>
+                                            @combinedValuesComunicadoInativo.ComunicadoInativoValue.Codigo
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoInativo.ComunicadoInativoValue.Item
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoInativo.ComunicadoInativoValue.AfSerial
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoInativo.ComunicadoInativoValue.PAT
+                                        </td>
+                                        <td>
+                                            @combinedValuesComunicadoInativo.ComunicadoInativoValue.Ferramentaria
+                                        </td>
+                                    </tr>
+                          
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <label class="BoldThis">Responsável pelo Comunicado</label>
+                            </div>
+                            <div class="d-flex align-items-start">
+
+                                @if (combinedValuesComunicadoInativo.UsuarioModel.Image == null)
+                                {
+                                    <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                else
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(combinedValuesComunicadoInativo.UsuarioModel.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                                }
+                                <div class="ms-2">
+                                        <div>
+                                            <label class="BoldThis">Chapa:</label>
+                                            <span> @combinedValuesComunicadoInativo.UsuarioModel.Chapa </span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Nome:</label>
+                                            <span> @combinedValuesComunicadoInativo.UsuarioModel.Nome </span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Empresa:</label>
+                                           @* <span> @combinedValuesComunicadoInativo.UsuarioModel.E </span>*@
+                                        </div>
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Funcao:</label>
+                                            <span> @combinedValuesComunicadoInativo.UsuarioModel.Funcao</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <label class="BoldThis"> Secao:</label>
+                                            <span> @combinedValuesComunicadoInativo.UsuarioModel.Secao </span>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div>
+                                <label class="BoldThis">Tipo:</label>
+                                <div class="row mb-2">
+                                    <span> @combinedValuesComunicadoInativo.Tipo </span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <label class="BoldThis">Justificativa:</label>
+                                <div class="row mb-2">
+                                    <span> @combinedValuesComunicadoInativo.Justificativa </span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-2">
+                                <label class="BoldThis">Data de Ocorrência:</label>
+                                <div class="row mb-2">
+                                    @*<span> @(((DateTime)ViewBag.ComunicadoInativo.DataOcorrencia).ToString("yyyy-MM-dd HH:mm")) </span>*@
+                                    <span>@(combinedValuesComunicadoInativo.DataOcorrencia.HasValue ? combinedValuesComunicadoInativo.DataOcorrencia.Value.ToString("yyyy-MM-dd HH:mm") : string.Empty)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal for Inativar*@
+<form asp-action="InactivateAction" method="post">
+    @Html.AntiForgeryToken()
+<div class="modal fade" id="InativarModal" tabindex="-1" aria-labelledby="Motivo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="Motivo">Motivo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    @if (ViewBag.ModalInativarError != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ModalInativarError
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                <p><b> NOTA: </b> Item controlado por Quantidade não podem ser inativado. Use o recurso de edição de estoque caso deseje a funcionalidade. </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="col-sm-3">
+                        <select name="TipoExclusao" id="ddlTipoExclusao" class="form-select form-select-sm" aria-label="Small select example">
+                            <option value="0" selected>Selecionar...</option>
+                            @if (ViewBag.TipoExclusao != null)
+                            {
+                                @foreach (var item in ViewBag.TipoExclusao)
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-sm-1"> Justificativa:</div>
+                    <div class="col-sm-3">
+                        <input name="justificativa" class="form-control form-control-sm" id="colFormLabelSm">
+                    </div>
+                </div>
+
+               @* <p><b> Listagem de Fichas Relacionadas ao Emprestimo </b></p>*@
+                <table class="table table-sm align-left" id="myTable2">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Tipo
+                            </th>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                Codigo
+                            </th>
+                            <th>
+                                AF/Serial
+                            </th>
+                            <th>
+                                PAT
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.ListToInactivate != null)
+                        {
+                            @foreach (var item in ViewBag.ListToInactivate)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.IdProduto
+                                        <input type="hidden" name="ProdutoId" value="@item.IdProduto" />
+                                    </td>
+                                    <td>
+                                        @item.Tipo
+                                    </td>
+                                    <td>
+                                        @item.Item
+                                    </td>
+                                    <td>
+                                        @item.Codigo
+                                    </td>
+                                    <td>
+                                        @item.AfSerial
+                                    </td>
+                                    <td>
+                                        @item.PAT
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger position-relative" style="color: white;">
+                    <img src="~/img/x-lg.svg" /> Efetivar Inativação
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+@*Modal for Transferir*@
+<form asp-action="TransferirActionNew" method="post">
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="TransferirModal" tabindex="-1" aria-labelledby="Transferir" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="Transferir">Transferir</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.ModalTransferError != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ModalTransferError
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+               @*      <div class="d-flex justify-content-between align-items-center">
+                        <div class="col-sm-3">
+                            <select name="Ferrmanetaria" id="ddlFerramentaria" class="form-select form-select-sm" aria-label="Small select example">
+                                <option value="0" selected>Selecionar...</option>
+                                @if (ViewBag.FerramentariaList != null)
+                                {
+                                    @foreach (var item in ViewBag.FerramentariaList)
+                                    {
+                                        <option value="@item.Id">@item.Nome</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div> *@
+                    <div class="row align-items-center">
+                        <div class="col-3">
+                            <label for="Item" class="col-form-label fw-bold"></label>
+                            <select name="Ferrmanetaria" id="ddlFerramentaria" class="form-select form-select-sm" aria-label="Small select example">
+                                <option value="0" selected>Selecionar...</option>
+                                @if (ViewBag.FerramentariaList != null)
+                                {
+                                    @foreach (var item in ViewBag.FerramentariaList)
+                                    {
+                                        <option value="@item.Id">@item.Nome</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <label for="Item" class="col-form-label fw-bold">Documento:</label>
+                            <input class="form-control" name="Documento">
+                        </div>
+                    </div>
+
+                    @* <p><b> Listagem de Fichas Relacionadas ao Emprestimo </b></p>*@
+                    <table class="table table-sm align-left" id="myTable3">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Item
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    AF/Serial
+                                </th>
+                                <th>
+                                    PAT
+                                </th>
+                                <th>
+                                    Saldo Disponivel
+                                </th>
+                                <th>
+                                    Saldo a Transferir
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.ListToTransfer != null)
+                            {
+                                @for (int i = 0; i < ViewBag.ListToTransfer.Count; i++)
+                                {
+                                    var item = ViewBag.ListToTransfer[i];
+                                    <tr>
+                                        <td>
+                                            @item.IdProduto
+                                            <input type="hidden" name="TransferValues[@i].IdProduto" value="@item.IdProduto" />
+                                        </td>
+                                        <td>
+                                            @item.Tipo
+                                            <input type="hidden" name="TransferValues[@i].Tipo" value="@item.Tipo" />
+                                        </td>
+                                        <td>
+                                            @item.Item
+                                            <input type="hidden" name="TransferValues[@i].Item" value="@item.Item" />
+                                        </td>
+                                        <td>
+                                            @item.Codigo
+                                            <input type="hidden" name="TransferValues[@i].Codigo" value="@item.Codigo" />
+                                        </td>
+                                        <td>
+                                            @item.AfSerial
+                                            <input type="hidden" name="TransferValues[@i].AfSerial" value="@item.AfSerial" />
+                                        </td>
+                                        <td>
+                                            @item.PAT
+                                            <input type="hidden" name="TransferValues[@i].PAT" value="@item.PAT" />
+                                        </td>
+                                        <td>
+                                            @item.Saldo
+                                            <input type="hidden" name="TransferValues[@i].Saldo" value="@item.Saldo" />
+                                        </td>
+                                        <td>
+                                            @if (item.Controle == "Serial" || item.Controle == "Aferido")
+                                            {
+                                                @item.Saldo
+                                                <input name="TransferValues[@i].SaldoTransferir" value="@item.Saldo" class="form-control" id="colFormLabelSm" type="hidden">
+                                            }
+                                            else
+                                            {
+                                                <input name="TransferValues[@i].SaldoTransferir" value="1" class="form-control" id="colFormLabelSm">
+                                            }                                      
+                                        </td>
+                                    </tr>
+                                }                 
+                            }    
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info position-relative" style="color: white;">
+                         Transferir
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form asp-action="SearchGestor" method="get">
+<div class="row">
+
+       <div class="col-md-3">
+
+            <div class="row mb-2">
+                <label for="ddlCatalogo" class="col-3 col-form-label"> Catalogo </label>
+                <div class="col-sm-7">
+                    <select asp-for="SearchGestorModel.Catalogo" id="ddlCatalogo" onchange="ddlCatalogoChangedGestor(this)" class="form-select form-select-sm" aria-label="Small select example">
+                        <option>Selecionar..</option>
+                        <option value="1">Ferramentas</option>
+                        <option value="2">EPI</option>
+                        <option value="3">Consumiveis</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+            <label for="ddlClasse" class="col-3 col-form-label"> Classe </label>
+            <div class="col-sm-7">
+                    <select asp-for="SearchGestorModel.Classe" id="ddlClasse" onchange="ddlClasseChangedGestor(this)" class="form-select form-select-sm" aria-label="Small select example">
+                    <option>Open this select menu</option>
+                </select>
+            </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> Tipo </label>
+                <div class="col-sm-7">
+                    <select asp-for="SearchGestorModel.Tipo" id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example">
+                        <option>Open this select menu</option>
+                    </select>
+                </div>
+            </div>
+       </div>
+
+       <div class="col-md-3">
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Código</label>
+                <div class="col-sm-7">
+                    <input asp-for="SearchGestorModel.Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14" value="@(Model != null && Model.SearchGestorModel != null ? Model.SearchGestorModel.Codigo : "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                <div class="col-sm-7">
+                    <input asp-for="SearchGestorModel.Item" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model != null && Model.SearchGestorModel != null ? Model.SearchGestorModel.Item : "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">AF/Serial</label>
+                <div class="col-sm-7">
+                    <input asp-for="SearchGestorModel.AF" class="form-control form-control-sm" id="colFormLabelSm" value="@(Model != null && Model.SearchGestorModel != null ? Model.SearchGestorModel.AF : "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">PAT</label>
+                <div class="col-sm-7">
+                    <input asp-for="SearchGestorModel.PAT" class="form-control form-control-sm" id="colFormLabelSm" oninput="SomenteNumeros(this, event);" value="@(Model != null && Model.SearchGestorModel != null ? Model.SearchGestorModel.PAT : "")">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Número de Série</label>
+                <div class="col-sm-7">
+                    <input asp-for="SearchGestorModel.Numero" class="form-control form-control-sm" id="NumeroSerie" disabled>
+                    <input class="form-check-input" type="checkbox" value="1" name="SerieCheckbox" id="NumeroSerieCheckbox" disabled>
+                    <label for="NumeroSerieCheckbox">Sem Dados</label>
+                </div>       
+            </div>
+
+
+       </div>
+
+       <div class="col-md-6">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data Vencimento</label>
+            <div class="col-sm-7 d-flex align-items-center">
+                    <input asp-for="SearchGestorModel.DataVencimento" type="date" class="form-control form-control-sm w-50" id="DataVencimento" disabled>
+                <div class="ml-2">
+                    <input class="form-check-input" type="checkbox" value="1" name="VencidasCheck" id="VencidasCheckbox" disabled>
+                    <label for="VencidasCheckbox">Vencidas</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Status </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio1" value="1" @(Model?.SearchGestorModel?.Status == null || Model?.SearchGestorModel?.Status == 1 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio1">Em Estoque</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio2" value="2" @(Model?.SearchGestorModel?.Status == 2 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio2">Emprestado</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Status" id="inlineRadio3" value="3" @(Model?.SearchGestorModel?.Status == 3 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio3">Ambos</label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Saldo </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="inlineRadio1" value="1" @(Model?.SearchGestorModel?.Saldo == 1 ? "checked" : ""))>
+                    <label class="form-check-label" for="inlineRadio1">Zero</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="inlineRadio2" value="2" @(Model?.SearchGestorModel?.Saldo == 2 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio2">Negativo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="inlineRadio3" value="3" checked @(Model?.SearchGestorModel?.Saldo == null || Model?.SearchGestorModel?.Saldo == 3 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio3">Positivo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Saldo" id="inlineRadio3" value="4" @(Model?.SearchGestorModel?.Saldo == 4 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio3">Todas</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Situação </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="inlineRadio1" value="1" @(Model?.SearchGestorModel?.Situacao == null || Model?.SearchGestorModel?.Situacao == 1 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio1">Ativo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="inlineRadio2" value="0" @(Model?.SearchGestorModel.Situacao == 0 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio2">Inativo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="inlineRadio3" value="3" @(Model?.SearchGestorModel.Situacao == 3 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio3">Extraviado</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="SearchGestorModel.Situacao" id="inlineRadio3" value="2" @(Model?.SearchGestorModel.Situacao == 2 ? "checked" : "")>
+                    <label class="form-check-label" for="inlineRadio3">Todas</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Ver itens de todos setores </label>
+            <div class="col-sm-9">
+                    <input class="form-check-input" asp-for="SearchGestorModel.Opcional" type="checkbox" id="ItemsCheckbox" checked>
+                <label class="form-check-label" for="ItemsCheckbox">Opcional</label>
+            </div>
+        </div>
+
+    
+
+
+       </div>
+</div>
+
+<div class="row mb-2">
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="SearchGestorModel.Pagination" id="pagination10" value="10" checked>
+                <label class="form-check-label" for="pagination10">10</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="SearchGestorModel.Pagination" id="pagination30" value="30">
+                <label class="form-check-label" for="pagination30">30</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="SearchGestorModel.Pagination" id="pagination50" value="50">
+                <label class="form-check-label" for="pagination50">50</label>
+            </div>
+        </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                    <button type="submit" class="btn btn-info mr-2 loadingButton" style="color: white;">
+                    <img src="~/img/search.svg" /> Buscar
+                </button>
+
+                    <a href="@Url.Action("EstoqueSaida", "Gestor")" class="btn btn-primary">
+                        Saida de Estoque
+                    </a>                    
+                              
+            </div>
+                <div>                   
+                    @if (Model?.ResultCount != null)
+                    {
+                        <label for="colFormLabelSm" class=" col-form-label col-form-label-sm">Resultado: @Model.ResultCount</label>
+                    }
+                <label for="colFormLabelSm" class="col-form-label col-form-label-sm colored-Inativo"> Inativo </label>
+                <label for="colFormLabelSm" class="col-form-label col-form-label-sm colored-Emprestado"> Emprestado </label>
+                <label for="colFormLabelSm" class="col-form-label col-form-label-sm colored-Extraviado"> Extraviado </label>
+                </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<form id="actionForm" method="post" action="">
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Ferramentaria
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                Catalogo
+            </th>
+            <th>
+                Classe
+            </th>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Af/Serial
+            </th>
+            <th>
+                PAT
+            </th>
+            <th>
+                Saldo
+            </th>
+            <th>
+                Controle
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.SP_1600012731_EstoqueViewModel != null)
+        {
+            @foreach (var item in Model.SP_1600012731_EstoqueViewModel)
+            {
+
+                    <tr data-url="@Url.Action("ToEdit", new { id = item.IdProduto })" data-ativo="@item.Ativo" id="row-@item.IdProduto">
+                 @*   <td style="@(item.Controle == "Aferido" || item.Controle == "Serial" && item.IdProdutoAlocado != 0 ? "background-color: blue;" :
+                            item.Extraviado == null ? "background-color: yellowgreen;" : "background-color: tomato;")" width="30px">
+
+                    </td>*@
+                    @if (item.Ativo == 1)
+                    {
+                        @if ((item.Controle == "Aferido" || item.Controle == "Serial") && item.Status == "Emprestado")
+                        {
+                            <td style="background-color: mediumblue" width="30px"> </td>                          
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+                    else
+                    {
+                        @if (item.Extraviado == null)
+                        {
+                            <td style="background-color: tomato" width="30px"> </td>
+                        }
+                        else
+                        {
+                            <td style="background-color: yellowgreen" width="30px"> </td>
+                        }
+                    }
+                
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ferramentaria)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProduto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Catalogo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Classe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Item)
+                         @*<a asp-action="ToEdit" asp-route-id="@item.IdProduto"> @Html.DisplayFor(modelItem => item.Item) </a>*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AfSerial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Saldo)
+                    </td>
+                    <td class="controleColumn">
+                        @Html.DisplayFor(modelItem => item.Controle)
+                    </td>
+                    <td>
+                        @if (item.Ativo == 1)
+                        {
+                            if (item.Controle == "Aferido" || item.Controle == "Serial")
+                            {
+                                if (item.Ferramentaria == Model?.NomeFerramentaria && item.Status != "Emprestado")
+                                {
+                                        <input class="form-check-input checkbox-group active-check" type="checkbox" name="selectedIds" value="@item.IdProduto" id="flexCheckDefault" onchange="handleCheckboxControle(this, @item.IdProduto)">
+                                }
+                                else
+                                {
+                                    <input class="form-check-input checkbox-group inactive-check" type="checkbox" name="selectedIds" value="@item.IdProduto" id="flexCheckDefault" disabled>
+                                }
+                            }
+                            else
+                            {
+                                if (item.Ferramentaria == Model?.NomeFerramentaria)
+                                {
+                                        <input class="form-check-input checkbox-group active-check" type="checkbox" name="selectedIds" value="@item.IdProduto" id="flexCheckDefault" onchange="handleCheckboxControle(this, @item.IdProduto)">
+                                }
+                                else
+                                {
+                                        <input class="form-check-input checkbox-group inactive-check" type="checkbox" name="selectedIds" value="@item.IdProduto" id="flexCheckDefault" disabled>
+                                }
+                            }
+                        }
+                        else
+                        {
+                                <input class="form-check-input checkbox-group inactive-check" type="checkbox" name="selectedIds" value="@item.IdProduto" id="flexCheckDefault" disabled>
+                        }
+                    </td>
+               
+                 
+                </tr>
+
+            }
+        }
+        else
+        {
+
+        }
+    </tbody>
+</table>
+</form>
+
+@if (Model != null && Model.SP_1600012731_EstoqueViewModel != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model.SP_1600012731_EstoqueViewModel, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
+}
+
+
+
+@if (Model != null && Model.SP_1600012731_EstoqueViewModel != null)
+{
+    <div class="row mb-4">
+        <div class="col-sm-12 d-flex justify-content-end align-items-center">
+
+            <button type="button" class="btn btn-danger" id="btnInactivateProduct" style="color: white; margin-right: 10px;" onclick="setAction('Inativar')">
+                <img src="~/img/x-lg.svg" /> Inativar
+            </button>
+
+            <button type="button" class="btn btn-info" style="color: white; margin-right: 10px;" onclick="setAction('Transferir')">
+                Transferir <img src="~/img/arrow-right-short.svg" />
+            </button>
+
+            <button type="button" class="btn btn-success" style="color: white;" onclick="setAction('Export')">
+                Exportar
+            </button>
+
+        </div>
+    </div>
+}
+
+@if (ViewBag.OpenInativarModal != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('InativarModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ComunicadoInativo != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ComunicadoInativoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ComunicadoExtraviado != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ComunicadoExtraviado');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenTransferirModal != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('TransferirModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (Model?.SearchGestorModel?.Opcional == false)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('ItemsCheckbox');
+            checkbox.checked = false; // Uncheck the checkbox
+        });
+    </script>
+}
+
+<script>
+    function setAction(action) {
+        // Set the form's action dynamically
+        document.getElementById('actionForm').action = action;
+
+        // Submit the form
+        document.getElementById('actionForm').submit();
+    }
+
+    function ddlCatalogoChangedGestor(selectElement) {
+        var selectedValue = selectElement.value;
+        console.log("Selected value:", selectedValue);
+
+        var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+        var SemDadaos = document.getElementById("NumeroSerieCheckbox");
+        if (selectedValue === "1") {
+            NumeroSerieTextbox.disabled = false;
+            SemDadaos.disabled = false;
+        }
+
+        $("#ddlClasse").empty();
+        $("#ddlTipo").empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/Gestor/LoadClasse",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                //$("#ddlClasse").empty();
+                $("#ddlClasse").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));          
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlClasse").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function ddlClasseChangedGestor(selectElement) {
+        var selectedValue = selectElement.value;
+        console.log("Selected value:", selectedValue);
+
+        var VencidasCheckBox = document.getElementById("VencidasCheckbox");
+        var SemDadaos = document.getElementById("NumeroSerieCheckbox");
+        if (selectedValue === "9") {
+            VencidasCheckBox.disabled = false;
+            SemDadaos.disabled = false;
+            console.log("Checkbox enabled");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Gestor/LoadTipo",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlTipo").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlTipo").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkbox = document.getElementById('NumeroSerieCheckbox');
+        var numeroInput = document.getElementById('NumeroSerie');
+
+        checkbox.addEventListener('change', function () {
+            // Disable or enable the input based on the checkbox state
+            numeroInput.disabled = checkbox.checked;
+        });
+
+        var VencimentoCheckbox = document.getElementById("VencidasCheckbox");
+        var dateInput = document.getElementById("DataVencimento");
+
+        VencimentoCheckbox.addEventListener("change", function () {
+            dateInput.disabled = !this.checked;
+        });
+    });
+
+    //document.addEventListener("DOMContentLoaded", function () {
+    //    var rows = document.querySelectorAll("tr[data-url]");
+    //    rows.forEach(function (row) {
+    //        row.addEventListener("dblclick", function () {
+    //            var url = this.getAttribute("data-url");
+    //            if (url) {
+    //                window.open(url, "_blank");
+    //            }
+    //        });
+    //    });
+    //});
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var rows = document.querySelectorAll("tr[data-url]");
+        rows.forEach(function (row) {
+            row.addEventListener("dblclick", function () {
+                var url = this.getAttribute("data-url");
+                if (url) {
+                    // Check if item is active (Ativo == 1)
+                    var isActive = this.getAttribute("data-ativo") === "1";
+                    if (isActive) {
+                        window.open(url, "_blank");
+                    } else {
+                        window.location.href = url;
+                    }
+                }
+            });
+        });
+    });
+
+
+    function handleCheckboxControle(checkbox,idProduto) {
+        console.log(checkbox);
+        console.log(idProduto);
+
+   
+
+        const row = document.getElementById(`row-${idProduto}`);
+        if (!row) {
+            console.error(`Row with ID row-${idProduto} not found`);
+            return;
+        }
+
+        const controleColumn = row.querySelector('.controleColumn');
+        if (!controleColumn) {
+            console.error('Controle column not found in row');
+            return;
+        }
+
+        const inactivateBtn = document.getElementById('btnInactivateProduct');
+        if (!inactivateBtn) {
+            console.error('Inactivate button not found in row');
+            return;
+        }
+
+        if (!checkbox.checked) {
+            // When unchecking, re-enable the button
+            inactivateBtn.disabled = false;
+            inactivateBtn.classList.remove('disabled');
+            inactivateBtn.style.opacity = '';
+            inactivateBtn.style.cursor = '';
+            return;
+        }
+
+        const controleValue = controleColumn.textContent.trim();
+        if (controleValue === "Quantidade") {
+            inactivateBtn.disabled = true;
+            inactivateBtn.classList.add('disabled');
+            inactivateBtn.style.opacity = '0.5';
+            inactivateBtn.style.cursor = 'not-allowed';
+        } else {
+            inactivateBtn.disabled = false;
+            inactivateBtn.classList.remove('disabled');
+            inactivateBtn.style.opacity = '';
+            inactivateBtn.style.cursor = '';
+        }
+
+    }
+
+</script>
+
+@if (Model?.SearchGestorModel?.DataVencimento.HasValue == true)
+{
+    <script>
+        $(document).ready(function () {
+            var VencimentoCheckbox = document.getElementById("VencidasCheckbox");
+            var DataVencimentoInput = document.getElementById("DataVencimento");
+
+            // Enable the checkbox
+            VencimentoCheckbox.checked = true;
+
+            // Enable the input
+            DataVencimentoInput.disabled = false;
+
+            VencimentoCheckbox.addEventListener("change", function () {
+                DataVencimentoInput.disabled = !this.checked;
+            });
+
+        });
+    </script>
+}
+
+@if (Model?.SearchGestorModel?.Catalogo != null)
+{
+    <script>
+        $(document).ready(function () {
+
+            var Catalogo = '@Model.SearchGestorModel.Catalogo';
+            var Classe = '@Model.SearchGestorModel.Classe';
+            var Tipo = '@Model.SearchGestorModel.Tipo';
+
+            console.log("try value Catalogo:", Catalogo);
+            console.log("try value Classe:", Classe);
+            console.log("try value Classe:", Tipo);
+
+            var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+            var SemDadaos = document.getElementById("NumeroSerieCheckbox");
+            if (Catalogo === "1") {
+                NumeroSerieTextbox.disabled = false;
+                SemDadaos.disabled = false;
+                console.log("Checkbox enabled");
+            }
+
+             var VencidasCheckBox = document.getElementById("VencidasCheckbox");
+            if (Classe === "9") {
+                VencidasCheckBox.disabled = false;
+                SemDadaos.disabled = false;
+                console.log("Checkbox Vencidas enabled");
+            }
+
+            if (Catalogo && Classe && Tipo) {
+                ddlLoadAll(Catalogo, Classe, Tipo);
+                console.log("using ddlLoadAll");
+            } else if (Catalogo && Classe) {
+                console.log("using ddlClasseLoad");
+                ddlClasseLoad(Catalogo, Classe);
+            } else if (Catalogo) {
+                console.log("using ddlClasseAloneReload");
+                ddlClasseAloneReload(Catalogo);
+            }
+
+
+
+        });
+
+        function ddlClasseAloneReload(selectedValue) {
+            console.log("Selected try value:", selectedValue);
+
+            var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+            if (selectedValue === "1") {
+                console.log("NumeroSerieTextbox", selectedValue);
+                NumeroSerieTextbox.disabled = false;
+            }
+
+            $("#ddlClasse").empty();
+            $("#ddlTipo").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    //$("#ddlClasse").empty();
+                    $("#ddlClasse").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        $("#ddlClasse").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+        }
+
+        function ddlClasseLoad(selectedValue, selectedClasse) {
+            console.log("try value catalogo for ddlClasseAloneReload: ", selectedValue);
+            console.log("try value classe for ddlClasseAloneReload: ", selectedClasse);
+            console.log("this is running ");
+
+      @*      var VencidasCheckBox = document.getElementById("VencidasCheckbox");          
+            var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+            if (selectedClasse === "9") {
+                console.log("NumeroSerieTextbox", selectedClasse);
+                VencidasCheckBox.disabled = false;
+                NumeroSerieTextbox.disabled = false;
+                console.log("Checkbox enabled");
+            }*@
+
+
+            $("#ddlClasse").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $("#ddlTipo").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    $.each(data, function (index, item) {
+                        $("#ddlTipo").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+
+        }
+
+        function ddlLoadAll(selectedValue, selectedClasse, selectedTipo) {
+            console.log("This is the Catalogo value: ", selectedValue);
+            console.log("This is the Classe value: ", selectedClasse);
+            console.log("This is the Tipo value: ", selectedTipo);
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var optiontipo = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedTipo.toString()) {
+                            optiontipo.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlTipo").append(optiontipo);
+                    });
+                }
+            });
+
+        }
+
+    </script>
+}
+
+
+@*@if (Model?.SearchGestorModel?.Catalogo != null && Model?.SearchGestorModel?.Classe != null && Model?.SearchGestorModel?.Tipo != null)
+{
+    <script>
+        $(document).ready(function () {
+            ddlLoadAll('@Model.SearchGestorModel.Catalogo', '@Model.SearchGestorModel.Classe', '@Model.SearchGestorModel.Tipo');
+
+        });
+
+        function ddlLoadAll(selectedValue, selectedClasse, selectedTipo) {
+            console.log("This is the Catalogo value: ", selectedValue);
+            console.log("This is the Classe value: ", selectedClasse);
+            console.log("This is the Tipo value: ", selectedTipo);
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var optiontipo = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedTipo.toString()) {
+                            optiontipo.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlTipo").append(optiontipo);
+                    });
+                }
+            });
+
+        }
+    </script>
+}*@
+
+@*@if (Model?.SearchGestorModel?.Catalogo != null && Model?.SearchGestorModel?.Classe != null)
+{
+  <script>
+        $(document).ready(function () {
+            ddlClasseLoad('@Model.SearchGestorModel.Catalogo', '@Model.SearchGestorModel.Classe');
+
+        });
+
+        function ddlClasseLoad(selectedValue,selectedClasse) {
+            console.log("This is the Catalogo value: ", selectedValue);
+            console.log("This is the Classe value: ", selectedClasse);
+
+            console.log("this is running ");
+
+            var VencidasCheckBox = document.getElementById("VencidasCheckbox");
+            if (selectedValue === "1" || selectedValue === "2") {
+                VencidasCheckBox.disabled = false;
+                console.log("Checkbox enabled");
+            }
+
+            $("#ddlClasse").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $("#ddlTipo").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    $.each(data, function (index, item) {
+                        $("#ddlTipo").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+
+        }
+  </script>
+}*@
+
+
+
+@*@if (Model?.SearchGestorModel?.Catalogo != null)
+{
+    <script>
+        $(document).ready(function () {
+            ddlClasseAloneReload('@Model.SearchGestorModel.Catalogo');
+
+        });
+
+        function ddlClasseAloneReload(selectedValue) {
+            console.log("Selected value:", selectedValue);
+
+            var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+            if (selectedValue === "1") {
+                NumeroSerieTextbox.disabled = false;
+            }
+
+            $("#ddlClasse").empty();
+            $("#ddlTipo").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    //$("#ddlClasse").empty();
+                    $("#ddlClasse").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        $("#ddlClasse").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+        }
+
+    </script>
+}*@

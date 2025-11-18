@@ -1,0 +1,85 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewData["Title"] = "Emprestimo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form id="yourFormId" asp-action="SetFerramentariaValue" method="post">
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <div class="d-flex align-items-center">
+                    @*<a asp-action="RefreshFerramentaria"> <img src="~/img/arrow-clockwise.svg" class="ml-2" /> </a>*@
+                    <label for="ddlSetor" class="col-form-label col-form-label-sm">Setor</label>
+                </div>
+         
+                @if (ViewBag.FerramentariaItems != null)
+                {
+                        <select name="Ferramentaria" class="form-select form-select-sm" onchange="ddlFerramentariaChanged(this)" aria-label="Small select example" onchange="ddlFerramentariaChanged(this)">
+                            <option>Selecionar...</option>
+                            @foreach (var item in ViewBag.FerramentariaItems)
+                            {
+                                <option value="@item.Id">@item.Nome</option>
+                            }
+                        </select>
+                        <input type="hidden" id="SelectedNome" name="SelectedNome" />
+                }
+                else
+                {
+                   <p> No Assigned Ferramentaria </p>
+                }
+
+                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+            </div>        
+        </div>
+    </div>
+</div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the current URL
+        var currentUrl = window.location.href;
+
+        // Extract the controller name from the URL
+        var controllerName = getControllerName(currentUrl);
+
+        // Set the controller attribute in the form
+        var form = document.getElementById('yourFormId'); // Replace with the actual ID of your form
+        if (form) {
+            form.setAttribute('asp-controller', controllerName);
+        }
+    });
+
+    // Function to extract the controller name from the URL
+    function getControllerName(url) {
+        var matches = url.match(/:\/\/[^/]+\/([^/]+)/);
+        return matches ? matches[1] : ''; // Extract the captured group
+    }
+</script>
+
+<script>
+    function ddlFerramentariaChanged(select) {
+        var selectedOption = select.options[select.selectedIndex];
+        var selectedNome = selectedOption.text;
+
+        document.getElementById('SelectedNome').value = selectedNome;
+    }
+</script>
+
+
+@*<form asp-controller="YourController" asp-action="SetFerramentariaValue" method="post">
+    <label for="selectedValue">Select an option:</label>
+    <select name="FerramentariaValue" class="form-control">
+        <option value="">-- Select --</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>*@

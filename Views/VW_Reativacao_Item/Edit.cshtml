@@ -1,0 +1,141 @@
+﻿@model FerramentariaTest.Entities.VW_Reativacao_Item
+
+@{
+    ViewData["Title"] = "Edit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h1>Edit</h1>*@
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" />Informe a Justificativa para Reativação Obrigatorio 
+    </div>
+}*@
+
+
+<form asp-action="Edit">
+<h4>Reativacao Item || Inativado </h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <label class="control-label"> Id: </label>
+        <span>@Model.Id</span>
+        <input type="hidden" asp-for="Id" />
+         <input type="hidden" asp-for="IdProdutoAlocado" />
+            <input type="hidden" asp-for="Status" />
+        <br />
+        <br />
+
+        <div class="col-md-8">
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Codigo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Codigo</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Produto:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Descricao</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">AF:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.AF</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">PAT:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.PAT</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">SALDO:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Saldo</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Controle</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Estoque:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.LocalEmEstoque</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Motivo:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Motivo</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Justificativa:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Justificativa</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Usuario:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.Usuario</span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-4 fw-bold">Data da Inativação:</div>
+                <div class="col-sm-8">
+                    <span class="p-1">@Model.DataInativacao</span>
+                </div>
+            </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Informe a Justificativa para Reativação :</div>
+                    <div class="col-sm-8">
+                        @if (@Model.Status == 1)
+                        {
+                            <textarea class="form-control" name="Reactivate" id="exampleFormControlTextarea1" rows="2" style="background-color: beige;"> @Model.Justificativa_Reativacao</textarea>
+                        }
+                        else
+                        {
+                            <textarea class="form-control" name="Reactivate" id="exampleFormControlTextarea1" rows="2" style="background-color: beige;">@Model.Justificativa_Reativacao</textarea>
+                        }
+
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" />Back </button>
+    </a>
+
+    <button type="submit" class="btn btn-outline-warning"> Reativar</button>
+</div>
+</form>
+
+
+     
+
+

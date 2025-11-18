@@ -1,0 +1,36 @@
+2025-11-03 09:27:56.829 -03:00 [Information]
+UserId: 2020
+TransactionId: ffc11a2b-a60e-4ac6-a7b0-994123fee186
+Action: AddTermsControl
+Outcome: Success
+TraceId: 3042c53df75f60f3b2a379835d1d6566
+TraceIdGuid: 47c61c0d-5816-497d-a968-9a321b7b2417
+Message: Employee:DABY JOHN PONCE ROMERO successfully signed Terms and Condition initiated by User:DABY JOHN PONCE ROMERO with TransactionId:ffc11a2b-a60e-4ac6-a7b0-994123fee186 .
+----------------------------------------
+2025-11-03 09:57:11.331 -03:00 [Information]
+UserId: 2020
+TransactionId: 6f00a794-6576-4124-89c3-9e93b8c16ecd
+Action: FinalizeHandoutRetirada
+Outcome: Success
+TraceId: 2c213975022441d5da8ec6816e72ba67
+TraceIdGuid: 95dd2d46-cb9e-4eb1-9067-89335ddb85ba
+Message: User:DABY JOHN PONCE ROMERO successfully handedout 1 Retirada Item/s with TransactionId: 6f00a794-6576-4124-89c3-9e93b8c16ecd .
+----------------------------------------
+2025-11-03 13:47:46.330 -03:00 [Information]
+UserId: 2020
+TransactionId: 8d606c22-17ab-4864-ad29-f8e3784ec747
+Action: FinalizeHandoutRetirada
+Outcome: Success
+TraceId: fbaff5bb5ce4f44925a30da1172f4d98
+TraceIdGuid: 51e85c06-6483-4172-95fb-74d83f04b7cf
+Message: User:DABY JOHN PONCE ROMERO successfully handedout 1 Retirada Item/s with TransactionId: 8d606c22-17ab-4864-ad29-f8e3784ec747 .
+----------------------------------------
+2025-11-03 14:57:40.619 -03:00 [Information]
+UserId: 2020
+TransactionId: 8a41cfcf-ca09-4d4a-a558-89f8ab78e54c
+Action: FinalizeHandoutReservation
+Outcome: Success
+TraceId: 2667cccca1200940bae5990a3951c2eb
+TraceIdGuid: 89e4a874-11a2-460b-991c-48c78fe2e615
+Message: User:DABY JOHN PONCE ROMERO successfully handedout 1 Reserved Item/s with TransactionId: 8a41cfcf-ca09-4d4a-a558-89f8ab78e54c .
+----------------------------------------

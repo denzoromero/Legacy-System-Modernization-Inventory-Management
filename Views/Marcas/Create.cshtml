@@ -1,0 +1,60 @@
+﻿@model FerramentariaTest.Models.MarcaViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+
+<h4>Marca</h4>
+<hr />
+
+@*<div id="myAlert" class="alert alert-danger" role="alert" style="@(ViewBag.ShowAlertDanger == true ? "display: block;" : "display: none;")">
+    <img src="~/img/exclamation-triangle.svg" />  A simple danger alert—check it out!
+</div>
+
+<div id="myAlert" class="alert alert-success" role="alert" style="@(ViewBag.ShowAlertSuccess == true ? "display: block;" : "display: none;")">
+    <img src="~/img/check2-circle.svg" /> A simple success alert—check it out!
+</div>
+
+<div id="myAlert" class="alert alert-warning" role="alert" style="@(ViewBag.ShowAlertWarning == true ? "display: block;" : "display: none;")">
+    <img src="~/img/exclamation-triangle.svg" />   A simple warning alert—check it out!
+</div>*@
+
+
+ <form method="post" action="/Marcas/Create">
+
+        <div class="col-md-3">
+            <div class="row mb-2">
+                <label asp-for="Nome" class="col-sm-3 col-form-label col-form-label-sm">Nome</label>
+                <div class="col-sm-7">
+                <input asp-for="Nome" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+        </div>
+
+
+
+<br />
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" /> Back </button>
+   </a>
+
+
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px;">
+        <img src="~/img/plus-lg.svg" alt="Plus Icon"> Create
+    </button>
+</div>
+</form>
+
+

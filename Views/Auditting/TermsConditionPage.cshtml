@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Terms Control";
+}
+
+<div class="modal fade" id="multipleEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Employees</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="col-5">
+                            <input class="form-control" placeholder="Chapa/Nome" id="searchChapaName" />
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Chapa</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Secao</th>
+                            <th scope="col">Funcao</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider" id="employeeListBody">
+                        <tr>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                            <td>sample</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Terms for Employee: <span id="employeeChapaTitleHolder"></span></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="uploadTermPDF" id="formUploadPDF" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="hidden" id="inputHiddenIdTerms" name="IdTerms">
+                        
+                        <input class="form-control" type="file" id="formFile" name="pdfFile">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-flex flex-row  mt-4">
+            <div class="col-6">
+                <div class="row">
+                    <div class="d-flex justify-content-center">
+                        <label for="inputChapaNome" class="col-form-label text-end fw-bold me-3"> Chapa/Nome: </label>
+                        <div class="col-6">
+                            <input class="form-control" id="inputChapaNome">
+                        </div>
+                        <button type="button" class="btn btn-info text-white" id="btnSearchEmployee">
+                            <span class="spinner-border spinner-border-sm visually-hidden" id="loadingSearchEmployee"></span>
+                            <img src="~/img/search.svg" id="searchImg" />
+                        </button>
+                    </div>
+                </div>
+                <div class="row m-2">
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="col-5">
+                            <div class="d-flex justify-content-center">
+                                <img src="~/img/image-not-available.jpg" class="rounded img-fluid w-50 h-50" alt="..." id="imgEmployee" />
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div>
+                                <input type="hidden" id="inputHiddenCodPessoa" name="codPessoa">
+                                <label class="col-form-label fw-bold me-1">Chapa:</label>
+                                <label class="col-form-label" id="labelChapa"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Nome:</label>
+                                <label class="col-form-label" id="labelNome"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Cod Situação:</label>
+                                <label class="col-form-label" id="labelSituacao"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Função:</label>
+                                <label class="col-form-label" id="labelFuncao"></label>
+                            </div>
+                            <div>
+                                <label class="col-form-label fw-bold me-1">Seção:</label>
+                                <label class="col-form-label" id="labelSecao"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="consultEmployeeTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-center align-middle">Balconista</th>
+                                    <th class="text-center align-middle">Date Signed</th>
+                                    <th class="text-center align-middle"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/audit/termscontrolejs.js"></script>

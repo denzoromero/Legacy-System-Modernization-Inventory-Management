@@ -1,0 +1,124 @@
+﻿
+
+
+@* @await Component.InvokeAsync("ValuePartial") *@
+
+@* <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">QR Code</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="video-container">
+                    <div style="height: 200px; width: 200px;">
+                        <video id="webcam-preview" autoplay style="height: 200px; width: 200px;"></video>
+                    </div>
+                    <div class="row col-4">
+                        <input type="text" class="form-control" placeholder="Chave" id="chaveInput">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div> *@
+
+<div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Reservation No</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <span class="spinner-border spinner-border-sm me-1 visually-hidden" id="loadingConfirmation"></span>
+                        <div class="col-6"> 
+                            <input type="text" class="form-control" placeholder="Reservation" id="chaveInput">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid">
+    <div class="row mt-2 mb-4">
+        <div class="col-4">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#qrCodeModal">
+                Reservation
+            </button>
+        </div>
+    </div>
+
+    <div class="row mb-2 align-items-center">
+        <label class="col-3 col-form-label text-end fw-bold">Status:</label>
+        <div class="col-3">
+            <select class="form-select" id="controlSelect" name="IdObra">
+                <option value="0">Pendencia</option>
+                <option value="1">Preparando</option>
+                @* <option value="0">Registrado</option> *@
+                @* <option value="7">Expired</option> *@
+                <option value="">Todos...</option>
+            </select>
+        </div>
+        <div class="col-2 d-flex justify-content-end text-black">
+            <label class="form-label mb-0 text-center rounded rounded-5 px-3 py-1 bg-danger text-white bg-opacity-75" >
+                Expirado
+            </label>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.ReservationList != null)
+{
+    <div class="container">
+        <div class="row mb-3">
+            <table class="table table-hover" id="controlListTable">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle">Id</th>
+                        <th class="text-center align-middle">Lider</th>
+                        <th class="text-center align-middle">Data Registro</th>
+                        <th class="text-center align-middle"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ReservationsModel? value in ViewBag.ReservationList as IEnumerable<ReservationsModel>)
+                    {
+                        <tr>
+
+                            <td class="text-center align-middle">@value.ControlId</td>
+                            <td class="text-center align-middle">@value.LeaderName</td>
+                            <td class="text-center align-middle">@value.controlDataRegistroString</td>
+                            <td class="text-center align-middle">
+                                <a class="btn btn-link" asp-action="PrepareItems" asp-route-id="@value.ControlId">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+@* <script type="text/javascript">
+    var testJsValue = '@ViewBag.TestJs';
+</script> *@
+
+@* <script src="~/lib/index.min.js"></script> *@
+@* <script src="~/views_js/reservations/indexreservation.js"></script> *@
+
+<script src="~/views_js/jsonhelper.js"></script>
+<script src="~/views_js/reservations/indexnewjs.js"></script>

@@ -1,0 +1,304 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@using FerramentariaTest.Entities;
+@using Newtonsoft.Json;
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Propeties</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Transaction ID:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">b8a26c0c-10f6-45b3-9782-e40b7b844eeb</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center align-middle">Item</th>
+                                    <th class="text-center align-middle">Qty</th>
+                                    <th class="text-center align-middle">Date</th>
+                                    <th class="text-center align-middle">Location</th>
+                                    <th class="text-center align-middle">Chapa Liberador</th>
+                                    <th class="text-center align-middle">Nome Liberador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center align-middle">ANEL BACKUP MULTIPLO P/ BOMBA HUSKY S-200 REF. 006112 - 1</td>
+                                    <td class="text-center align-middle">1</td>
+                                    <td class="text-center align-middle">01/01/2001 xx:xx</td>
+                                    <td class="text-center align-middle">Pintura</td>
+                                    <td class="text-center align-middle">010101</td>
+                                    <td class="text-center align-middle">Liberador Lastname</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+    
+
+                <hr />
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Balconista:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">Daby John Romero</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Validation:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">Badge</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Badge Type:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">Permanent</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Badge No:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">12345678900</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <label class="col-form-label fw-bold me-1">Machine Name:</label>
+                    </div>
+                    <div class="col-9">
+                        <label class="col-form-label fw-bold me-1">BRSFBxxxxxxx</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+        @*         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <form asp-action="SearchAuditLog">
+    <div class="row mb-4">
+            <div class="col-4 me-2">
+                <input class="form-control" id="FiltroMemberPage" name="Filtro" placeholder="Transaction ID">
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-info align-content-center text-white"> Consult </button>
+            </div>
+    </div>
+    </form>
+
+    @if (ViewBag.LogResult != null)
+    {
+        AuditLogModel logModel = ViewBag?.LogResult as AuditLogModel ?? new AuditLogModel();
+
+        <div class="row mt-4">
+            <div class="row mt-2">
+          @*       <div class="col-2">
+                    <label class="col-form-label fw-bold me-1">Transaction ID:</label>
+                </div> *@
+                <label class="col-2 fw-bold text-end">Transaction ID:</label>
+                <div class="col-9">
+                    <label class="form-label me-1">@logModel.TransactionId</label>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <label class="col-2 fw-bold text-end">Message:</label>
+                <div class="col-9">
+                    <label class="form-label me-1">@logModel.Message</label>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <label class="col-2 fw-bold text-end">Time:</label>
+                <div class="col-9">
+                    <label class="form-label me-1">@logModel.TimeStamp</label>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <label class="col-2 fw-bold text-end">Outcome:</label>
+                <div class="col-9">
+                    <label class="form-label me-1">@logModel.Outcome</label>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mt-2 d-flex justify-content-center">
+                <label class="col-2 fw-bold text-end">Requester and Balconista</label>
+            </div>
+            <div class="row mt-2">
+                <div class="d-flex flex-row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <label class="fw-bold text-end">Employee:</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Badge Type:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Requester.CrachaTypeRequester</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Badge No:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Requester.CrachaNoRequester</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Chapa:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Requester.ChapaRequester</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Name:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Requester.NameRequester</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <label class="fw-bold text-end">Balconista:</label>
+                            </div>
+                        </div>
+
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Name:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Balconista.BalconistaNome</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-2 fw-bold text-end">Name:</label>
+                            <div class="col-9">
+                                <label class="form-label me-1">@logModel.Property.Properties.FinalAuditResultModel.Balconista.BalconistaChapa</label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mt-2 d-flex justify-content-center">
+                <label class="col-2 fw-bold text-end">Materials</label>
+            </div>
+
+            <div class="row mt-4">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="consultEmployeeTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle">Code</th>
+                                <th class="text-center align-middle">Catalog</th>
+                                <th class="text-center align-middle">Description</th>
+                                <th class="text-center align-middle">Qty</th>
+                                <th class="text-center align-middle">ChapaLiberador</th>
+                                <th class="text-center align-middle">NomeLiberador</th>
+                                <th class="text-center align-middle">Obra</th>
+                                <th class="text-center align-middle">ObservacaoBalconista</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (logModel.Property.Properties.FinalAuditResultModel.Materials.Count > 0)
+                            {
+                                foreach (AuditMaterialsModel item in logModel.Property.Properties.FinalAuditResultModel.Materials)
+                                {
+                                    <tr>
+                                        <td>@item.Code</td>
+                                        <td>@item.Catalog</td>
+                                        <td>@item.CatalogDescription</td>
+                                        <td>@item.QtyRequested</td>
+                                        <td>@item.ChapaLiberador</td>
+                                        <td>@item.NomeLiberador</td>
+                                        <td>@item.Obra</td>
+                                        <td>@item.ObservacaoBalconista</td>
+                                    </tr>
+                                }
+                               
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+    @* <div class="row mt-4">
+        <div class="table-responsive">
+            <table class="table table-hover" id="consultEmployeeTable">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle">Transaction Id</th>
+                        <th class="text-center align-middle">Message</th>
+                        <th class="text-center align-middle">Outcome</th>
+                        <th class="text-center align-middle">Properties</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.LogResult != null)
+                    {
+                        AuditLogModel logModel = ViewBag?.LogResult as AuditLogModel ?? new AuditLogModel();
+                        var propertyJson = JsonConvert.SerializeObject(logModel.Property);
+                        <tr>
+                            <td>@logModel.TransactionId</td>
+                            <td>@logModel.Message</td>
+                            <td>@logModel.Outcome</td>
+                            <td>
+                                <button class="btn btn-info" onclick="OpenTransactionModal('@Html.Raw(propertyJson.Replace("'", "\\'"))')">View</button>
+                                <button class="btn btn-info" onclick="console.log('Button click JSON:', '@propertyJson')">View (Debug)</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div> *@
+</div>
+
+<script src="~/views_js/audit/consulttransactionjs.js"></script>

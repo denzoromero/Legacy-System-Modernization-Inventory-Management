@@ -1,0 +1,264 @@
+﻿@model IPagedList<FerramentariaTest.Models.JustificativasExtraviadasViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using TinyMCE.Blazor
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Index</h4>
+
+@*@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}*@
+
+<form asp-action="SendToEmail">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    @if (ViewBag.ErrorModal != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ErrorModal
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    <div class="mb-2">
+                        <label for="recipient-name" class="col-form-label">Para*:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="For">
+                    </div>
+                    <div class="mb-2">
+                        <label for="recipient-copy" class="col-form-label">Copia:</label>
+                        <input type="text" class="form-control" id="recipient-copy" name="CC">
+                    </div>
+                    <div class="mb-2">
+                        <label for="recipient-anexo" class="col-form-label">Anexo:</label>
+                        @if (ViewBag.Filepathname != null)
+                        {
+                            <a asp-action="ViewFile" asp-route-filename="@ViewBag.Filepathname" target="_blank">@ViewBag.Filepathname</a>
+                            <input type="hidden" name="Anexo" value="@ViewBag.Filepathname">
+                        }                  
+                    </div>
+                    <div class="mb-2">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="mytextarea" name="Message"></textarea>
+                    </div>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<form asp-action="GetLog" method="post">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Transacoes </label>
+                <div class="col-sm-4">
+                    De <input name="De" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+                <div class="col-sm-4">
+                    Ate <input name="Ate" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3"> Ferramentaria</div>
+                <div class="col-sm-5">
+                    <select name="Ferramentaria" id="ddlFerramentaria" class="form-select form-select-sm" aria-label="Small select example">
+                        <option selected>Selecionar...</option>
+                        @if (ViewBag.FerramentariaList != null)
+                        {
+                            @foreach (var item in ViewBag.FerramentariaList)
+                            {
+                                <option value="@item.Nome">@item.Nome</option>
+                            }
+                        }                   
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+@*    <div class="row mb-4">
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                <img src="~/img/search.svg" /> Buscar
+            </button>
+        </div>
+    </div>*@
+
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                        <img src="~/img/search.svg" /> Buscar
+                    </button>
+                    @if (Model != null)
+                    {
+                        <button type="button" class="btn btn-primary" onclick="exportData()">
+                            Exportar
+                        </button>
+
+                        <button type="button" class="btn btn-primary" onclick="SendEmail()">
+                            <img src="~/img/envelope.svg" />
+                            Enviar
+                        </button>
+
+                        @*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Open</button>*@
+                    }       
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Ferramentaria
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Descricao
+            </th>
+            <th>
+                Quantidade
+            </th>
+            <th>
+                AF Serial
+            </th>
+            <th>
+                PAT
+            </th>
+            <th>
+                Obs
+            </th>
+            <th>
+                Matricula Solicitante
+            </th>
+            <th>
+                Data do Emprestimo
+            </th>
+            <th>
+                Balconista do Resitro do Extravio
+            </th>
+            <th>
+                Justificativa do Extravio
+            </th>
+            <th>
+               Data e Hora do Registro do Extravio
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ferramentaria)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantidade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AF)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PAT)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Obs)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Solicitante_Chapa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataEmprestimo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Balconista_Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Justificativa)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataRegistroExtravio)
+                    </td>
+                </tr>
+
+            }
+        }
+        else
+        {
+
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("GetLog", new { page, De = ViewBag.De, Ate = ViewBag.Ate, Ferramentaria =  ViewBag.Ferramentaria }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div>
+
+<script>
+    function exportData() {
+        // Redirect to the export action's URL
+        window.location.href = '/JustificativasExtraviadas/Export';
+    }
+</script>
+
+<script>
+    function SendEmail() {
+        // Redirect to the export action's URL
+        window.location.href = '/JustificativasExtraviadas/Enviar';
+    }
+</script>
+
+@if (ViewBag.Filepathname != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('exampleModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}

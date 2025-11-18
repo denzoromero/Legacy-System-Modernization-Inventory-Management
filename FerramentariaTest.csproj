@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EntitiesSeekEmployees\**" />
+    <Compile Remove="Views\Marca\**" />
+    <Content Remove="EntitiesSeekEmployees\**" />
+    <Content Remove="Views\Marca\**" />
+    <EmbeddedResource Remove="EntitiesSeekEmployees\**" />
+    <EmbeddedResource Remove="Views\Marca\**" />
+    <None Remove="EntitiesSeekEmployees\**" />
+    <None Remove="Views\Marca\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\MarcaController_bug.cs" />
+    <Compile Remove="DAL\ContextoBancoSeekEmployee.cs" />
+    <Compile Remove="Entities\HistoricoAlocacao_2022.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\BloqueioEmprestimoVsLiberador\Create.cshtml" />
+    <Content Remove="Views\BloqueioEmprestimoVsLiberador\Delete.cshtml" />
+    <Content Remove="Views\BloqueioEmprestimoVsLiberador\Details.cshtml" />
+    <Content Remove="Views\BloqueioEmprestimoVsLiberador\Edit.cshtml" />
+    <Content Remove="Views\Catalogoes\Delete.cshtml" />
+    <Content Remove="Views\Catalogoes\Details.cshtml" />
+    <Content Remove="Views\ControleCA\Create.cshtml" />
+    <Content Remove="Views\ControleCA\Delete.cshtml" />
+    <Content Remove="Views\FerramentariaVsBalconista\Create.cshtml" />
+    <Content Remove="Views\FerramentariaVsBalconista\Delete.cshtml" />
+    <Content Remove="Views\FerramentariaVsBalconista\Details.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item\Create.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item\Delete.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item\Details.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item_Extraviado\Create.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item_Extraviado\Delete.cshtml" />
+    <Content Remove="Views\VW_Reativacao_Item_Extraviado\Details.cshtml" />
+    <Content Remove="wwwroot\css\login.css" />
+    <Content Remove="wwwroot\views_js\Audit\ConsultTransactionJS.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\views_js\Audit\ConsultTransactionJS.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="EPPlus" Version="7.2.2" />
+    <PackageReference Include="ESC-POS-USB-NET" Version="1.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.0-preview.7.23375.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+    <PackageReference Include="PagedList.Mvc" Version="4.5.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="25.2.0" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.2.2" />
+    <PackageReference Include="System.DirectoryServices" Version="8.0.0-preview.7.23375.6" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="System.Net.Mail" Version="1.0.0-rtm-00002">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="TinyMCE.Blazor" Version="1.0.4">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
+    <PackageReference Include="X.PagedList" Version="9.1.2" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="9.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\views_js\Audit\ConsultTransactionJS.js" />
+  </ItemGroup>
+
+</Project>

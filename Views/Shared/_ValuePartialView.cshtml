@@ -1,0 +1,25 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@*<p>Setor:@ViewBag.FerramentariaNome</p>*@
+@* @using FerramentariaTest.Services.Interfaces; *@
+
+@* @inject IFerramentariaService FerramentariaService *@
+
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="mr-2">
+                <a asp-action="RefreshFerramentaria"> <img src="~/img/arrow-clockwise.svg" class="ml-2" /> </a>
+            </div>
+            <label for="ddlSetor" class="col-form-label col-form-label-sm">Setor: @ViewBag.FerramentariaNome</label>
+            @* <label for="ddlSetor" class="col-form-label col-form-label-sm">Setor: @FerramentariaService.GetChosenFerramentariaName()</label> *@
+        </div>
+    </div>
+</div>
+
+
+
+

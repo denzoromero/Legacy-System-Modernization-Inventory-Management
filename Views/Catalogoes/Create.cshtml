@@ -1,0 +1,391 @@
+﻿@model FerramentariaTest.Entities.Catalogo
+
+@{
+    ViewData["Title"] = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Create Item</h3>
+
+<hr />
+
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}
+*@
+  <form asp-action="Create">
+
+<div class="row">
+
+  
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-8">
+        <label class="control-label"> Id: </label>
+
+        <br />
+        <br />
+
+        <div class="row mb-3">
+            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm" >Catalogo</label>
+            <div class="col-sm-5">
+                <select name="selectedCatalogo" id="ddlCatalogo" onchange="ddlCatalogoChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                        <option value="0" >Todos...</option>
+                        <option value="1" >Ferramentaria</option>                
+                        <option value="2" >EPI</option>                                  
+                        <option value="3" >Consumiveis</option>                  
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Classe</label>
+            <div class="col-sm-5">
+                <select name="selectedClasse" id="ddlClasse" onchange="ddlClasseChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                  @*  <option selected>Open this select menu</option>*@
+
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tipo</label>
+            <div class="col-sm-5">
+                <select name="selectedTipo" id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example">
+                   @* <option selected>Open this select menu</option>*@
+
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Controle</label>
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PorMetro" id="PorMetro" value="1" disabled>
+                    <label class="form-check-label" for="radio1">Por Metro</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PorAferido" id="PorAferido" value="1" disabled>
+                    <label class="form-check-label" for="radio2">Por Aferido</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PorSerial" id="PorSerial" value="1" disabled>
+                    <label class="form-check-label" for="radio3">Por Serial</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="PorQuantidade" id="PorQuantidade" value="1" disabled>
+                    <label class="form-check-label" for="radio4">Por Quantidade</label>
+                </div>
+            </div>
+        </div>
+
+            <div class="row mb-3">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Codigo</label>
+                <div class="col-sm-5">
+                    <input name="codigo" class="form-control form-control-sm" id="codigoInput"
+                           pattern="[0-9]{2}\.[0-9]{2}\.[0-9]{2}\.[0-9]{5}" >
+                </div>
+            </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Item:</label>
+            <div class="col-sm-10">
+                <textarea name="item" class="form-control" id="floatingTextarea2" style="height: 80px"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Descrição:</label>
+            <div class="col-sm-10">
+                <textarea name="descricao" class="form-control" id="floatingTextarea2" style="height: 80px"></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="ddlCatalogo" class="col-sm-2 col-form-label col-form-label-sm">Ferramentaria</label>
+            <div class="col-sm-5">
+                <select name="Ferramentaria" class="form-select form-select-sm" aria-label="Small select example">
+                    <option value="0">Selecionar...</option>
+                    @foreach (var item in ViewBag.FerramentariaItems)
+                    {
+                        <option value="@item.Id">@item.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-10">
+                <p class="tdFormEdicao">As informações de prateleiras ao lado mudam conforme a seleção do Ferramentaria acima</p>
+            </div>
+        </div>
+        <div class="row mb-3 mb-md-0 mt-md-3">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Prateleira:</label>
+                            <input type="text" class="form-control" id="txtPos1Prateleira" name="txtPos1Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPo2Prateleira" name="txtPo2Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos3Prateleira" name="txtPos3Prateleira" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Coluna:</label>
+                            <input type="text" class="form-control" id="txtPos1Coluna" name="txtPos1Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos2Coluna" name="txtPos2Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos3Coluna" name="txtPos3Coluna" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Linha:</label>
+                            <input type="text" class="form-control" id="txtPos1Linha" name="txtPos1Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos2Linha" name="txtPos2Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos3Linha" name="txtPos3Linha" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6 mt-5 mt-md-0">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Prateleira:</label>
+                            <input type="text" class="form-control" id="txtPos4Prateleira" name="txtPos4Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPo5Prateleira" name="txtPo5Prateleira" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos6Prateleira" name="txtPos6Prateleira" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Coluna:</label>
+                            <input type="text" class="form-control" id="txtPos4Coluna" name="txtPos4Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos5Coluna" name="txtPos5Coluna" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos6Coluna" name="txtPos6Coluna" />
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="col-form-label col-form-label-sm">Linha:</label>
+                            <input type="text" class="form-control" id="txtPos4Linha" name="txtPos4Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos5Linha" name="txtPos5Linha" />
+                        <br />
+                            <input type="text" class="form-control" id="txtPos6Linha" name="txtPos6Linha" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-4">
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">Restrição de Emprestimo:</label>
+            <div class="col-sm-3">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="RestricaoEmprestimo" value="1" name="RestricaoEmprestimo">
+                    <label class="form-check-label" for="checkboxLabel1"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">Impedir Descarte:</label>
+            <div class="col-sm-3">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="ImpedirDescarte" value="1" name="ImpedirDescarte">
+                    <label class="form-check-label" for="checkboxLabel2"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">Habilitar descarte do EPI no Setor Atual do Balconista:</label>
+            <div class="col-sm-3">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="EPI" value="1" name="EPI" disabled>
+                    <label class="form-check-label" for="checkboxLabel3"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-9 col-form-label col-form-label-sm">
+                Ativar Data de Retorno automática com
+                <input class="form-control form-control-sm" type="text" id="daysInput" style="width: 70px;" name="DataDeRetornoAutomatico" disabled> dias após data de Empréstimo
+            </label>
+
+            @*  <div class="col-sm-1">
+            <input class="form-control form-control-sm">
+            </div>*@
+            <div class="col-sm-2">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="chkDataDeRetornoAutomatico" value="1" name="chkDataDeRetornoAutomatico" disabled>
+                    <label class="form-check-label" for="checkboxLabel4"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<br />
+<br />
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" /> Back </button>
+    </a>
+
+
+    <button type="submit" class="btn btn-primary" style="margin-left: 10px;">
+        <img src="~/img/plus-lg.svg" alt="Plus Icon"> Create
+    </button>
+</div>
+
+</form>
+
+
+<script>
+
+    // Get the checkbox element
+    var checkbox = document.getElementById("chkDataDeRetornoAutomatico");
+
+    // Get the input element you want to enable/disable
+    var daysInput = document.getElementById("daysInput");
+
+    // Add an event listener to the checkbox
+    checkbox.addEventListener("change", function () {
+        // If the checkbox is checked, enable the input field; otherwise, disable it
+        daysInput.disabled = !checkbox.checked;
+    });
+
+    // Initial state based on the checkbox's default state
+    daysInput.disabled = !checkbox.checked;
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var codigoInput = document.getElementById("codigoInput");
+
+        codigoInput.addEventListener("input", function () {
+            var inputValue = codigoInput.value.replace(/[^0-9]/g, "");
+            var formattedValue = inputValue.replace(/(\d{2})(\d{2})(\d{2})(\d{5})/, "$1.$2.$3.$4");
+            codigoInput.value = formattedValue;
+        });
+    });
+
+    function ddlCatalogoChanged(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $("#ddlClasse").empty();
+        $("#ddlTipo").empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadClasse",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+
+                // Disable all radio buttons by default
+                $("input[type=radio]").prop("disabled", true);
+
+                switch (selectedValue) {
+                    case "1": // Ferramenta
+                        $("#PorMetro").prop("disabled", true);
+                        $("#PorAferido").prop("disabled", false);
+                        $("#PorSerial").prop("disabled", false);
+                        $("#PorQuantidade").prop("disabled", false);
+
+                        $("#EPI").prop("disabled", true);
+                        $("#chkDataDeRetornoAutomatico").prop("disabled", true);
+                        $("#daysInput").prop("disabled", true);
+                        break;
+                    case "2": // EPI
+                        $("#PorMetro").prop("disabled", true);
+                        $("#PorAferido").prop("disabled", true);
+                        $("#PorSerial").prop("disabled", true);
+                        $("#PorQuantidade").prop("disabled", false);
+
+                        $("#EPI").prop("disabled", false);
+                        $("#chkDataDeRetornoAutomatico").prop("disabled", false);
+                      
+                        break;
+                    case "3": // Consumiveis
+                        $("#PorMetro").prop("disabled", false);
+                        $("#PorAferido").prop("disabled", true);
+                        $("#PorSerial").prop("disabled", true);
+                        $("#PorQuantidade").prop("disabled", false);
+
+                        $("#EPI").prop("disabled", true);
+                        $("#chkDataDeRetornoAutomatico").prop("disabled", true);
+                        $("#daysInput").prop("disabled", true);
+                        break;
+                    default:
+                        $("#PorMetro").prop("disabled", true);
+                        $("#PorAferido").prop("disabled", true);
+                        $("#PorSerial").prop("disabled", true);
+                        $("#PorQuantidade").prop("disabled", true);
+
+                        $("#EPI").prop("disabled", true);
+                        $("#chkDataDeRetornoAutomatico").prop("disabled", true);
+                        $("#daysInput").prop("disabled", true);
+                        break;
+                }
+
+                // Handle radio button click event to allow only one selection
+                $("input[type=radio]").on("click", function () {
+                    $("input[type=radio]").prop("checked", false);
+                    $(this).prop("checked", true);
+                });
+
+
+                //$("#ddlClasse").empty();
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlClasse").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function ddlClasseChanged(selectElement) {
+        var selectedValue = selectElement.value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadTipo",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlTipo").empty();
+                // Populate the second dropdown with the fetched data
+                $.each(data, function (index, item) {
+                    $("#ddlTipo").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+</script>

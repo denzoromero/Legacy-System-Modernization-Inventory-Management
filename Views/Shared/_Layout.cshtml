@@ -1,0 +1,359 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using FerramentariaTest.Helpers;
+@inject IHttpContextAccessor httpContexto;
+
+
+@{
+    var logado = "N";
+    // var nome = string.Empty;
+    // var chapa = string.Empty;
+    // var id = 0;
+    var environment = string.Empty;
+
+    try
+    {
+        logado = httpContexto?.HttpContext?.Session.GetString(Sessao.LOGADO);
+        LoggedUserData? loggedUser = httpContexto?.HttpContext?.Session.GetObject<LoggedUserData>("LoggedUserInformation") ?? new LoggedUserData();
+        if (loggedUser != null)
+        {
+            environment = httpContexto?.HttpContext?.Session.GetString(Sessao.Environment);
+            // if (logado == "S")
+            // {
+            //     nome = httpContexto.HttpContext.Session.GetString(Sessao.NOME);
+            //     chapa = httpContexto.HttpContext.Session.GetString(Sessao.CHAPA);
+            //     id = (int)httpContexto.HttpContext.Session.GetInt32(Sessao.ID);
+              
+            // }
+            // else
+            // {
+            //     httpContexto.HttpContext.Response.Redirect("/Home/Login");
+            // }
+        }
+        else
+        {
+            httpContexto?.HttpContext?.Response.Redirect("/Home/Login");
+        }
+
+    }
+    catch (Exception)
+    {
+        httpContexto?.HttpContext?.Response.Redirect("/Home/Login");
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FerramentariaTest</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/js/jquery-3.7.1.min.js"></script>*@
+    <script src="~/js/tinymce/js/tinymce/tinymce.min.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FerramentariaTest.styles.css" asp-append-version="true" />
+    <link href="~/css/lightbox.css" rel="stylesheet" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div class="loader loadingIndicator"></div>
+
+    <header>
+        <nav class="navbar navbar-dark bg-blue">
+            <div class="container-fluid">
+                <div>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ferramentaria (Sistemas Integrados Company)</a>             
+                </div>
+            @*     <a class="navbar-brand">@nome</a> *@
+            
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="offcanvas offcanvas-end text-bg-black bg-light" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+                    <div class="offcanvas-header text-blue text-center">
+                        <button type="button" class="btn-close btn-close-blue" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body" style="max-height: 700px; overflow-y: auto;">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link text-black fs-5 active" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+
+
+                            @if (User.IsInRole("Demo"))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Retirada/Reserva
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                     
+                                        
+                                            <a class="dropdown-item" asp-area="" asp-controller="HandoutRetirada" asp-action="Index">Retirada</a>
+                                        
+                                  
+                                            <a class="dropdown-item" asp-area="" asp-controller="HandoutReservation" asp-action="Index">Dar Reserva</a>
+                                        
+                                      
+                                            <a class="dropdown-item" asp-area="" asp-controller="PrepareReservation" asp-action="Index">Preparar Reserva</a>
+                                        
+                                       
+                                            <a class="dropdown-item" asp-area="" asp-controller="ConsultReservationRetirada" asp-action="Index">Consultar Reserva/Retirada</a>
+                                        
+                                     
+                                            <a class="dropdown-item" asp-area="" asp-controller="GestorRetiradaReserva" asp-action="Index">Gestor Reserva/Retirada</a>
+                                        
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Audit
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="Index">Generate Report</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="ConsultTransaction">Consult</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="TermsConditionPage">Terms Control</a>
+                                    </div>
+                                </li>
+
+       
+                            } 
+                            else
+                            {
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Tabelas Auxiliares
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Marcas" asp-action="Index">Marca</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Ferramentarias" asp-action="Index">Ferramentaria</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="FerramentariaVsBalconista" asp-action="Index">Ferramentaria vs Balconista</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="BloqueioEmprestimoVsLiberador" asp-action="Index">Usuarios para Liberação Excepcional</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Obras" asp-action="Index">Obra</a>
+                                        <a class="dropdown-item" href="http://sib.seatrium.com.br/Content/Sistema/Informatica/seTerceiro.aspx" target="_blank">Menu Terceiro</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Estoque
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <div class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#" id="submenuReinclusao">Reinclusão de Item</a>
+                                            <div class="dropdown-menu" aria-labelledby="submenuReinclusao">
+                                                <a class="dropdown-item" asp-area="" asp-controller="VW_Reativacao_Item" asp-action="Index">Inativo</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="VW_Reativacao_Item_Extraviado" asp-action="Index">Extraviado</a>
+                                            </div>
+                                        </div>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Catalogoes" asp-action="Index">Item do Catalogo</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="ControleCA" asp-action="Index">Controle de C.A</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AlertaVencimentoCA" asp-action="Index">Ligar/Desligar - Alerta automatico de Vencimento de C.A</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Gestor" asp-action="Index">Gestor</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="EntradaEmLote_Req" asp-action="Index">Entrada em Lote</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Transações
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="thBloqueioEmprestimoAoSolicitante" asp-action="Index">Bloqueio de Emprestimo ao Solicitante de Item</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="MensagemSolicitante" asp-action="Index">Mensagem ao Solicitante</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Emprestimo" asp-action="Index">Emprestimo</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Devolucao" asp-action="Index">Devolução</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="DevolucaoExpressa" asp-action="Index">Devolução Expressa</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Historico" asp-action="Index">Historico</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="UploadFicha" asp-action="Index">Upload de Ficha</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Relatorios
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="AtribuicaoFerramentaria" asp-action="Index">Atribuição de Ferramentaria</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="MovimentoSaldo" asp-action="Index">Movimento de Saldo</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="TransferenciaFerramentaria" asp-action="Index">Transferencia entre Ferramentaria</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="JustificativasExtraviadas" asp-action="Index">Justificativas Extraviadas</a>
+                                        @* <a class="dropdown-item" href="#">Download Automatico</a>*@
+                                        <div class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#" id="submenuDownloadAutomatico">Download Automatico</a>
+                                            <div class="dropdown-menu" aria-labelledby="submenuDownloadAutomatico">
+                                                <a class="dropdown-item" asp-area="" asp-controller="AutomaticoEstoqueAtual" asp-action="Index">Listagem do Estoque Atual</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="AutomaticoEstoqueResidual" asp-action="Index">Listagem do Estoque Residual</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="AutomaticoRadios" asp-action="Index">Listagem do Radios</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="AutomaticoRadiosEmprestados" asp-action="Index">Listagem do Radios Emprestados</a>
+                                            </div>
+                                        </div>
+                                        @* <a class="dropdown-item" href="#">Em Batch</a>*@
+                                        <div class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#" id="submenuEmBatch">Em Batch</a>
+                                            <div class="dropdown-menu" aria-labelledby="submenuEmBatch">
+                                                <a class="dropdown-item" asp-area="" asp-controller="ItensEmprestados" asp-action="Index">Itens Emprestados</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="TransacoesEmprestimosDevolucoes" asp-action="Index">Transacoes de Emprestimos e Devolucoes</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogItemTransacoesEmprestimosDevolucoes" asp-action="Index">Log de Item em Transacoes de Emprestimos e Devolucoes</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogItemTransferenciaEntre" asp-action="Index">Log de Item em Transferencia Entre Ferramentarias</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogExclusaoProduto" asp-action="Index">Exclusao de Produto</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogItensDeolvidos" asp-action="Index">Itens Devolvidos</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogEmprestimosConsumiveisEPI" asp-action="Index">Emprestimos de Consumiveis e EPI</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogEntradaSaida" asp-action="Index">Movimento de Entradas e Saidas</a>
+                                                <a class="dropdown-item" asp-area="" asp-controller="LogLiberacaoExcepcional" asp-action="Index">Liberacao Extraordionaria</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Retirada/Reserva
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        @if (User.Claims.Any(c => c.Type == "PageAccess" && c.Value == "HandoutRetirada.cs"))
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="HandoutRetirada" asp-action="Index">Retirada</a>
+                                        }
+                                        @if (User.Claims.Any(c => c.Type == "PageAccess" && c.Value == "HandoutReservation.cs"))
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="HandoutReservation" asp-action="Index">Dar Reserva</a>
+                                        }
+                                        @if (User.Claims.Any(c => c.Type == "PageAccess" && c.Value == "PrepareReservation.cs"))
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="PrepareReservation" asp-action="Index">Preparar Reserva</a>
+                                        }
+                                        @if (User.Claims.Any(c => c.Type == "PageAccess" && c.Value == "ConsultReservationRetirada.cs"))
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="ConsultReservationRetirada" asp-action="Index">Consultar Reserva/Retirada</a>
+                                        }
+                                        @if (User.Claims.Any(c => c.Type == "PageAccess" && c.Value == "GestorRetiradaReserva.cs"))
+                                        {
+                                            <a class="dropdown-item" asp-area="" asp-controller="GestorRetiradaReserva" asp-action="Index">Gestor Reserva/Retirada</a>
+                                        }
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="HandoutRetirada" asp-action="Index">Retirada</a> *@
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="HandoutReservation" asp-action="Index">Handout Reservations</a> *@
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="PrepareReservation" asp-action="Index">Prepare Reservations</a> *@
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="ConsultReservationRetirada" asp-action="Index">Consult Reservation/Retirada</a> *@
+                                        @* <a class="dropdown-item" asp-area="" asp-controller="GestorRetiradaReserva" asp-action="Index">Gestor Reservation/Retirada</a> *@
+
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Audit
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="Index">Generate Report</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="ConsultTransaction">Consult</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Auditting" asp-action="TermsConditionPage">Terms Control</a>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-black fs-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Admins
+                                    </a>
+                                    <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" asp-area="" asp-controller="AdminSide" asp-action="Index">Leader</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="AdminSide" asp-action="ImageCatalog">Image</a>
+                                    </div>
+                                </li>
+
+                            }
+
+
+                        </ul>
+
+
+                        <hr />
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="theme-toggle" onclick="toggleTheme()">
+                            <label class="form-check-label" for="theme-toggle" id="theme-label"></label>
+                        </div>
+
+                        <hr />
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link text-black fs-5" asp-area="" asp-controller="Home" asp-action="Logout">Sair</a>
+                            </li>
+                        </ul>
+
+                        <hr />
+
+                        <div class="mt-auto pt-3 fs-6">
+                            <div class="row">
+                                Session Id:
+                            </div>
+                            <div class="row">
+                                @User.Claims.FirstOrDefault(c => c.Type == "SessionId")?.Value
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </nav>
+    </header>
+
+
+
+
+    <div class="container-fluid" id="container">
+        <div id="liveAlertPlaceholder" class="sticky-alert"></div>
+        <main role="main" class="pb-3">
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (ViewBag.ShowSuccessAlert != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <img src="~/img/check-lg.svg" /> Success!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (ViewBag.SuccessAlertNew != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <img src="~/img/check-lg.svg" /> @ViewBag.SuccessAlertNew
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <footer class="border-top footer text-muted mt-auto">
+        <div class="container">
+            Demo
+        </div>
+    </footer>
+
+
+ 
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/lightbox.js"></script>
+ 
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

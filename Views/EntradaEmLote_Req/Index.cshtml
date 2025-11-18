@@ -1,0 +1,698 @@
+﻿@*@model IPagedList<FerramentariaTest.Entities.EntradaEmLote_Req>*@
+@model FerramentariaTest.Models.CombinedEmLote
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Search</h4>
+
+@await Component.InvokeAsync("ValuePartial")
+
+@{
+    PagedListRenderOptions customRenderOptions = new PagedListRenderOptions
+    {
+      Display = PagedListDisplayMode.IfNeeded,
+      ContainerDivClasses = new[] { "pagination-container" },
+      UlElementClasses = new[] { "pagination" },
+      LiElementClasses = new[] { "page-item" },
+      PageClasses = new[] { "page-link" },
+    };
+}
+
+@if (ViewBag.ErrorList != null)
+{  @* <div class="alert alert-danger">
+    <ul>
+        @foreach (var error in ViewBag.ErrorList)
+        {
+            <li>@error</li>
+        }
+    </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>*@
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach (var error in ViewBag.ErrorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+@if (ViewBag.ModalRegistrado != null && ViewBag.LoteReqValues != null)
+{
+    EntradaEmLote_ReqViewModel? LoteReqValues = ViewBag.LoteReqValues as EntradaEmLote_ReqViewModel;
+    List<EntradaEmLote_TempModel?>? catalogValues = ViewBag.ModalRegistrado as List<EntradaEmLote_TempModel?>;
+    <div class="modal fade" id="ConcluidoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">ID: @LoteReqValues.Id | RFM: @LoteReqValues.RFM</h1>
+                    <button type="button" class="btn-close ModalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <label class="col-4 col-form-label">@catalogValues.Count() <span>registro(s) encontrado(s)</span></label>
+                    </div>
+                    <div class=" row">
+                        <div col="12">
+                            <table class="table align-left light-dark-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Catalogo
+                                        </th>
+                                        <th>
+                                            Controle
+                                        </th>
+                                        <th>
+                                            Codigo
+                                        </th>
+                                        <th>
+                                            Item
+                                        </th>
+                                        <th>
+                                            Quantidade
+                                        </th>
+                                        <th>
+                                            AF
+                                        </th>
+                                        <th>
+                                            PAT
+                                        </th>
+                                        <th>
+                                            Numero de Serie
+                                        </th>
+                                        <th>
+                                            Propriedade
+                                        </th>
+                                        <th>
+                                            Data de Vencimento
+                                        </th>
+                                        <th>
+                                            Certificado
+                                        </th>
+                                        <th>
+                                            Data Aquisição
+                                        </th>
+                                        <th>
+                                            Valor
+                                        </th>
+                                        <th>
+                                            Fornecedor
+                                        </th>
+                                        <th>
+                                            Observação
+                                        </th>                   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in catalogValues)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.IdClasse == 1)
+                                                {
+                                                    <span>Ferramenta</span>
+                                                }
+                                                else if (item.IdClasse == 2)
+                                                {
+                                                    <span>EPI</span>
+                                                }
+                                                else if (item.IdClasse == 3)
+                                                {
+                                                    <span>Consumíveis</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.PorMetro == 1)
+                                                {
+                                                    <span>Metro</span>
+                                                }
+
+                                                @if (item.PorAferido == 1)
+                                                {
+                                                    <span>Aferido</span>
+                                                }
+
+                                                @if (item.PorSerial == 1)
+                                                {
+                                                    <span>Serial</span>
+                                                }
+
+                                                @if (item.PorMetro == 0 && item.PorAferido == 0 && item.PorSerial == 0)
+                                                {
+                                                    <span>Quantidade</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <span>@item.Codigo</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.CatalogNome</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Quantidade</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.AF</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.PAT</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Serie</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Propriedade</span>
+                                            </td>
+                                            <td>
+                                                <span>@(item.DataVencimento.HasValue == true ? item.DataVencimento.Value.ToString("dd/MM/yyyy") : "")</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Certificado</span>
+                                            </td>
+                                            <td>
+                                                <span>@(item.DC_DataAquisicao.HasValue == true ? item.DC_DataAquisicao.Value.ToString("dd/MM/yyyy") : "")</span>
+                                            </td>
+                                            <td>
+                                                <span>@(item.DC_Valor.HasValue == true && item.DC_Valor != 0.00m ? $"R$ {item.DC_Valor}" : "")</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.DC_Fornecedor</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Observacao</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Observacao</span>
+                                            </td>
+                                     @*        <td>
+                                                @if (item.PorAferido == 1 || item.PorSerial == 1)
+                                                {
+                                                    @if (!string.IsNullOrEmpty(item.FilePath))
+                                                    {
+                                                        <a asp-action="ViewFile" asp-route-FilePath="@item.FilePath" target="_blank">Ver Planilha</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        
+                                                    }
+                                                }
+                                            </td> *@
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if (LoteReqValues.Status == 0 || LoteReqValues.Status == 1 || LoteReqValues.Status == 2)
+                   {
+                        <a asp-action="CancelAction" asp-route-id="@LoteReqValues.Id">
+                            <button type="button" class="btn btn-danger">Cancelar</button>
+                        </a>
+                   }
+
+                   @if (LoteReqValues.Status == 2)
+                   {
+                        <a asp-action="DeferirAction" asp-route-id="@LoteReqValues.Id">
+                            <button type="button" class="btn btn-warning">Deferir</button>
+                        </a>
+                   }                 
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<!-- Modal -->
+@if (ViewBag.ModalValues != null && ViewBag.LoteReqValues != null)
+{
+    EntradaEmLote_ReqViewModel? LoteReqValues = ViewBag.LoteReqValues as EntradaEmLote_ReqViewModel;
+    List<CombinedForModal?>? catalogValues = ViewBag.ModalValues as List<CombinedForModal>;
+    <div class="modal fade" id="IndexModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">ID: @LoteReqValues.Id | RFM: @LoteReqValues.RFM</h1>
+                    <button type="button" class="btn-close ModalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <label class="col-4 col-form-label">@catalogValues.Count() <span>registro(s) encontrado(s)</span></label>
+                    </div>
+                    <div class=" row">
+                        <div col="12">
+                            <table class="table align-left light-dark-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Catalogo
+                                        </th>
+                                        <th>
+                                            Controle
+                                        </th>
+                                        <th>
+                                            Codigo
+                                        </th>
+                                        <th>
+                                            Item
+                                        </th>
+                                        <th>
+                                            Quantidade
+                                        </th>
+                                        <th>
+                                            Observação
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in catalogValues)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @if (item.CategoriaClasse == 1)
+                                                {
+                                                    <span>Ferramenta</span>
+                                                }
+                                                else if (item.CategoriaClasse == 2)
+                                                {
+                                                    <span>EPI</span>
+                                                }
+                                                else if (item.CategoriaClasse == 3)
+                                                {
+                                                    <span>Consumíveis</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.PorMetro == 1)
+                                                {
+                                                    <span>Metro</span>
+                                                }
+
+                                                @if (item.PorAferido == 1)
+                                                {
+                                                    <span>Aferido</span>
+                                                }
+
+                                                @if (item.PorSerial == 1)
+                                                {
+                                                    <span>Serial</span>
+                                                }
+
+                                                @if (item.PorMetro == 0 && item.PorAferido == 0 && item.PorSerial == 0)
+                                                {
+                                                    <span>Quantidade</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <span>@item.Codigo</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Nome</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Quantidade</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Observacao</span>
+                                            </td>
+                                            <td>
+                                                @if (item.PorAferido == 1 || item.PorSerial == 1)
+                                                {
+                                                    @if (!string.IsNullOrEmpty(item.FilePath))
+                                                    {
+                                                        <a asp-action="ViewFile" asp-route-FilePath="@item.FilePath" target="_blank">Ver Planilha</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @if (LoteReqValues.Status == 0 || LoteReqValues.Status == 1 || LoteReqValues.Status == 2)
+                   {
+                       @*  <a asp-action="CancelAction" asp-route-id="@LoteReqValues.Id">
+                            <button type="button" class="btn btn-danger">Cancelar</button>
+                        </a> *@
+                        <div class="d-flex justify-content-center align-items-start">
+                            <a asp-action="ProcessAction" asp-route-id="@LoteReqValues.Id">
+                                <button type="button" class="btn btn-success me-3">Processar</button>
+                            </a>
+                            
+                            <a asp-action="CancelAction" asp-route-id="@LoteReqValues.Id">
+                                <button type="button" class="btn btn-danger">Cancelar</button>
+                            </a>
+                        </div>
+                    }
+
+                   @if (LoteReqValues.Status == 2)
+                   {
+                        <a asp-action="DeferirAction" asp-route-id="@LoteReqValues.Id">
+                            <button type="button" class="btn btn-warning">Deferir</button>
+                        </a>
+                   }                 
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<form asp-action="GetEmprestimo" method="get">
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-check form-check-inline">
+            <label class="form-check-label" for="RFM">PR / Nota Fiscal</label>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <input asp-for="EntradaEmLoteSearch.RFM" class="form-control form-control-sm" id="RFM">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-check form-check-inline">
+            <label class="form-check-label" for="inlineRadio1">Status do Processo</label>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="0" value="0">
+            <label class="form-check-label" for="0">Registrado</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="1" value="1">
+            <label class="form-check-label" for="1">Em Processamento (Validando Requisição)</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="6" value="6">
+            <label class="form-check-label" for="6">Em Processamento (Deferindo)</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="2" value="2">
+            <label class="form-check-label" for="2">Aguardando Deferição</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="3" value="3">
+            <label class="form-check-label" for="3">Falhou</label>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="form-check form-check-inline">
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="4" value="4">
+            <label class="form-check-label" for="4">Deferido</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="5" value="5">
+            <label class="form-check-label" for="5">Cancelado</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="7" value="7">
+            <label class="form-check-label" for="7">Concluído</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Status" id="8" value="8" checked>
+            <label class="form-check-label" for="8">Todos</label>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    <div class="row mt-3">
+        <div class="col-md-2">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="inlineRadio1">No. Páginação </label>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Pagination" id="10" value="10" checked>
+                <label class="form-check-label" for="10">10</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Pagination" id="30" value="30">
+                <label class="form-check-label" for="30">30</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="EntradaEmLoteSearch.Pagination" id="50" value="50">
+                <label class="form-check-label" for="50">50</label>
+            </div>
+        </div>
+    </div>
+
+
+<br />
+
+
+
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                        <img src="~/img/search.svg" /> Buscar
+                    </button>
+@* 
+                    <a asp-action="Create">
+                        <button type="button" class="btn btn-primary loadingButton">
+                            <img src="~/img/plus-lg.svg" alt="Plus Icon"> Novo Lançamento
+                        </button>
+                    </a> *@
+
+
+
+                        <button type="button" class="btn btn-primary" id="CreateEntradaEmLoteButton">
+                            <img src="~/img/plus-lg.svg" alt="Plus Icon"> Novo Lançamento
+                        </button>
+
+                    @if (Model != null && Model.ResultCount != null)
+                    {
+                        <label for="colFormLabelSm" class=" col-form-label">Resultado: @Model.ResultCount </label>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Solicitante
+            </th>
+            <th>
+                RFM
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                DataRegistro
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.EntradaEmLote_ReqViewModel != null)
+        {
+            @foreach (var item in Model.EntradaEmLote_ReqViewModel)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                  @*  @foreach (var user in ViewBag.NomeList)
+                    {
+                        <td>@user.Nome</td>
+                    }*@
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SolicitanteNome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RFM)
+                    </td>
+                    <td>
+                        @if (item.Status == 0)
+                        {
+                            <span>Registrado</span>
+                        }
+                        else if(item.Status == 1)
+                        {
+                            <span>Em Processamento (Validando Requisição)</span>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <span>Aguardando Deferição</span>
+                        }
+                        else if (item.Status == 3)
+                        {
+                            <span>Falhou</span>
+                        }
+                        else if (item.Status == 4)
+                        {
+                            <span>Deferido</span>
+                        }
+                        else if (item.Status == 5)
+                        {
+                            <span>Cancelado</span>
+                        }
+                        else if (item.Status == 6)
+                        {
+                            <span>Em Processamento (Deferindo)</span>
+                        }
+                        else if (item.Status == 7)
+                        {
+                            <span>Concluído</span>
+                        }
+                        @*@Html.DisplayFor(modelItem => item.Status)*@
+                    </td>
+                    <td>
+                        @if(item.DataRegistro.HasValue)
+                        {
+                            @item.DataRegistro.Value.ToString("dd/MM/yyyy HH:mm")
+                        }
+                        @* @Html.DisplayFor(modelItem => item.DataRegistro) *@
+                    </td>
+                    <td>
+                        <a asp-action="GetListOfItems" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-info">
+                                <img src="~/img/pencil-square.svg" />
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@{
+    int? Status = ViewData["Status"] as int?;
+    int? Setor = ViewData["Setor"] as int?;
+}
+
+@*@if (Model != null && Model.EntradaEmLote_ReqViewModel != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model.EntradaEmLote_ReqViewModel, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions 
+        { Display = PagedListDisplayMode.IfNeeded,
+            ContainerDivClasses = new[] { "pagination-container" }, 
+            UlElementClasses = new[] { "pagination" }, 
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+        })
+    </div>
+}*@
+
+@if (Model != null && Model.EntradaEmLote_ReqViewModel != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model.EntradaEmLote_ReqViewModel, page => Url.Action("TestPage", new { page }), customRenderOptions)
+    </div>
+}
+
+
+@if (ViewBag.ModalValues != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('IndexModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+@if (ViewBag.ModalRegistrado != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ConcluidoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    document.getElementById("CreateEntradaEmLoteButton").addEventListener("click", function () {
+        let rfmNumber = prompt("Insira o numero PR/Nota Fiscal:");
+        console.log(rfmNumber)
+        if (rfmNumber) {
+          $.ajax({
+            type: "GET",
+            url: "/EntradaEmLote_Req/CheckRFM",
+            data: { selectedValue: rfmNumber },
+            success: function (data) {
+
+                if (data) {
+                        // Alert the user that the RFM number is already registered
+                        let userResponse = confirm("O numero PR/Nota Fiscal ja esta registrado. Voce quer continuar com a transacao?");
+                        if (userResponse) {
+                            // User chose to continue
+                            // window.location.href = '@Url.Action("Create", "EntradaEmLote_Req")';
+                            window.location.href = '@Url.Action("Create", "EntradaEmLote_Req")' + '?InputtedRFM=' + rfmNumber;
+                            // alert("Continuing with the transaction.");
+                            // Add your code here for the next steps
+                        } 
+                    } else {
+                        // window.location.href = '@Url.Action("Create", "EntradaEmLote_Req")';
+                        window.location.href = '@Url.Action("Create", "EntradaEmLote_Req")' + '?InputtedRFM=' + rfmNumber;
+                    // alert("Invalid RFM number. Please try again.");
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", status, error);
+            }
+        });
+
+        } else {
+            alert("Nenhum numero PR/Nota Fiscal inserido.");
+        }
+    });
+</script>

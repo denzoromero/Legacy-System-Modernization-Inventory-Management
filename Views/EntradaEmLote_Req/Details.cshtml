@@ -1,0 +1,150 @@
+﻿@model FerramentariaTest.Models.CatalogoViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Adicionar RFM</h4>
+
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}
+*@
+<form asp-action="Create">
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Catalogo:</div>
+            <div class="col-sm-8">
+
+                @if (@Model.CategoriaClasse == 1)
+                {
+                    <span>Ferramenta</span>
+                }
+                else if (@Model.CategoriaClasse == 2)
+                {
+                    <span>EPI</span>
+                }
+                else if (@Model.CategoriaClasse == 3)
+                {
+                    <span>Consumíveis</span>
+                }
+               @* else
+                {
+                    @Html.DisplayFor(modelItem => item.CategoriaClasse)
+                }*@
+                @*<span class="p-1" name="classe">@Model.CategoriaClasse</span>*@
+            </div>
+        </div>
+
+        @if (Model.PorMetro == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Metro </span>
+                </div>
+            </div>
+        }
+        else if (Model.PorAferido == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Aferido </span>
+                </div>
+            </div>
+        }
+        else if (Model.PorSerial == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Serial </span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Quantidade </span>
+                </div>
+            </div>
+        }
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Codigo:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.Codigo</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Item:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.Nome   </span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Saldo (HOJE):</div>
+            <div class="col-sm-8">
+                <span class="p-1"> * </span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold"> Quantidade:</div>
+            <div class="col-sm-2">
+                <input name="Quantidade" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold"> Observação:</div>
+            <div class="col-sm-5">
+                <input name="Obs" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold"> RFM/Nota Fiscal:</div>
+            <div class="col-sm-5">
+                <input name="RFM" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold"> Setor:</div>
+                <div class="col-sm-5">
+                    <select name="Setor" id="ddlSetor" class="form-select form-select-sm" aria-label="Small select example">
+                        @foreach (var item in ViewBag.TakenList)
+                        {
+                            <option value="@item.Id" selected>@item.Nome</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-primary">
+            <img src="~/img/plus-lg.svg" alt="Plus Icon"> Salvar
+        </button>
+
+        <a asp-action="Create">
+            <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" /> Back </button>
+        </a>
+
+    </div>
+</div>
+
+</form>

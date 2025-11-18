@@ -1,0 +1,324 @@
+﻿@using FerramentariaTest.Entities
+@model FerramentariaTest.Models.CatalogoViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>
+    Item selecionado
+</h3>
+
+<br />
+
+@*@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+<!-- Modal -->
+<form method="post" asp-action="EditAction">
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar CA</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+                    @if (ViewBag.ErrorCA != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ErrorCA
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                @if (ViewBag.EditValue != null)
+                {
+                    ControleCA? caDetails = ViewBag.EditValue as ControleCA;
+                    <div class="row mb-3">
+                        <label class="col-3 col-form-label col-form-label-sm">Numero da C.A:</label>
+                        <div class="col-5">
+                            <input name="numeroCA" class="form-control form-control-sm" value="@caDetails?.NumeroCA">
+                             <input name="Id" value="@caDetails?.Id" type="hidden">
+                        </div>
+                    
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-3 col-form-label col-form-label-sm">Validade:</label>
+                        <div class="col-5">
+                            <input name="validade" class="form-control form-control-sm" type="date" value="@caDetails?.Validade?.ToString("yyyy-MM-dd")">
+                        </div>
+                    </div>
+                }
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<form method="post" asp-action="Create">
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Id Catalogo:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.Id</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Catalogo:</div>
+            <div class="col-sm-8">
+                <span class="p-1" name="classe">@Model.CategoriaClasse</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Classe:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.CategoriaNome</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Tipo:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.CategoriaNomePai</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Codigo:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.Codigo</span>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-sm-3 fw-bold">Item:</div>
+            <div class="col-sm-8">
+                <span class="p-1">@Model.Nome   </span>
+            </div>
+        </div>
+
+        @if (Model.PorMetro == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Metro </span>
+                </div>
+            </div>
+        }
+        else if (Model.PorAferido == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Aferido </span>
+                </div>
+            </div>
+        }
+        else if (Model.PorSerial == 1)
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Serial </span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row mb-2">
+                <div class="col-sm-3 fw-bold">Controle:</div>
+                <div class="col-sm-8">
+                    <span class="p-1"> Quantidade </span>
+                </div>
+            </div>
+        }
+
+        <hr />
+
+         <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm">Numero da C.A:</label>
+            <div class="col-sm-3">
+                <input name="numeroCA" class="form-control form-control-sm" >
+            </div>
+            <label class="col-sm-1 col-form-label col-form-label-sm">Validade:</label>
+            <div class="col-sm-3">
+                <input name="validade" class="form-control form-control-sm" type="date">
+            </div>
+        </div>
+
+   
+            <button type="submit" class="btn btn-primary">
+                <img src="~/img/plus-lg.svg" alt="Plus Icon"> Salvar
+            </button>
+
+
+            <a asp-action="Index">
+                <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" /> Back </button>
+            </a>
+
+    </div>
+</div>
+
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Data do Registro
+            </th>
+            <th>
+                Responsavel
+            </th>
+            <th>
+                Numero C.A
+            </th>
+            <th>
+                Validade
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < ViewBag.ControlCA.Count; i++)
+        {
+            <tr>
+                <!-- Add a row element for each item -->
+                <td>
+
+                    @if (i == 0)
+                    {
+                        <text>C.A. Vigente</text>
+                    }
+
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].DataRegistro
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].Responsavel
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].NumeroCA
+                </td>
+                <td>
+                    @ViewBag.ControlCA[i].Validade.ToString("dd-MM-yyyy")
+                </td>
+                <td>
+                @*     @if (i == 0)
+                    {
+                        <a asp-action="Edit" asp-route-id="@ViewBag.ControlCA[i].Id">
+                            <button type="button" class="btn btn-warning">
+                                <img src="~/img/pencil-square.svg" />
+                            </button>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0);" onclick="confirmDelete(@ViewBag.ControlCA[i].Id);" data-id="@ViewBag.ControlCA[i].Id">
+                            <button type="button" class="btn btn-danger">
+                                <img src="~/img/trash3-fill.svg" />
+                            </button>
+                        </a>
+                    } *@
+
+                    <a asp-action="Edit" asp-route-id="@ViewBag.ControlCA[i].Id">
+                        <button type="button" class="btn btn-warning">
+                            <img src="~/img/pencil-square.svg" />
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:void(0);" onclick="confirmDelete(@ViewBag.ControlCA[i].Id);" data-id="@ViewBag.ControlCA[i].Id">
+                        <button type="button" class="btn btn-danger">
+                            <img src="~/img/trash3-fill.svg" />
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>
+
+
+<script>
+    function confirmDelete(itemId) {
+        if (confirm('Are you sure you want to delete this item?')) {
+            var data = { itemId: itemId };
+
+            $.ajax({
+                type: 'POST',
+                url: '/ControleCA/DeleteConfirmed?id=' + itemId, // Replace with your actual URL
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                complete: function () {
+                    // Regardless of success or error, navigate to the Index page
+                    window.location.href = '/ControleCA/Index';
+                }
+            });
+        }
+    }
+</script>
+
+@if (ViewBag.EditValue != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('EditModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+
+
+@*<script>
+
+    function confirmDelete(itemId) {
+        if (confirm('Are you sure you want to delete this item?')) {
+            var data = { itemId: itemId };
+
+            $.ajax({
+                type: 'POST',
+                url: '/ControlaCA/DeleteConfirmed?id=' + itemId, // Replace with your actual URL
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                complete: function () {
+                    // Regardless of success or error, navigate to the Index page
+                    window.location.href = '/ControleDA/Index';
+                }
+            });
+        }
+    }
+
+</script>*@

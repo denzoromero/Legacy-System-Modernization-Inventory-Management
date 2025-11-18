@@ -1,0 +1,1004 @@
+﻿@*@model IPagedList<FerramentariaTest.Models.CatalogoViewModel>*@
+@model FerramentariaTest.Models.CombinedCatalogo
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Item do Catalogo</h3>
+
+@await Component.InvokeAsync("ValuePartial")
+
+<!--Create Catalogo Modal -->
+<form asp-action="CreateCatalogo" method="post">
+<div class="modal fade" id="CreateCatalogoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Item</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    @if (ViewBag.ErrorCreateCatalogo != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ErrorCreateCatalogo
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="row mb-2">
+                                <label for="ddlCatalogo" class="col-2 col-form-label">Catalogo</label>
+                                <div class="col-sm-9">
+                                    <select name="SelectedCatalogo" id="ddlCatalogo" onchange="ddlCatalogoChangedSearch(this)" class="form-select" aria-label="Catalogo dropdown">
+                                        <option value="0">Todos...</option>
+                                        <option value="1">Ferramentaria</option>
+                                        <option value="2">EPI</option>
+                                        <option value="3">Consumiveis</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="ddlClasse" class="col-2 col-form-label">Classe</label>
+                                <div class="col-sm-9">
+                                    <select name="selectedClasse" id="ddlClasseSearch" onchange="ddlClasseChangedSearch(this)" class="form-select" aria-label="Catalogo DropDown">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="ddlTipo" class="col-2 col-form-label">Tipo</label>
+                                <div class="col-sm-9">
+                                    <select name="selectedTipo" id="ddlTipoSearch" class="form-select" aria-label="Tipo DropDown">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-2 col-form-label">Controle</label>
+                                <div class="col-sm-9">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="Controle" id="PorMetro" value="1" disabled>
+                                            <label class="form-check-label" for="PorMetro">Por Metro</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="Controle" id="PorAferido" value="2" disabled>
+                                            <label class="form-check-label" for="PorAferido">Por Aferido</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="Controle" id="PorSerial" value="3" disabled>
+                                            <label class="form-check-label" for="PorSerial">Por Serial</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="Controle" id="PorQuantidade" value="4" disabled>
+                                            <label class="form-check-label" for="PorQuantidade">Por Quantidade</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row mb-2">
+                                <label for="RestricaoEmprestimo" class="col-10 col-form-label">Restrição de Emprestimo:</label>
+                                <div class="col-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="RestricaoEmprestimo" value="1" name="RestricaoEmprestimo">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="ImpedirDescarte" class="col-10 col-form-label">Impedir Descarte:</label>
+                                <div class="col-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="ImpedirDescarteCreate" value="1" name="ImpedirDescarte">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="HabilitarDescarteEpi" class="col-10 col-form-label">Habilitar descarte do EPI no Setor Atual do Balconista:</label>
+                                <div class="col-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="EPI" value="1" name="HabilitarDescarteEpi" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-10 col-form-label">
+                                    Ativar Data de Retorno automática com
+                                    <input class="form-control form-control-sm" type="text" id="daysInput" style="width: 60px;" name="DataDeRetornoAutomatico" disabled> dias após data de Empréstimo
+                                </label>
+                                <div class="col-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="chkDataDeRetornoAutomatico" value="1" name="chkDataDeRetornoAutomatico" onchange="toggleTextInput()" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                           
+                 </div>
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <label for="codigoInput" class="col-1 col-form-label">Codigo</label>
+                        <div class="col-sm-5">
+                               <input name="Codigo" class="form-control form-control-sm" id="codigoInput" oninput="formataCodigoProduto(this, event);" maxlength="14" value="@(ViewBag.CreateValue?.Codigo ?? "")">
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="txtAreaItem" class="col-1 col-form-label">Item</label>
+                        <div class="col-11">
+                                <textarea name="Nome" class="form-control" id="txtAreaItem" style="height: 80px" value="@(ViewBag.CreateValue?.Nome ?? "")">@(ViewBag.CreateValue?.Nome ?? "")</textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="txtAreaDescricao" class="col-1 col-form-label">Descrição</label>
+                        <div class="col-11">
+                                <textarea name="Descricao" class="form-control" id="txtAreaDescricao" style="height: 80px" value="@(ViewBag.CreateValue?.Descricao ?? "")">@(ViewBag.CreateValue?.Nome ?? "")</textarea>
+                        </div>
+                    </div>
+               
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<!--Edit Catalogo Modal -->
+@if (ViewBag.CatalogoValues != null)
+{
+    CatalogoViewModel? values = ViewBag.CatalogoValues as CatalogoViewModel;
+    <form asp-action="EditCatalogo" method="post">
+    <div class="modal fade" id="EditCatalogoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Item @values.Id</h1>
+                    <input type="hidden" value="@values.Id" name="Id"> 
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="row mb-2">
+                                    <label for="ddlCatalogoEdit" class="col-2 col-form-label">Catalogo</label>
+                                    <div class="col-sm-9">
+                                        <select name="SelectedCatalogo" id="ddlCatalogoEdit" class="form-select" aria-label="Catalogo dropdown" disabled>
+                                            @if (values.CategoriaClasse == 1)
+                                            {
+                                                <option value="1" selected>Ferramentaria</option>
+                                            }
+                                            else if (values.CategoriaClasse == 2)
+                                            {
+                                                <option value="2" selected>EPI</option>
+                                            }
+                                            else if (values.CategoriaClasse == 3)
+                                            {
+                                                <option value="3" selected>Consumiveis</option>
+                                            }
+                                        </select>
+                                            <input type="hidden" value="@values.CategoriaClasse" name="SelectedCatalogo">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="ddlClasseEdit" class="col-2 col-form-label">Classe</label>
+                                    <div class="col-sm-9">
+                                        <select name="selectedClasse" id="ddlClasseEdit" class="form-select" aria-label="Catalogo DropDown" disabled>
+                                            <option value="@values.IdCategoriaPai" selected>@values.CategoriaNomePai</option>
+                                        </select>
+                                            <input type="hidden" value="@values.IdCategoriaPai" name="selectedClasse">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="ddlTipoSearchEdit" class="col-2 col-form-label">Tipo</label>
+                                    <div class="col-sm-9">
+                                        <select name="selectedTipo" id="ddlTipoSearchEdit" class="form-select" aria-label="Tipo DropDown" disabled>
+                                            <option value="@values.IdCategoria" selected>@values.CategoriaNome</option>
+                                        </select>
+                                            <input type="hidden" value="@values.IdCategoria" name="selectedTipo">
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-sm-2 col-form-label">Controle</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="PorMetro" id="PorMetroEdit" value="@(values.PorMetro == 1 ? 1 : 0)" @(values.PorMetro == 1 ? "checked" : "") @(values.PorMetro == 1 ? "" : "disabled")>
+                                            <label class="form-check-label" for="PorMetroEdit">Por Metro</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="PorAferido" id="PorAferidoEdit" value="@(values.PorAferido == 1 ? 1 : 0)" @(values.PorAferido == 1 ? "checked" : "") @(values.PorAferido == 1 ? "" : "disabled")>
+                                            <label class="form-check-label" for="PorAferidoEdit">Por Aferido</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="PorSerial" id="PorSerialEdit" value="@(values.PorSerial == 1 ? 1 : 0)" @(values.PorSerial == 1 ? "checked" : "") @(values.PorSerial == 1 ? "" : "disabled")>
+                                            <label class="form-check-label" for="PorSerialEdit">Por Serial</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="PorQuantidade" id="PorQuantidadeEdit" value="@(values.PorMetro != 1 && values.PorAferido != 1 && values.PorSerial != 1 ? 1 : 0)" @(values.PorMetro != 1 && values.PorAferido != 1 && values.PorSerial != 1 ? "checked" : "") @(values.PorMetro != 1 && values.PorAferido != 1 && values.PorSerial != 1 ? "" : "disabled")>
+                                            <label class="form-check-label" for="PorQuantidadeEdit">Por Quantidade</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="row mb-2">
+                                    <label for="RestricaoEmprestimoEdit" class="col-10 col-form-label">Restrição de Emprestimo:</label>
+                                    <div class="col-2">
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="RestricaoEmprestimoEdit" value="1" name="RestricaoEmprestimo" @(values.RestricaoEmprestimo == 1 ? "checked" : "")>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="ImpedirDescarteEdit" class="col-10 col-form-label">Impedir Descarte:</label>
+                                    <div class="col-2">
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="ImpedirDescarteEdit" value="1" name="ImpedirDescarte" @(values.ImpedirDescarte == 1 ? "checked" : "") @(values.CategoriaClasse == 1 ? "disabled" : "")>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="EPIedit" class="col-10 col-form-label">Habilitar descarte do EPI no Setor Atual do Balconista:</label>
+                                    <div class="col-2">
+                                        <div class="form-check form-check-inline">                                                                             
+                                            <input class="form-check-input" type="checkbox" id="EPIedit" value="1" name="HabilitarDescarteEpi" @(values.HabilitarDescarteEpi == 1 ? "checked" : "") @(values.CategoriaClasse == 2 ? "" : "disabled")>                                                                                     
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <label class="col-10 col-form-label">
+                                        Ativar Data de Retorno automática com
+                                        <input class="form-control form-control-sm" type="text" id="daysInputEdit" style="width: 60px;" name="DataDeRetornoAutomatico" value="@values.DataDeRetornoAutomatico" @(values.DataDeRetornoAutomatico != 0 && values.CategoriaClasse == 2 ? "" : "disabled")> dias após data de Empréstimo
+                                    </label>
+                                    <div class="col-2">
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="chkDataDeRetornoAutomaticoEdit" value="@(values.DataDeRetornoAutomatico != 0 ? 1 : 0)" name="chkDataDeRetornoAutomatico" onchange="toggleTextInputEdit()" @(values.DataDeRetornoAutomatico != 0 ? "checked" : "") @(values.CategoriaClasse == 2 ? "" : "disabled")>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row mb-2">
+                            <label for="codigoInput" class="col-1 col-form-label">Codigo</label>
+                            <div class="col-sm-5">
+                                <input name="Codigo" class="form-control form-control-sm" id="codigoInput" oninput="formataCodigoProduto(this, event);" maxlength="14" value="@values.Codigo">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="txtAreaItem" class="col-1 col-form-label">Item</label>
+                            <div class="col-11">
+                                <textarea name="Nome" class="form-control" id="txtAreaItem" style="height: 80px">@values.Nome</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label for="txtAreaDescricao" class="col-1 col-form-label">Descrição</label>
+                            <div class="col-11">
+                                <textarea name="Descricao" class="form-control" id="txtAreaDescricao" style="height: 80px">@values.Descricao</textarea>
+                            </div>
+                        </div>          
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </form>
+}
+
+<!--Delete Catalogo Modal -->
+@if (ViewBag.IdToBeDeleted != null)
+{
+    <form asp-action="InactivateCatalogo" method="post">
+        <div class="modal fade" id="DeleteCatalogoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Desativar Confirmação </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span>Deseja realmente DESATIVAR o registro Id @ViewBag.IdToBeDeleted.Id ---- @ViewBag.IdToBeDeleted.Codigo ?</span>
+                        <input type="hidden" name="Id" value="@ViewBag.IdToBeDeleted.Id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Inativar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+
+
+<form asp-action="GetCatalogo" method="get">
+    <div class="row">
+            <div class="col-md-4">
+
+                    <div class="row mb-2">
+                        <label for="ddlCatalogoSearch" class="col-sm-3 col-form-label col-form-label-sm">Catalogo</label>
+                        <div class="col-sm-7">
+                            <select asp-for="CatalogoSearchModel.CategoriaClasse" id="ddlCatalogoSearch" onchange="ddlCatalogoChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                <option selected>Selecionar..</option>
+                                <option value="1">Ferramenta</option>
+                                <option value="2">EPI</option>
+                                <option value="3">Consumiveis</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label for="ddlClasse" class="col-sm-3 col-form-label col-form-label-sm">Classe</label>
+                        <div class="col-sm-7">
+                            <select asp-for="CatalogoSearchModel.IdCategoria" id="ddlClasse" onchange="ddlClasseChanged(this)" class="form-select form-select-sm" aria-label="Small select example">
+                                <option>Selecionar...</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label for="ddlTipo" class="col-sm-3 col-form-label col-form-label-sm">Tipo</label>
+                        <div class="col-sm-7">
+                            <select asp-for="CatalogoSearchModel.Id" id="ddlTipo" class="form-select form-select-sm" aria-label="Small select example">
+                                <option>Selecionar...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label asp-for="CatalogoSearchModel.Codigo" class="col-sm-3 col-form-label col-form-label-sm">Código</label>
+                        <div class="col-sm-7">
+                            <input asp-for="CatalogoSearchModel.Codigo" class="form-control form-control-sm" id="colFormLabelSm" oninput="formataCodigoProduto(this, event);" maxlength="14">
+                        </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <label asp-for="CatalogoSearchModel.Descricao" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                        <div class="col-sm-7">
+                        <input asp-for="CatalogoSearchModel.Descricao" class="form-control form-control-sm" id="colFormLabelSm">
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="CatalogoSearchModel.Pagination" id="pagination10" value="10" checked>
+                <label class="form-check-label" for="pagination10">10</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="CatalogoSearchModel.Pagination" id="pagination30" value="30">
+                <label class="form-check-label" for="pagination30">30</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="CatalogoSearchModel.Pagination" id="pagination50" value="50">
+                <label class="form-check-label" for="pagination50">50</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info mr-2 loadingButton" style="color: white;">
+                        <img src="~/img/search.svg" /> Buscar
+                    </button>
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CreateCatalogoModal">
+                        <img src="~/img/plus-lg.svg" alt="Plus Icon"> Novo Registro
+                    </button>
+           
+                  @*<a href="@Url.Action("Create", "Catalogoes")" class="btn btn-primary">
+                        <img src="~/img/plus-lg.svg" alt="Plus Icon"> Novo Registro
+                    </a>*@
+                    @if (Model != null && Model.ResultCount != null)
+                    {
+                        <label for="colFormLabelSm" class=" col-form-label">Resultado: @Model.ResultCount </label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>   
+
+</form>
+
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                Catalogo
+            </th>
+            <th>
+                Classe
+            </th>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Controle
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Model?.CatalogoViewModel != null)
+{
+            @foreach (var item in Model?.CatalogoViewModel)
+            {
+                <tr>
+                    <td>
+               
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                        <td>
+                            @if (item.CategoriaClasse == 1)
+                            {
+                                <span>Ferramenta</span>
+                            }
+                            else if (item.CategoriaClasse == 2)
+                            {
+                                <span>EPI</span>
+                            }
+                            else if (item.CategoriaClasse == 3)
+                            {
+                                <span>Consumíveis</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.CategoriaClasse)
+                            }
+                        </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoriaNomePai)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoriaNome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Codigo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                            @if (item.PorMetro == 1)
+                            {
+                                <span>Metro</span>
+                            }
+                    
+                            @if (item.PorAferido == 1)
+                            {
+                                <span>Aferido</span>
+                            }
+
+                            @if (item.PorSerial == 1)
+                            {
+                                <span>Serial</span>
+                            }
+
+                            @if (item.PorMetro == 0 && item.PorAferido == 0 && item.PorSerial == 0)
+                            {
+                                <span>Quantidade</span>
+                            }
+                    </td>         
+                    <td>
+                        <a asp-action="GetCatalogoToEdit" asp-route-id="@item.Id">
+                                <button type="button" class="btn btn-warning">
+                                    <img src="~/img/pencil-square.svg" />
+                                </button>
+                            </a>
+                            </td>
+
+                        <td>
+                         @*   <a href="javascript:void(0);" onclick="confirmDelete(@item.Id);" data-id="@item.Id">
+                                <button type="button" class="btn btn-danger">
+                                    <img src="~/img/trash3-fill.svg" />
+                                </button>
+                            </a>*@
+                            <a asp-action="DeleteCatalogo" asp-route-id="@item.Id">
+                                <button type="button" class="btn btn-danger">
+                                    <img src="~/img/trash3-fill.svg" />
+                                </button>
+                            </a>
+                        </td>          
+                </tr>
+                }
+}
+    </tbody>
+</table>
+
+
+@if (Model?.CatalogoViewModel != null)
+{
+    <div class="pagination-container">
+        @Html.PagedListPager(Model?.CatalogoViewModel, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </div>
+}
+
+@if (ViewBag.CatalogoValues != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('EditCatalogoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ErrorCreateCatalogo != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('CreateCatalogoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.IdToBeDeleted != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('DeleteCatalogoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+
+    function confirmDelete(itemId) {
+        if (confirm('Deseja realmente DESATIVAR o registro?')) {
+            var data = { itemId: itemId };
+
+            $.ajax({
+                type: 'POST',
+                url: '/Catalogoes/DeleteConfirmed?id=' + itemId, // Replace with your actual URL
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                complete: function () {
+                    // Regardless of success or error, navigate to the Index page
+                    window.location.href = '/Catalogoes/Index';
+                }
+            });
+        }
+    }
+
+    function ddlCatalogoChangedSearch(selectElement) {
+        var selectedValue = selectElement.value;
+        var EPIcheckbox = document.getElementById("EPI");
+        var DataRetornoCheckbox = document.getElementById("chkDataDeRetornoAutomatico");
+
+        var DescarteCheckbox = document.getElementById("ImpedirDescarteCreate");
+
+        if (selectedValue === "1"){
+            DescarteCheckbox.disabled = true;
+        } else {
+            DescarteCheckbox.disabled = false;
+        }
+
+        var PorMetro = document.getElementById("PorMetro");
+        var PorAferido = document.getElementById("PorAferido");
+        var PorSerial = document.getElementById("PorSerial");
+        var PorQuantidade = document.getElementById("PorQuantidade");
+
+        PorMetro.disabled = true;
+        PorAferido.disabled = true;
+        PorSerial.disabled = true;
+        PorQuantidade.disabled = true;
+
+         if (selectedValue === "2") { // If EPI is selected
+                EPIcheckbox.disabled = false;
+                DataRetornoCheckbox.disabled = false;
+            } else { // If any other option is selected
+                EPIcheckbox.disabled = true;
+            DataRetornoCheckbox.disabled = true;
+            }
+
+        $("#ddlClasseSearch").empty();
+        $("#ddlTipoSearch").empty();
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadClasse",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlClasseSearch").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));
+                $.each(data, function (index, item) {
+                    $("#ddlClasseSearch").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function ddlClasseChangedSearch(selectElement) {
+        var selectedValue = selectElement.value;
+        var ddlCatalogoValue = document.getElementById("ddlCatalogo").value;
+
+        var PorMetro = document.getElementById("PorMetro");
+        var PorAferido = document.getElementById("PorAferido");
+        var PorSerial = document.getElementById("PorSerial");
+        var PorQuantidade = document.getElementById("PorQuantidade");
+
+        console.log("Selected value from ddlCatalogo:", ddlCatalogoValue);
+        console.log("Selected value from selected value:", selectedValue);
+        if (selectedValue == 9) {
+             PorMetro.disabled = true;
+             PorAferido.disabled = false;
+             PorSerial.disabled = true;
+            PorQuantidade.disabled = true;
+        } else if (selectedValue == 1382) {
+            PorMetro.disabled = true;
+            PorAferido.disabled = false;
+            PorSerial.disabled = false;
+            PorQuantidade.disabled = true;
+        }else{
+            switch (ddlCatalogoValue) {
+                case "1":
+                    PorMetro.disabled = true;
+                    PorAferido.disabled = false;
+                    PorSerial.disabled = false;
+                    PorQuantidade.disabled = false;
+                break;
+                case "2":
+                    PorMetro.disabled = true;
+                    PorAferido.disabled = true;
+                    PorSerial.disabled = true;
+                    PorQuantidade.disabled = false;
+                    break;
+                case "3":
+                    PorMetro.disabled = false;
+                    PorAferido.disabled = true;
+                    PorSerial.disabled = true;
+                    PorQuantidade.disabled = false;
+                    break;
+                default:
+                    console.log("Selected value from ddlCatalogo:", ddlCatalogoValue);
+                    PorMetro.disabled = true;
+                    PorAferido.disabled = true;
+                    PorSerial.disabled = true;
+                    PorQuantidade.disabled = true;
+            }
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Catalogoes/LoadTipo",
+            data: { selectedValue: selectedValue },
+            success: function (data) {
+                $("#ddlTipoSearch").empty().append($('<option>', {
+                    value: '', // Set an empty value for the default option
+                    text: 'Selecionar...'
+                }));
+                $.each(data, function (index, item) {
+                    $("#ddlTipoSearch").append($('<option>', {
+                        value: item.id, // Use the IdCategoria property
+                        text: item.nome // Use the Nome property
+                        //css: { color: 'red' }
+
+                    }));
+                });
+            }
+        });
+    }
+
+    function toggleTextInput() {
+        var chkDataDeRetornoAutomatico = document.getElementById("chkDataDeRetornoAutomatico");
+        var daysInput = document.getElementById("daysInput");
+
+        // Enable/disable text input based on checkbox checked state
+        daysInput.disabled = !chkDataDeRetornoAutomatico.checked;
+    }
+
+    function toggleTextInputEdit() {
+        var chkDataDeRetornoAutomaticoEdit = document.getElementById("chkDataDeRetornoAutomaticoEdit");
+        var daysInputEdit = document.getElementById("daysInputEdit");
+
+        // Enable/disable text input based on checkbox checked state
+        daysInputEdit.disabled = !chkDataDeRetornoAutomaticoEdit.checked;
+    }
+
+
+
+</script>
+
+
+@if (Model?.CatalogoSearchModel?.CategoriaClasse != null)
+{
+    <script>
+        $(document).ready(function () {
+
+            var Catalogo = '@Model?.CatalogoSearchModel?.CategoriaClasse';
+            var Classe = '@Model?.CatalogoSearchModel?.IdCategoria';
+            var Tipo = '@Model?.CatalogoSearchModel?.Id';
+
+            console.log("try value Catalogo:", Catalogo);
+            console.log("try value Classe:", Classe);
+            console.log("try value Tipo:", Tipo);
+
+
+            if (Catalogo && Classe && Tipo) {
+                ddlLoadAll(Catalogo, Classe, Tipo);
+                console.log("using ddlLoadAll");
+            } else if (Catalogo && Classe) {
+                console.log("using ddlClasseLoad");
+                ddlClasseLoad(Catalogo, Classe);
+            } else if (Catalogo) {
+                console.log("using ddlClasseAloneReload");
+                ddlClasseAloneReload(Catalogo);
+            }
+
+
+
+        });
+
+        function ddlClasseAloneReload(selectedValue) {
+            console.log("Selected try value:", selectedValue);
+
+            $("#ddlClasse").empty();
+            $("#ddlTipo").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    //$("#ddlClasse").empty();
+                    $("#ddlClasse").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        $("#ddlClasse").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+        }
+
+        function ddlClasseLoad(selectedValue, selectedClasse) {
+            console.log("try value catalogo for ddlClasseAloneReload: ", selectedValue);
+            console.log("try value classe for ddlClasseAloneReload: ", selectedClasse);
+            console.log("this is running ");
+
+        @*      var VencidasCheckBox = document.getElementById("VencidasCheckbox");
+            var NumeroSerieTextbox = document.getElementById("NumeroSerie");
+            if (selectedClasse === "9") {
+            console.log("NumeroSerieTextbox", selectedClasse);
+            VencidasCheckBox.disabled = false;
+            NumeroSerieTextbox.disabled = false;
+            console.log("Checkbox enabled");
+            }*@
+
+
+                $("#ddlClasse").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $("#ddlTipo").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    $.each(data, function (index, item) {
+                        $("#ddlTipo").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+
+        }
+
+        function ddlLoadAll(selectedValue, selectedClasse, selectedTipo) {
+            console.log("This is the Catalogo value: ", selectedValue);
+            console.log("This is the Classe value: ", selectedClasse);
+            console.log("This is the Tipo value: ", selectedTipo);
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var option = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedClasse.toString()) {
+                            option.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlClasse").append(option);
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "/Gestor/LoadTipo",
+                data: { selectedValue: selectedClasse },
+                success: function (data) {
+                    // Populate the second dropdown with the fetched data
+                    $.each(data, function (index, item) {
+                        var optiontipo = $('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        });
+
+                        // Check if the current item's value matches the catalogoValue
+                        if (item.id.toString() === selectedTipo.toString()) {
+                            optiontipo.prop('selected', true); // Set selected attribute
+                        }
+
+                        $("#ddlTipo").append(optiontipo);
+                    });
+                }
+            });
+
+        }
+
+    </script>
+}
+
+
+
+
+@*@if (Model?.CatalogoSearchModel?.IdCategoria != null)
+{
+    <script>
+        function ddlForTipo(selectedValue) {
+            console.log("This is the value: ", selectedValue);
+
+            $.ajax({
+                type: "GET",
+                url: "/Catalogoes/LoadTipo",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    $("#ddlTipo").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    $.each(data, function (index, item) {
+                        $("#ddlTipo").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                            //css: { color: 'red' }
+
+                        }));
+                    });
+                }
+            });
+        }
+
+        // Call ddlTest initially with the current value of CategoriaClasse
+        $(document).ready(function () {
+            ddlForTipo('@Model.CatalogoSearchModel.IdCategoria');
+
+        });
+    </script>
+}
+
+
+@if (Model?.CatalogoSearchModel?.CategoriaClasse != null)
+{
+    <script>
+        function ddlTest(selectedValue) {
+            console.log("This is the value: ", selectedValue);
+
+
+            $("#ddlClasse").empty();
+            $("#ddlTipo").empty();
+
+            $.ajax({
+                type: "GET",
+                url: "/Catalogoes/LoadClasse",
+                data: { selectedValue: selectedValue },
+                success: function (data) {
+                    $("#ddlClasse").empty().append($('<option>', {
+                        value: '', // Set an empty value for the default option
+                        text: 'Selecionar...'
+                    }));
+                    $.each(data, function (index, item) {
+                        $("#ddlClasse").append($('<option>', {
+                            value: item.id, // Use the IdCategoria property
+                            text: item.nome // Use the Nome property
+                        }));
+                    });
+                }
+            });
+        }
+
+        // Call ddlTest initially with the current value of CategoriaClasse
+        $(document).ready(function () {
+            ddlTest('@Model.CatalogoSearchModel.CategoriaClasse');
+        });
+    </script>
+}
+*@
+

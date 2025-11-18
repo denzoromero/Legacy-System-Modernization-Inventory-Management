@@ -1,0 +1,687 @@
+﻿@model List<FerramentariaTest.Models.CatalogoViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Create";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.ErrorList != null)
+{ 
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <ul>
+            @foreach (var error in ViewBag.ErrorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h4>Registrar</h4>
+
+
+<!-- Catalog List Modal -->
+<div class="modal fade" id="CatalogList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Catalog List</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div col="12">
+                    @if (ViewBag.CatalogList != null)
+                    {
+                        IPagedList<CatalogoViewModel> CatalogListValues = ViewBag.CatalogList as IPagedList<CatalogoViewModel>;
+                        <table class="table align-left light-dark-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Catalogo
+                                    </th>
+                                    <th>
+                                        Controle
+                                    </th>
+                                    <th>
+                                        Codigo
+                                    </th>
+                                    <th>
+                                        Item
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in CatalogListValues)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (item.CategoriaClasse == 1)
+                                            {
+                                                <span>Ferramenta</span>
+                                            }
+                                            else if (item.CategoriaClasse == 2)
+                                            {
+                                                <span>EPI</span>
+                                            }
+                                            else if (item.CategoriaClasse == 3)
+                                            {
+                                                <span>Consumíveis</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.CategoriaClasse</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.PorMetro == 1)
+                                            {
+                                                <span>Metro</span>
+                                            }
+
+                                            @if (item.PorAferido == 1)
+                                            {
+                                                <span>Aferido</span>
+                                            }
+
+                                            @if (item.PorSerial == 1)
+                                            {
+                                                <span>Serial</span>
+                                            }
+
+                                            @if (item.PorMetro == 0 && item.PorAferido == 0 && item.PorSerial == 0)
+                                            {
+                                                <span>Quantidade</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <span>@item.Codigo</span>
+                                        </td>
+                                        <td>
+                                            <span>@item.Nome</span>
+                                        </td>
+                                        <td>
+                                            <a asp-action="AddToCart" asp-route-id="@item.Id">
+                                                <button type="button" class="btn btn-primary">
+                                                    <img src="~/img/plus-lg.svg" alt="Plus Icon">
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                        <div class="pagination-container">
+                            @Html.PagedListPager(CatalogListValues, page => Url.Action("TestPageCatalogo", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Anexo Modal -->
+@if (ViewBag.AnexoCatalogValue != null)
+{
+    CatalogoViewModel? catalogValues = ViewBag.AnexoCatalogValue as CatalogoViewModel;
+<div class="modal fade" id="AnexoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Planilha - AF/Serial e PAT</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    @if (ViewBag.ErrorUpload != null)
+                    {
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.ErrorUpload
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                <div class="row mb-2">
+                    <label class="col-4 col-form-label"><strong>TEMPLATE PLANILHA *.XLSX.</strong></label>
+                </div>
+                <div class="row mb-2">
+                        <label class="col-4 col-form-label">..:Controlado por 
+                            <strong>
+                                @if (catalogValues.PorAferido == 1)
+                                {
+                                    <span>Aferido</span>
+                                }
+                                else if (catalogValues.IdCategoriaPai == 1384)
+                                {
+                                     <span>Preventivo</span>
+                                }
+                                else if (catalogValues.PorSerial == 1)
+                                {
+                                    <span>Serial</span>
+                                }
+                            </strong>
+                        </label>
+                </div>
+                <div class=" row">
+                    <div col="12">
+                        <center>
+                            <table class="light-dark-table">
+                                <tr>
+                                    <td colspan="2">
+                                       @if (catalogValues.PorAferido == 1)
+                                       {
+                                           <table id="tblPorAfericao">
+                                                    <tr>
+                                                        <td>
+                                                            <table align="center">
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style" colspan="12"><b>Colunas</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style"><b>1</b></td>
+                                                                    <td class="cell-style"><b>2</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>3</b></td>
+                                                                    <td class="cell-style"><b>4</b></td>
+                                                                    <td class="cell-style"><b>5</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>6</b></td>
+                                                                    <td class="cell-style"><b>7</b></td>
+                                                                    <td class="cell-style"><b>8</b></td>
+                                                                    <td class="cell-style"><b>9</b></td>
+                                                                    <td>&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style"><b>AF/Serial</b></td>
+                                                                    <td class="cell-style"><b>PAT</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>Número de Série</b></td>
+                                                                    <td class="cell-style"><b>Propriedade</b></td>
+                                                                    <td class="cell-style"><b>Data de Vencimento</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>Certificado</b></td>
+                                                                    <td class="cell-style"><b>Data Aquisição</b></td>
+                                                                    <td class="cell-style"><b>Valor</b></td>
+                                                                    <td class="cell-style"><b>Fornecedor</b></td>
+                                                                    <td class="cell-style"><b>Cabeçalho</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="cell-style" rowspan="2"><b>Linhas</b></td>
+                                                                    <td class="cell-style"><b>1</b></td>
+                                                                    <td class="cell-style">XX00001</td>
+                                                                    <td class="cell-style">0001</td>
+                                                                    <td class="auto-style1 cell-style">X001</td>
+                                                                    <td class="cell-style">Brasfels</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="auto-style1 cell-style">00000</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="cell-style">R$ 0,00</td>
+                                                                    <td class="cell-style">N/D</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="cell-style"><b>2</b></td>
+                                                                    <td class="cell-style">XX00002</td>
+                                                                    <td class="cell-style">0002</td>
+                                                                    <td class="auto-style1 cell-style">X002</td>
+                                                                    <td class="cell-style">Brasfels</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="auto-style1 cell-style">00000</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="cell-style">R$ 0,00</td>
+                                                                    <td class="cell-style">N/D</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="13"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="auto-style1 cell-style">&nbsp;</td>
+                                                                    <td colspan="12">Item não OBRIGATÓRIO.</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                       }
+                                       else if (catalogValues.IdCategoriaPai == 1384)
+                                       {
+                                               <table id="tblPreventivo">
+                                                <tr>
+                                                    <td>
+                                                        <table align="center">
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td>&nbsp;</td>
+                                                                <td class="cell-style" colspan="5"><b>Colunas</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td>&nbsp;</td>
+                                                                <td class="cell-style"><b>1</b></td>
+                                                                <td class="auto-style1 cell-style"><b>2</b></td>
+                                                                <td class="cell-style"><b>3</b></td>
+                                                                <td class="cell-style"><b>4</b></td>
+                                                                <td class="cell-style"><b>5</b></td>
+                                                                <td class="cell-style"><b>6</b></td>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td>&nbsp;</td>
+                                                                <td class="cell-style"><b>AF/Serial</b></td>
+                                                                <td class="auto-style1 cell-style"><b>PAT</b></td>
+                                                                <td class="cell-style"><b>Data Aquisição</b></td>
+                                                                <td class="cell-style"><b>Valor</b></td>
+                                                                <td class="cell-style"><b>Fornecedor</b></td>
+                                                                <td class="cell-style"><b>Data de Vencimento</b></td>
+                                                                <td class="cell-style"><b>Cabeçalho</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="cell-style" rowspan="2"><b>Linhas</b></td>
+                                                                <td class="cell-style"><b>1</b></td>
+                                                                <td class="cell-style">XX00001</td>
+                                                                <td class="auto-style1 cell-style">0001</td>
+                                                                <td class="cell-style">dd/mm/aaaa</td>
+                                                                <td class="cell-style">R$ 0,00</td>
+                                                                <td class="cell-style">N/D</td>
+                                                                <td class="cell-style">dd/mm/aaaa</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="cell-style"><b>2</b></td>
+                                                                <td class="cell-style">XX00002</td>
+                                                                <td class="auto-style1 cell-style">0002</td>
+                                                                <td class="cell-style">dd/mm/aaaa</td>
+                                                                <td class="cell-style">R$ 0,00</td>
+                                                                <td class="cell-style">N/D</td>
+                                                                <td class="cell-style">dd/mm/aaaa</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="6">&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="auto-style1 cell-style">&nbsp;</td>
+                                                                <td colspan="5">Item liberado para receber valor 0</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                       }
+                                       else if (catalogValues.PorSerial == 1)
+                                       {
+                                           <table id="tblPorSerial">
+                                                    <tr>
+                                                        <td>
+                                                            <table align="center">
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style" colspan="5"><b>Colunas</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style"><b>1</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>2</b></td>
+                                                                    <td class="cell-style"><b>3</b></td>
+                                                                    <td class="cell-style"><b>4</b></td>
+                                                                    <td class="cell-style"><b>5</b></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                    <td class="cell-style"><b>AF/Serial</b></td>
+                                                                    <td class="auto-style1 cell-style"><b>PAT</b></td>
+                                                                    <td class="cell-style"><b>Data Aquisição</b></td>
+                                                                    <td class="cell-style"><b>Valor</b></td>
+                                                                    <td class="cell-style"><b>Fornecedor</b></td>
+                                                                    <td class="cell-style"><b>Cabeçalho</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="cell-style" rowspan="2"><b>Linhas</b></td>
+                                                                    <td class="cell-style"><b>1</b></td>
+                                                                    <td class="cell-style">XX00001</td>
+                                                                    <td class="auto-style1 cell-style">0001</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="cell-style">R$ 0,00</td>
+                                                                    <td class="cell-style">N/D</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="cell-style"><b>2</b></td>
+                                                                    <td class="cell-style">XX00002</td>
+                                                                    <td class="auto-style1 cell-style">0002</td>
+                                                                    <td class="cell-style">dd/mm/aaaa</td>
+                                                                    <td class="cell-style">R$ 0,00</td>
+                                                                    <td class="cell-style">N/D</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="6">&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="auto-style1 cell-style">&nbsp;</td>
+                                                                    <td colspan="5">Item liberado para receber valor 0</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                       }
+                                 
+                                        </td>
+                                </tr>
+                            </table>
+                        </center>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-4 col-form-label">Codigo #<strong>@catalogValues.Codigo</strong></label>
+                </div>
+                @if (catalogValues.Uploaded != 1)
+                {
+                        <form method="post" enctype="multipart/form-data" action="UploadAction">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <input type="file" name="file" class="form-control col-4" id="inputGroupFile02">
+                                    <input type="hidden" value="@catalogValues.Id" name="CatalogoId">
+                                </div>
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary col-2">Anexar</button>
+                                </div>
+                            </div>
+                        </form>
+                }
+                else
+                {
+                      <div class="row mb-2">
+                          <div class="col-2">
+                                <a asp-action="ViewFile" asp-route-FilePath="@catalogValues.FilePath" target="_blank"><img src="~/img/upload_modal.svg" /> Baixar</a>
+                          </div>
+                          <div class="col-2">
+                                <a asp-action="DeleteFile" asp-route-FilePath="@catalogValues.FilePath"> <img src="~/img/x-circle-fill.svg" /> Excluir</a>
+                          </div>
+                      </div>                                         
+                       @* <span>Download File or Exclude file here</span>*@
+                }        
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+
+<form asp-action="SearchCatalogo" method="get">
+
+   <div class="row mb-3">
+
+        <label for="Codigo" class="col-sm-1 col-form-label"> Codigo </label>
+        <div class="col-2">
+             <input name="Codigo" class="form-control" id="Codigo" oninput="formataCodigoProduto(this, event);" maxlength="14">
+        </div>
+
+        <label for="Item" class="col-sm-1 col-form-label"> Item </label>
+        <div class="col-2">
+            <input name="Item" class="form-control" id="Item">
+        </div>
+
+        <div class="col-2">
+            <button type="submit" class="btn btn-info" style="color: white;">
+                <img src="~/img/search.svg" /> Search
+            </button>
+        </div>
+
+@*        <div class="col-3 d-flex justify-content-end">
+            <button type="button" class="btn btn-primary position-relative">
+                <img src="~/img/cart-fill.svg" />
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    99+
+                </span>
+            </button>
+        </div>*@
+
+   </div>
+
+</form>
+
+<hr />
+
+<form asp-action="Save" method="post">
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Catalogo
+            </th>
+            <th>
+                Controle
+            </th>
+            <th>
+                Codigo
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Saldo (HOJE)
+            </th>
+            <th>
+                Quantidade
+            </th>
+            <th>
+                Observação
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @for (int i = 0; i < Model.Count; i++)
+            {
+              var item = Model[i];
+              <tr>
+                        <input type="hidden" value="@item.Id" name="SaveValues[@i].Id">
+                   <td>
+                       <input type="hidden" value="@item.CategoriaClasse" name="SaveValues[@i].CategoriaClasse">
+                       @if (item.CategoriaClasse == 1)
+                       {
+                             <span>Ferramenta</span>
+                       }
+                       else if (item.CategoriaClasse == 2)
+                       {
+                            <span>EPI</span>
+                       }
+                       else if (item.CategoriaClasse == 3)
+                       {
+                            <span>Consumíveis</span>
+                       }                         
+                   </td>
+                        <td>
+                            <input type="hidden" value="@item.PorMetro" name="SaveValues[@i].PorMetro">
+                            <input type="hidden" value="@item.PorAferido" name="SaveValues[@i].PorAferido">
+                            <input type="hidden" value="@item.PorSerial" name="SaveValues[@i].PorSerial">
+                            @if (item.PorMetro == 1)
+                            {
+                                <span>Metro</span>
+                            }
+
+                            @if (item.PorAferido == 1)
+                            {
+                                <span>Aferido</span>
+                            }
+
+                            @if (item.PorSerial == 1)
+                            {
+                                <span>Serial</span>
+                            }
+
+                            @if (item.PorMetro == 0 && item.PorAferido == 0 && item.PorSerial == 0)
+                            {
+                                <input type="hidden" value="1" name="SaveValues[@i].PorQuantidade">
+                                <span>Quantidade</span>
+                            }
+                        </td>
+                        <td>
+                            <span>@item.Codigo</span>
+                            <input type="hidden" value="@item.Codigo" name="SaveValues[@i].Codigo">
+                        </td>
+                        <td>
+                            <span>@item.Nome</span>
+                            <input type="hidden" value="@item.Nome" name="SaveValues[@i].Nome">
+                        </td>
+                        <td>
+                            @if (item.Saldo != null)
+                            {
+                                <input type="hidden" value="@item.Saldo" name="SaveValues[@i].Saldo">
+                                <span>@item.Saldo</span>
+                            }
+                            else
+                            {
+                                <span>*</span>
+                            }
+                        </td>
+                        <td>
+                            <input name="SaveValues[@i].Quantidade" class="form-control" style="width: 65px;">
+                        </td>
+                        <td>
+                            <input name="SaveValues[@i].Observacao" class="form-control">
+                        </td>
+                        <td>
+                            @if (item.PorAferido == 1 || item.PorSerial == 1)
+                            {
+                                <a asp-action="ShowAnexoModal" asp-route-id="@item.Id">
+                                    <img src="~/img/file-earmark-spreadsheet-fill.svg" />
+                                </a>
+                            }
+                            else
+                            {
+
+                            }
+                        </td>
+                        <td>
+                            <img src="~/img/arrow-clockwise.svg" />
+                        </td>
+                        <td>
+                          @*  <a asp-action="ExcludeToCart" asp-route-id="@item.Id">
+                                <img src="~/img/x-circle-fill.svg" />
+                            </a>*@
+                            <a href="#" class="exclude-button" data-id="@item.Id" data-index="@i">
+                                <img src="~/img/x-circle-fill.svg" />
+                            </a>
+                        </td>
+              </tr>
+            }
+        }     
+    </tbody>
+</table>
+
+@* @if (Model != null && Model.Count > 0)
+{
+    <div class="row mb-3">
+        <label for="RFM" class="col-sm-2 col-form-label"> RFM / Nota Fiscal  </label>
+        <div class="col-4">
+            <input name="RFM" class="form-control" id="RFM">
+        </div>
+
+        <div class="col-2">
+            <button type="submit" class="btn btn-info" style="color: white;">
+                Registrar Requisição
+            </button>
+        </div>
+    </div>
+} *@
+
+ 
+        <div class="row mb-3">
+            <label for="RFM" class="col-sm-2 col-form-label"> PR / Nota Fiscal  </label>
+            <div class="col-4">
+                <input class="form-control" id="RFM" value="@(!string.IsNullOrEmpty(ViewBag.InputtedRFM) ? ViewBag.InputtedRFM : string.Empty)" disabled>
+                <input type="hidden" name="RFM" value="@(!string.IsNullOrEmpty(ViewBag.InputtedRFM) ? ViewBag.InputtedRFM : string.Empty)">
+            </div>
+@if (Model != null && Model.Count > 0)
+{
+        <div class="col-2">
+            <button type="submit" class="btn btn-info" style="color: white;">
+               Registrar Requisição
+            </button>
+        </div>
+}
+        </div>
+
+</form>
+
+
+<a asp-action="Index">
+    <button type="button" class="btn btn-info"> <img src="~/img/caret-left-fill.svg" style="margin-right: 10px;" /> Back </button>
+</a>
+
+
+@if (ViewBag.CatalogList != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('CatalogList');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.AnexoCatalogValue != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('AnexoModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".exclude-button").click(function (e) {
+            e.preventDefault(); // Prevent the default behavior of the link click
+
+            var itemId = $(this).data("id"); 
+            var rowIndex = $(this).data("index"); // Get the index of the row to be excluded
+
+            // Send an AJAX request to the server to exclude the item
+            $.ajax({
+                type: "POST",
+                url: "/EntradaEmLote_Req/ExcludeToCart",
+                data: { id: itemId },
+                success: function () {
+                    // Remove the corresponding row from the table
+                    $("tr").eq(rowIndex + 1).remove(); // Add 1 to rowIndex to account for the table header row
+                    //$(this).closest("tr").remove();
+                },
+                error: function () {
+                    console.log("Error occurred while excluding the item.");
+                }
+            });
+        });
+    });
+</script>

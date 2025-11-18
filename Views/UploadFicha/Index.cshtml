@@ -1,0 +1,551 @@
+﻿@model List<FerramentariaTest.Models.UploadFichaViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4> Upload de Ficha </h4>
+<br />
+
+@await Component.InvokeAsync("ValuePartial")
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}
+
+
+@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+
+<div class="modal fade" id="ListOfMessages" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> Mensagem </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable5">
+                    <tbody>
+                        @if (ViewBag.Messages != null)
+                        {
+                            @foreach (var item in ViewBag.Messages)
+                            {
+                                <tr>
+                                    <td>
+                                        <span><b>Postado Por:</b></span>@item.Username
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span><b>Texto:</b></span> @item.Mensagem
+                                        @if (item.Fixar != 1)
+                                        {
+                                            <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                        }
+                                        else
+                                        {
+                                            @*  if (item.IdUsuario_Adicionou == item.LoggedUserId)
+                                {
+                                <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                } *@
+
+                                            if (item.allowdelete == true)
+                                            {
+                                                <a asp-action="DeleteMessage" asp-route-id="@item.Id">Apagar</a>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ListOfUsers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"> List of Employees </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-sm align-left" id="myTable4">
+                    <thead>
+                        <tr>
+                            <th>
+                                Chapa
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                CodSituacao
+                            </th>
+                            <th>
+                                Secao
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (ViewBag.ListOfEmployees != null)
+                        {
+                            @foreach (var item in ViewBag.ListOfEmployees)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Chapa
+                                    </td>
+                                    <td>
+                                        @item.Nome
+                                    </td>
+                                    <td>
+                                        @item.CodSituacao
+                                    </td>
+                                    <td>
+                                        @item.Secao
+                                    </td>
+                                    <td>
+                                        <a asp-action="SelectedUser" asp-route-chapa="@item.Chapa">Select</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                @*    <button type="submit" class="btn btn-primary position-relative">
+                <img src="~/img/plus-lg.svg" alt="Plus Icon"> Confirmar Extravio
+                </button>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<form asp-action="SearchDev" method="get">
+    <div class="row mb-3">
+        <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm"> Matricula / Nome: </label>
+        <div class="col-sm-2">
+            <input name="IdFuncionario" class="form-control form-control-sm" id="colFormLabelSm">
+        </div>
+        <div class="col-sm-4">
+            <button type="submit" class="btn btn-info loadingButton" style="color: white;">
+                <img src="~/img/search.svg" />
+            </button>
+        </div>
+    </div>
+</form>
+
+<form asp-action="GetArquivo" method="get">
+<div class="row">
+
+        <div class="col-md-5">
+
+            <div id="Solicitante">
+            <div class="row">
+                <div class="col-md-8">
+                        @{
+                            UserViewModel? UsuarioModel = new UserViewModel();
+                        }
+                            @if (ViewBag.Funcionario != null)
+                            {
+                                UsuarioModel = ViewBag.Funcionario as UserViewModel;
+                            }
+                        
+
+                    <div class="d-flex align-items-start">
+                         @if (UsuarioModel.Image == null)
+                        {
+                            <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                        }
+                        else
+                        {
+                            @*<img src="data:image/jpeg;base64,@ViewData["Base64ImageFunctionario"]" class="rounded" alt="..." height="160px" width="130px" />*@
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(UsuarioModel.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                        }
+
+                        <div class="ms-2">
+
+                            @if (ViewBag.Funcionario == null)
+                            {
+                                <div>
+                                    <label for="colFormLabelSm">Chapa:</label>
+                                    <span>  </span>
+                                </div>
+                                <div class="mt-1">
+                                    <label for="colFormLabelSm"> Nome:</label>
+                                    <span>  </span>
+                                </div>
+
+                                <div class="mt-1">
+                                    <label for="colFormLabelSm"> Cod Situação:</label>
+                                    <span>  </span>
+                                </div>
+
+                                <div class="mt-1">
+                                    <label for="colFormLabelSm"> Empressa:</label>
+                                    <span>  </span>
+                                </div>
+
+                                <div class="mt-1">
+                                    <label for="colFormLabelSm"> Função:</label>
+                                    <span> </span>
+                                </div>
+
+                                <div class="mt-1">
+                                    <label for="colFormLabelSm"> Seção:</label>
+                                    <span> </span>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div>
+                                    <label for="colFormLabelSm">Chapa:</label>
+                                        <span> @UsuarioModel.Chapa </span>
+                                        <input name="chapaFuncionario" type="hidden" value="@UsuarioModel.Chapa" />
+                                </div>
+                                <div class="mt-1 d-flex">
+                                    <label for="colFormLabelSm"> Nome: </label>
+                                        <span style="white-space: nowrap;"> &nbsp; @UsuarioModel.Nome </span>
+                                        <input name="nomeFuncionario" type="hidden" value="@UsuarioModel.Nome" />
+                                </div>
+
+                                    @if (@UsuarioModel.CodSituacao != "D")
+                                {
+                                    <div class="mt-1">
+                                        <label for="colFormLabelSm"> Cod Situação:</label>
+                                            <span> @UsuarioModel.CodSituacao </span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mt-1">
+                                        <!-- Add margin-top for spacing -->
+                                        <label for="colFormLabelSm"> Cod Situação:</label>
+                                            <span> <font color="red"> @UsuarioModel.CodSituacao </font> </span>
+                                            <input name="CodSituacaoFuncionario" type="hidden" value="@UsuarioModel.CodSituacao" />
+                                    </div>
+                                    <div class="mt-1">
+                                        <!-- Add margin-top for spacing -->
+                                        <label for="colFormLabelSm"> Date Demissão:</label>
+                                            <span> <font color="red"> @UsuarioModel.DataDemissao.Value.ToString("dd/MM/yyyy") </font> </span>
+                                    </div>
+
+                                }
+
+                                    <input name="coligadaFuncionario" type="hidden" value="@UsuarioModel.CodColigada" />
+
+
+                                <div class="mt-1">
+                                    <!-- Add margin-top for spacing -->
+                                    <label for="colFormLabelSm"> Empressa:</label>
+                                        @if (UsuarioModel.CodColigada == 2)
+                                    {
+                                        <span> BrasFELS </span>
+                                    }
+                                    else
+                                    {
+                                        <span>  </span>
+                                    }
+                                </div>
+
+                                <div class="mt-1">
+                                    <!-- Add margin-top for spacing -->
+                                    <label for="colFormLabelSm"> Função:</label>
+                                        <span> @UsuarioModel.Funcao </span>
+                                </div>
+
+                                <div class="mt-1">
+                                    <!-- Add margin-top for spacing -->
+                                    <label for="colFormLabelSm"> Seção:</label>
+                                        <span> @UsuarioModel.Secao </span>
+                                </div>
+
+
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        
+        </div>
+
+        </div>
+
+    <div class="col-md-7">
+
+        <div class="row mb-3">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Transações</label>
+            <div class="col-sm-4">
+                De <input name="De" type="date" class="form-control form-control-sm w-70" id="colFormLabelSm">
+            </div>
+            <div class="col-sm-4">
+                Ate <input name="Ate" type="date" class="form-control form-control-sm w-70" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tipo </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Todas" value="0" checked>
+                        <label class="form-check-label" for="Todas">Todas </label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Fichas" value="1">
+                        <label class="form-check-label" for="Fichas">Fichas V1</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"> </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Outros" value="2">
+                        <label class="form-check-label" for="Outros">Outros </label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Consta" value="3">
+                        <label class="form-check-label" for="Consta">Nada  Consta</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-6">
+            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"> </label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Alocados" value="4">
+                        <label class="form-check-label" for="Alocados">Itens Alocados</label>
+                </div>
+                <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Tipo" id="Histórico" value="5">
+                        <label class="form-check-label" for="Tipo">Itens no Histórico</label>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                    <img src="~/img/search.svg" /> Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Data da Transação
+            </th>
+            <th>
+                Data do Upload
+            </th>
+            <th>
+                Responsável pelo Upload
+            </th>
+            <th>
+                Ficha/Arquivo
+            </th>
+            <th>
+                
+            </th>          
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                       @* @Html.DisplayFor(modelItem => item.Id)*@
+                        <input name="chapaFuncionario" type="hidden" value="@item.Id" />
+                    </td>
+                    <td>
+                        @switch (item.Tipo)
+                        {
+                            case 1:
+                                <p>Fichas V1</p>
+                                break;
+                            case 2:
+                                <p>Outros</p>
+                                break;
+                            case 3:
+                                <p>Nada Consta</p>
+                                break;
+                            case 4:
+                                <p>Itens Alocados</p>
+                                break;
+                            case 5:
+                                <p>Itens no Histórico</p>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <p>-</p>
+                    </td>
+                    <td>
+                        @(((DateTime)item.DataRegistro).ToString("dd/MM/yyyy"))
+                    </td>
+                    <td>
+                         @Html.DisplayFor(modelItem => item.ResponsavelUploadNome)
+                    </td>
+                    <td>
+                      @*  @Html.DisplayFor(modelItem => item.ArquivoNome)*@
+
+                        @if (item.ImageData != null)
+                        {
+                            <a href="data:image/jpeg;base64,@Convert.ToBase64String(item.ImageData)" data-lightbox="image-group" data-title="@item.ArquivoNome"> @item.ArquivoNome  </a>
+                        }
+                        else
+                        {
+                            @if (item.Tipo == 1)
+                            {
+                                <a href="http://ferramentaria.seatrium.com.br/Repositorio/UploadFicha/FichasV1/@item.Solicitante_Chapa/@item.ArquivoNome" target="_blank">@item.ArquivoNome</a>
+                            }
+                            else
+                            {
+                                <a href="http://ferramentaria.seatrium.com.br/Repositorio/UploadFicha/@item.Solicitante_Chapa/@item.ArquivoNome" target="_blank">@item.ArquivoNome</a>
+                            }
+                        }                                        
+                    </td>
+                    <td>
+                        <a asp-action="Exclude" asp-route-id="@item.Id">
+
+                            <img src="~/img/x-circle-fill.svg" />
+
+                        </a>
+                    </td>
+
+                </tr>
+
+            }
+        }
+        else
+        {
+
+        }
+    </tbody>
+</table>
+
+
+@if (ViewBag.Funcionario != null)
+{
+     <form method="post" enctype="multipart/form-data" action="UploadAction">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <input name="chapaFuncionarioBelow" type="hidden" value="@ViewBag.Funcionario.Chapa" />
+                        <input name="CodColigadaFuncionarioBelow" type="hidden" value="@ViewBag.Funcionario.CodColigada" />
+
+                        <!-- Radio Buttons -->
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="below" id="OutrosBelow" value="2" checked>
+                            <label class="form-check-label" for="OutrosBelow">Outros</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="below" id="NadaConsta" value="3" >
+                            <label class="form-check-label" for="NadaConsta">Nada Consta</label>
+                        </div>
+
+                        <!-- File Input -->
+                        <div class="input-group mb-3 w-50">
+                            <input type="file" name="file" class="form-control" id="inputGroupFile02">
+                        </div>
+
+                        <!-- Button -->
+                        <button type="submit" class="btn btn-primary">
+                            <img src="~/img/upload.svg" /> EXECUTAR UPLOAD
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+    </form>
+}
+else
+{
+    
+}
+
+@if (ViewBag.Messages != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfMessages');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.ListOfEmployees != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('ListOfUsers');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+

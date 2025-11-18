@@ -1,0 +1,117 @@
+2025-11-17 10:48:23.230 -03:00 [Information]
+UserId: 1
+TransactionId: 
+Action: PrepareReservation
+Outcome: Success
+TraceId: 01e849f7b463d361510897f8cbfe2e31
+TraceIdGuid: 63a19b61-3a69-426b-b494-1e8d45243ad2
+Message: User:admin.demo successfully Prepared 1 Item/s with Control:abcde-asdgf.
+----------------------------------------
+2025-11-17 10:51:44.361 -03:00 [Information]
+UserId: 1
+TransactionId: 
+Action: PrepareReservation
+Outcome: Success
+TraceId: 77831c40214c05298f66c4b50ad214d0
+TraceIdGuid: 06cf69c5-ecb2-430c-bd82-99d8f69db838
+Message: User:admin.demo successfully Prepared 1 Item/s with Control:abcde-asdgf.
+----------------------------------------
+2025-11-17 10:53:09.435 -03:00 [Information]
+UserId: 1
+TransactionId: 
+Action: PrepareReservation
+Outcome: Success
+TraceId: efe18cb212187ca54f6f202332e4802c
+TraceIdGuid: 402368c7-0d56-489d-b9b0-856710f238c2
+Message: User:admin.demo successfully Prepared 1 Item/s with Control:abcde-asdgf.
+----------------------------------------
+2025-11-17 10:53:18.633 -03:00 [Information]
+UserId: 1
+TransactionId: 
+Action: CancelReservation
+Outcome: Success
+TraceId: b1579d30a85c432ffdee4e4af7653d66
+TraceIdGuid: 55eb46ab-44db-41f8-93a1-5fc92e92ae26
+Message: User:admin.demo successfully Cancelled Reservation Id: 1 - Reason: ads.
+----------------------------------------
+2025-11-17 10:55:28.811 -03:00 [Information]
+UserId: 1
+TransactionId: 
+Action: PrepareReservation
+Outcome: Success
+TraceId: c36f249ff2b3d1ff88a5ea146a6c7809
+TraceIdGuid: 78200fd8-f3b5-4ff8-8bb6-f24d1434ef20
+Message: User:admin.demo successfully Prepared 1 Item/s with Control:abcde-asdgf.
+----------------------------------------
+2025-11-17 11:14:13.673 -03:00 [Information]
+UserId: 1
+TransactionId: 457d09ff-ef65-45c5-acd0-511edcb70c2b
+Action: FinalizeReservation
+Outcome: Success
+TraceId: 83e1748c7952273e901e9dbbd53f9d1e
+TraceIdGuid: 72862d40-bf46-497d-9b9a-83d55f0a7d15
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:34:28.780 -03:00 [Information]
+UserId: 1
+TransactionId: 20adedb9-0819-4ad8-b429-f1026c3ff6bd
+Action: FinalizeReservation
+Outcome: Success
+TraceId: 219ca1121398dad6362b8128564cc7ea
+TraceIdGuid: c61946b5-0498-4d2b-bc0f-b9688374eea7
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:35:38.280 -03:00 [Information]
+UserId: 1
+TransactionId: cfcd03cc-0aa1-402a-9ed5-307c66b95a3b
+Action: FinalizeReservation
+Outcome: Success
+TraceId: 8c28ea73c6eebcf88eee14c818bce606
+TraceIdGuid: 38f78590-a1f7-4fe3-94a0-cecd010aed1e
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:37:03.984 -03:00 [Information]
+UserId: 1
+TransactionId: 967f3df7-b117-424b-b2b5-a1249e22e877
+Action: FinalizeReservation
+Outcome: Success
+TraceId: 6ff11a572e4aa123a1c2882531fbc173
+TraceIdGuid: 0e5ec5f3-40ae-46ce-9ff1-8ff00704ec50
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:41:05.232 -03:00 [Information]
+UserId: 1
+TransactionId: cce6c36c-7567-40ff-85b6-b026c8f23f2b
+Action: FinalizeReservation
+Outcome: Success
+TraceId: eb7ace61ebbf8073f7b56c9370af96ed
+TraceIdGuid: bfd93990-22c9-4e74-83fa-43c6a6452f0c
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:42:49.826 -03:00 [Information]
+UserId: 1
+TransactionId: 647c4133-17d4-4295-a391-adf6981c3447
+Action: FinalizeReservation
+Outcome: Success
+TraceId: 3df25cfce81cd16f8bdbe07c6f2efe6f
+TraceIdGuid: 5031bceb-3364-4d45-9ce4-6986dbfc6f11
+Message: User:admin.demo successfully Finalize 1 Item/s.
+----------------------------------------
+2025-11-17 13:53:27.350 -03:00 [Information]
+UserId: 1
+TransactionId: 756a1bdc-0f76-4ce3-b5b1-b0e40e52627d
+Action: AddTermsControl
+Outcome: Success
+TraceId: 62ed8227e89e364f13894a8f0d3a3240
+TraceIdGuid: eb6da8d5-9b81-41f0-a139-0a26aefa17f6
+Message: Employee:Jane Doe successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:756a1bdc-0f76-4ce3-b5b1-b0e40e52627d .
+----------------------------------------
+2025-11-17 13:56:26.735 -03:00 [Information]
+UserId: 1
+TransactionId: 2dc5ea1e-bfea-4210-8729-103ae365d5de
+Action: AddTermsControl
+Outcome: Success
+TraceId: 6e97594cbcaf1139d235e01e3de4b40e
+TraceIdGuid: 44058ec7-38a3-4dea-8b6e-78ce98d0e576
+Message: Employee:Jane Doe successfully signed Terms and Condition initiated by User:admin.demo with TransactionId:2dc5ea1e-bfea-4210-8729-103ae365d5de .
+----------------------------------------

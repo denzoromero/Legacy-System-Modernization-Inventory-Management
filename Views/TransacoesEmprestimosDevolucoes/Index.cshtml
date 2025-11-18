@@ -1,0 +1,442 @@
+﻿@model IPagedList<FerramentariaTest.Models.RelatorioViewModel>
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Transações de Empréstimos e Devoluções</h4>
+<br />
+
+@* @if (ViewBag.ShowSuccessAlert != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+} *@
+
+<div class="modal fade" id="obsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><img src="~/img/search.svg" /> QUERY</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                @if (ViewBag.Query != null)
+                {
+                    <p>
+                        @ViewBag.Query
+                    </p>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form asp-action="Salvar" method="post">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Transações de Empréstimos e Devoluções</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row mb-3">
+                                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Por período do Empréstimo*</label>
+                                <div class="col-sm-4">
+                                    Inicial* <input name="Inicial" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+                                </div>
+                                <div class="col-sm-4">
+                                    Final* <input name="Final" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="TodosTipo" class="col-sm-3 col-md-3 col-form-label col-form-label-sm">
+                                    <input type="checkbox" class="form-check-input" id="TodosTipo" onclick="toggle(this);"> Tipo (Todos)
+                                </label>
+                                <div class="col-sm-2 col-md-2">
+                                    <input name="Type" type="checkbox" class="form-check-input Tipos" id="EPI" value="EPI"> EPI
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <input name="Type" type="checkbox" class="form-check-input Tipos" id="Ferramenta" value="Ferramenta"> Ferramenta
+                                </div>
+                                <div class="col-sm-2 col-md-2">
+                                    <input name="Type" type="checkbox" class="form-check-input Tipos" id="Consumivies" value="Consumíveis"> Consumivies
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <label class="form-check-label" for="Todos">
+                                    Setor: Todos
+                                </label>
+                                <input class="form-check-input" type="checkbox" value="false" id="Todos" onclick="SetorClick(this);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        @if (ViewBag.FerramentariaList != null)
+                        {
+                            var items = ViewBag.FerramentariaList;
+                            for (int i = 0; i < items.Count; i += 25)
+                            {
+                                <div class="col-md-4">
+                                    <!-- Adjust the column size based on your layout -->
+                                    <table class="table table-sm w-100 light-dark-table">
+                                        <tbody>
+                                            @for (int j = i; j < Math.Min(i + 25, items.Count); j++)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input Setorchoose" name="Setor" type="checkbox" value="@items[j].Nome" id="@items[j].Nome">
+                                                        <label class="form-check-label" style="width: 80%;" for="@items[j].Nome">
+                                                            @items[j].Nome
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        }
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+
+<form asp-action="GetLog" method="post">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="inlineRadio1">Status do Processo</label>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Processo" id="inlineRadio1" value="0">
+                <label class="form-check-label" for="inlineRadio1">Registrado</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Processo" id="inlineRadio2" value="1">
+                <label class="form-check-label" for="inlineRadio2">Em Processamento</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Processo" id="inlineRadio3" value="2">
+                <label class="form-check-label" for="inlineRadio3">Concluido</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Processo" id="inlineRadio4" value="3">
+                <label class="form-check-label" for="inlineRadio3">Falhou</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Processo" id="inlineRadio5" value="4" checked>
+                <label class="form-check-label" for="inlineRadio3">Todos</label>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="inlineRadio1">Registro</label>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Registro" id="inlineRadio4" value="1" checked>
+                <label class="form-check-label" for="inlineRadio3">Ativos</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Registro" id="inlineRadio4" value="0">
+                <label class="form-check-label" for="inlineRadio3">Inativos</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Registro" id="inlineRadio4" value="2">
+                <label class="form-check-label" for="inlineRadio3">Todos</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="row mb-2">
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Pagination" id="pagination10" value="10" checked>
+                    <label class="form-check-label" for="pagination10">10</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Pagination" id="pagination30" value="30">
+                    <label class="form-check-label" for="pagination30">30</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Pagination" id="pagination50" value="50">
+                    <label class="form-check-label" for="pagination50">50</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                        <img src="~/img/search.svg" /> Buscar
+                    </button>
+
+
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" onclick="OpenModal()">
+                        <img src="~/img/plus-lg.svg" alt="Plus Icon"> Novo Registro
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-sm align-left" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Solicitante
+            </th>
+            <th>
+                Iniciou
+            </th>
+            <th>
+                Finalizou
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Status/Arquivo
+            </th>
+            <th>
+                Data Registro
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @if (item.ProcessoDataInicio.HasValue)
+                        {
+                            @(((DateTime)item.ProcessoDataInicio).ToString("HH:mm:ss"))
+                        }                
+                    </td>
+                    <td>
+                        @if (item.ProcessoDataConclusao.HasValue)
+                        {
+                            @(((DateTime)item.ProcessoDataConclusao).ToString("HH:mm:ss"))
+                        }                     
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.timeDifference)
+                    </td>
+                    <td>
+                        @switch (item.Processar)
+                        {
+                            case 0:
+                                <p>Registrado</p>
+                                break;
+                            case 1:
+                                <p>Em Processamento</p>
+                                break;
+                            case 2:
+                                @if (item.ArquivoStatus == 1)
+                                {
+                                    <a asp-action="ViewFile" asp-route-FilePath="@item.Arquivo" target="_blank">@item.ArquivoFilename</a>
+                                }
+                                else
+                                {
+                                    <span>Não localizado</span>
+                                }
+                                break;
+                            case 3:
+                                <p>Falhou</p>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataRegistro)
+                    </td>
+                    <td>
+                        @if (item.Ativo == 0)
+                        {
+
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0);" onclick="confirmDelete(@item.Id);" data-id="@item.Id">
+                                @*<a asp-action="Delete" asp-route-id="@item.Id">*@
+
+                                <img src="~/img/x-circle-fill.svg" />
+
+                            </a>
+
+                    @*         @if (ViewBag.usuariofer != null)
+                            {
+                                @if (ViewBag.usuariofer.Permissao.Visualizar == 1)
+                                {
+                                    <a href="javascript:void(0);" onclick="confirmDelete(@item.Id);" data-id="@item.Id">
+
+                                        <img src="~/img/x-circle-fill.svg" />
+
+                                    </a>
+                                }
+                            } *@
+
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="GetObservacao" asp-route-id="@item.Id">   <img src="~/img/card-text.svg" /> </a>
+                        @*    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <img src="~/img/card-text.svg" />
+                </button>*@
+                    </td>
+                </tr>
+
+            }
+        }
+        else
+        {
+
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(Model, page => Url.Action("TestPage", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div>
+
+
+
+<script>
+    function OpenModal() {
+        // Redirect to the export action's URL
+        window.location.href = '/TransacoesEmprestimosDevolucoes/OpenModal';
+    }
+
+    function SetorClick(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].Setorchoose');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].Tipos');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+
+@if (ViewBag.FerramentariaList != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('exampleModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenObsModal != null && (bool)ViewBag.OpenObsModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('obsModal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+
+    function confirmDelete(itemId) {
+        if (confirm('Are you sure you want to delete this item?')) {
+            var data = { itemId: itemId };
+
+            $.ajax({
+                type: 'POST',
+                url: '/TransacoesEmprestimosDevolucoes/DeleteConfirmed?id=' + itemId, // Replace with your actual URL
+                data: JSON.stringify(data),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                success: function () {
+                    alert('Item deleted successfully.');
+                    window.location.href = '/TransacoesEmprestimosDevolucoes/Index';
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Error: display the error message or handle it as needed
+                    console.error(xhr.responseText);
+                    alert('An error occurred while deleting the TransacoesEmprestimosDevolucoes item: ' + errorThrown);
+                }
+            });
+        }
+    }
+</script>

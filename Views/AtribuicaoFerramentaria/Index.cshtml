@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Atribuição de Ferramentaria</h4>
+<br />
+
+@*@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}*@
+
+<form asp-action="GetLog" method="post">
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Periodo </label>
+            <div class="col-sm-4">
+                De <input name="De" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+            <div class="col-sm-4">
+                Ate <input name="Ate" type="date" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-sm-12">
+        <button type="submit" class="btn btn-info mr-2" style="color: white;">
+            <img src="~/img/search.svg" /> Buscar
+        </button>
+    </div>
+</div>
+</form>
+@*<div class="form-check form-check-inline">
+    <label class="form-check-label" for="inlineRadio1">testt</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+    <label class="form-check-label" for="inlineRadio1">1</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+    <label class="form-check-label" for="inlineRadio2">2</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+    <label class="form-check-label" for="inlineRadio3">3</label>
+</div>*@

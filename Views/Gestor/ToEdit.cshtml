@@ -1,0 +1,1050 @@
+﻿@model FerramentariaTest.Models.GestorEdit
+
+@{
+    ViewData["Title"] = "ToEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Editar de Estoque</h4>
+<br />
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+@if (ViewBag.ErrorList != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <ul>
+            @foreach (var error in ViewBag.ErrorList)
+            {
+                <li>@error</li>
+            }
+        </ul>
+   
+    </div>
+}
+
+@if (ViewBag.BorrowerDetails != null)
+{
+    EmprestadoModel BorrowerDetails = ViewBag.BorrowerDetails as EmprestadoModel;
+
+    <div class="container-fluid justify-content-center align-content-center">
+        <div class="row align-items-center">
+            <!-- Left column for image -->
+            <div class="col-auto">
+                @if (BorrowerDetails.Image == null)
+                {
+                    <img src="~/img/image-not-available.jpg" class="rounded" alt="..." height="160px" width="130px" />
+                }
+                else
+                {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(BorrowerDetails.Image)" class="rounded" alt="..." height="160px" width="130px" />
+                }
+            </div>
+
+            <!-- Right column for details -->
+            <div class="col">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b>Emprestado em:</b> @BorrowerDetails.DataEmprestimo.Value.ToString("dd/MM/yyyy")
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b>Matricula:</b> @BorrowerDetails.Matricula
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b>Nome:</b> @BorrowerDetails.Nome
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b>Funcao:</b> @BorrowerDetails.Funcao
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <b>Secao:</b> @BorrowerDetails.Secao
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@*@if (ModelState.ContainsKey("Error"))
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <span asp-validation-for="Error" class="text-danger"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}*@
+
+<div class="modal fade" id="AtribuirUsuario" tabindex="-1" aria-labelledby="Atribuir" aria-hidden="true">
+    @*<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-xxl-down">*@
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="Atribuir">Gerenciador de Local</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center">
+
+                <div class="left">
+                    <form id="myForm" asp-action="AddToDatabaseToEdit" method="post">
+                        <table class="table table-sm align-left" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                       
+                                        Id
+                                    </th>
+                                    <th>
+                                        Editar
+                                    </th>
+                                    <th>
+                                        @if (ViewBag.VW_Usuario_NewViewModel != null && ViewBag.IdProduto != null)
+                                        {
+                                            <input type="hidden" name="IdProduto" value="@ViewBag.IdProduto" class="form-control form-control-sm" id="colFormLabelSm">
+                                            <input class="form-check-input" type="checkbox" onclick="toggle(this);" id="selectAll">
+                                        }
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.VW_Usuario_NewViewModel != null)
+                                {
+                                    @foreach (var item in ViewBag.VW_Usuario_NewViewModel)
+                                    {
+                                        <tr>
+                                            <td>
+                                             @*   @Html.DisplayFor(modelItem => item.Id)*@
+                                                <span>@item.Id</span>
+                                            </td>
+                                            <td>
+                                                @*@Html.DisplayFor(modelItem => item.Nome)*@
+                                                <span>@item.Nome</span>
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input insert" type="checkbox" name="selectedIds" value="@item.Id" id="flexCheckDefault">
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+                <div class="content mx-3 d-flex flex-column align-items-center">
+                    <button type="button" class="btn btn-outline-warning" onclick="submitForm()"><img src="~/img/arrow-right.svg" /> </button>
+                    <button type="button" class="btn btn-outline-warning" onclick="DeleteForm()"><img src="~/img/arrow-left.svg" /> </button>
+                </div>
+
+                <div class="right">
+                    <form id="deleteForm" asp-action="DeleteToDatabaseToEdit" method="post">
+                        <table class="table table-sm align-left" id="myTable2">
+                            <thead>
+                                <tr>
+                                    <th>
+                                       
+                                        Id
+                                    </th>
+                                    <th>
+                                        Editar
+                                    </th>
+                                    <th>
+                                        @if (ViewBag.VW_Usuario_NewViewModelRelacionado != null && ViewBag.IdProduto != null)
+                                        {
+                                            <input type="hidden" name="IdProduto" value="@ViewBag.IdProduto" class="form-control form-control-sm" id="colFormLabelSm">
+                                            <input class="form-check-input" type="checkbox" onclick="Delete(this);" id="selectAll">
+                                        }
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.VW_Usuario_NewViewModelRelacionado != null)
+                                {
+                                    @foreach (var item in ViewBag.VW_Usuario_NewViewModelRelacionado)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @*@Html.DisplayFor(modelItem => item.Id)*@
+                                                <span>@item.Id</span>
+                                            </td>
+                                            <td>
+                                                @*@Html.DisplayFor(modelItem => item.Nome)*@
+                                                <span>@item.Nome</span>
+                                            </td>
+                                            <td>
+                                                <input class="form-check-input delete" type="checkbox" name="deletedIds" value="@item.Id" id="flexCheckDefault">
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form asp-action="SaveEdit" method="post">
+ <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Id</label>
+                <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.IdProduto</label>
+                    <input type="hidden" asp-for="IdProduto" value="@Model.IdProduto" />
+                </div>
+            </div>
+        </div>
+ </div>
+
+<div class="row">
+
+    <div class="col-md-6">
+  @*      <input type="hidden" asp-for="CatalogoId" value="@Model.CatalogoId" class="form-control form-control-sm" id="colFormLabelSm">
+        <input type="hidden" asp-for="ProdutoId" value="@Model.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">*@
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Catalogo</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CatalogoType</label>
+                    <input type="hidden" asp-for="CatalogoType" value="@Model.CatalogoType" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Tipo</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CategoriaNome</label>
+                    <input type="hidden" asp-for="CategoriaNome" value="@Model.CategoriaNome" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CatalogoNome</label>
+                    <input type="hidden" asp-for="CatalogoNome" value="@Model.CatalogoNome" />
+                    <input type="hidden" asp-for="IdCatalogo" value="@Model.IdCatalogo" />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Classe</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.ClasseNome</label>
+                    <input type="hidden" asp-for="ClasseNome" value="@Model.ClasseNome" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Codigo</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.CatalogoCodigo</label>
+                    <input type="hidden" asp-for="CatalogoCodigo" value="@Model.CatalogoCodigo" />
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Controle</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">
+                    <label for="colFormLabelSm" class="col-sm-9 col-form-label col-form-label-sm">@Model.Controle</label>
+                        <input type="hidden" asp-for="Controle" value="@Model.Controle" />
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Descrição</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-9 col-form-label col-form-label-sm">@Model.CatalogoDescricao</label>
+                    <input type="hidden" asp-for="CatalogoDescricao" value="@Model.CatalogoDescricao" />
+                    <input type="hidden" asp-for="SaveButton" value="@Model.SaveButton" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Controle == "Aferido")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">AF/Serial</label>
+                <div class="col-sm-6">
+                    <input asp-for="AfSerial" value="@Model.AfSerial" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">PAT</label>
+                <div class="col-sm-6">
+                    <input asp-for="PAT" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.PAT">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Número de Série</label>
+                <div class="col-sm-6">
+                    <input asp-for="Serie" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Serie">
+                </div>
+            </div>
+
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data de Vencimento </label>
+                    <div class="col-sm-6">
+                        <input asp-for="DatadeVencimento" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DatadeVencimento != null && Model.DatadeVencimento != DateTime.MinValue
+                                           ? (((DateTime)Model.DatadeVencimento).ToString("yyyy-MM-dd"))
+                                           : "")">
+
+                    </div>
+                </div>
+
+            @if (Model.ClasseNome == "CALIBRADA")
+            {
+      
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Selo</label>
+                    <div class="col-sm-6">
+                        <input asp-for="Selo" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Selo">
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Propriedade </label>
+                    <div class="col-sm-6">
+                        <select asp-for="Empresa" class="form-select form-select-sm" aria-label="Small select example">
+                            <option value="0" selected>Selecionar...</option>
+                            @foreach (var item in ViewBag.ddlEmpresa)
+                            {
+                                if (Model.Empresa == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Nome</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data de Vencimento </label>
+                    <div class="col-sm-6">
+                        <input asp-for="DatadeVencimento" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DatadeVencimento != null && Model.DatadeVencimento != DateTime.MinValue
+                                           ? (((DateTime)Model.DatadeVencimento).ToString("yyyy-MM-dd"))
+                                           : "")">
+                       
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Certificado </label>
+                    <div class="col-sm-6">
+                        <input asp-for="Certificado" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Certificado">
+                    </div>
+                </div>
+
+            }
+
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo em Estoque</label>
+                <div class="col-sm-6">
+                    <label asp-for="Saldo" value="@Model.AfSerial" class="col-sm-3 col-form-label col-form-label-sm" id="colFormLabelSm">@Model.Saldo</label>
+                        <input type="hidden" asp-for="Saldo" value="@Model.Saldo" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Saldo Minimo em Estoque </label>
+                <div class="col-sm-6">
+                    <input asp-for="QuantidadeMinima" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.QuantidadeMinima" disabled>
+                        <input type="hidden" asp-for="QuantidadeMinima" value="@Model.QuantidadeMinima" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação</label>
+                <div class="col-sm-9">
+                    @*<input asp-for="Observacao" class="col-sm-9 col-form-label col-form-label-sm" value="@Model.Observacao">*@
+                    <textarea asp-for="Observacao" class="form-control" rows="2">@Model.Observacao</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> <b><u> Dados da Compra </u></b></label>
+            </div>
+        </div>
+      </div>
+
+       <div class="row">
+            <div class="col-md-6">
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM/NF </label>
+                    <div class="col-sm-6">
+                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm"> @Model.RFM </label>
+                        <input type="hidden" asp-for="RFM" value="@Model.RFM" />
+                    @*<input asp-for="RFM" value="@Model.RFM" class="form-control form-control-sm" id="colFormLabelSm">*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Data Aquisição </label>
+                    <div class="col-sm-3">
+                        <input asp-for="DataAquisicao" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataAquisicao != null && Model.DataAquisicao != DateTime.MinValue
+                                           ? (((DateTime)Model.DataAquisicao).ToString("yyyy-MM-dd"))
+                                           : "")">
+                    </div>
+                    <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Valor</label>
+                    <div class="col-sm-3">
+                        <input asp-for="Valor" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Valor">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Asset Number</label>
+                <div class="col-sm-6">
+                        <input asp-for="AssetNumber" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.AssetNumber">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Fornecedor </label>
+                <div class="col-sm-6">
+                        <input asp-for="Fornecedor" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Fornecedor">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm"> <b><u>Gestão do Contratos</u></b></label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Contrato</label>
+                <div class="col-sm-6">
+                        <input asp-for="Contrato" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Contrato">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Obra Locada</label>
+                <div class="col-sm-6">
+                    <select asp-for="Obra" class="form-select form-select-sm" aria-label="Small select example">
+                        <option value="0" selected>Selecionar...</option>
+                     @*   @foreach (var item in ViewBag.ddlObra)
+                        {                         
+                                <option value="@item.Id">@item.Nome</option>                            
+                        }*@
+                            @foreach (var item in ViewBag.ddlObra)
+                            {
+                                if (Model.Obra == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Nome</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">OC</label>
+                <div class="col-sm-6">
+                        <input asp-for="OC" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.OC">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">NF de Saída  </label>
+                <div class="col-sm-6">
+                        <input asp-for="NFSaida" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.NFSaida">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data Início</label>
+                <div class="col-sm-6">
+                    @*<input asp-for="DataInicio" type="date" class="form-control form-control-sm" id="colFormLabelSm">*@
+                        <input asp-for="DataInicio" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataInicio != null && Model.DataInicio != DateTime.MinValue
+                                           ? (((DateTime)Model.DataInicio).ToString("yyyy-MM-dd"))
+                                           : "")">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"> 	Data Saída  </label>
+                <div class="col-sm-6">
+                    @*<input asp-for="DataSaida" class="form-control form-control-sm" id="colFormLabelSm">*@
+                        <input asp-for="DataSaida" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataSaida != null && Model.DataSaida != DateTime.MinValue
+                                           ? (((DateTime)Model.DataSaida).ToString("yyyy-MM-dd"))
+                                           : "")">
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else if (Model.Controle == "Serial")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">AF/Serial</label>
+                <div class="col-sm-6">
+                    <input asp-for="AfSerial" value="@Model.AfSerial" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">PAT</label>
+                <div class="col-sm-6">
+                    <input asp-for="PAT" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.PAT">
+                </div>
+            </div>
+        </div>
+        </div>
+
+        if (Model.ClasseNome == "PREVENTIVO")
+        {
+         <div class="row">
+
+            <div class="col-md-6">
+                <div class="row mb-2">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data de Vencimento </label>
+                    <div class="col-sm-6">
+                        <input asp-for="DatadeVencimento" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DatadeVencimento != null && Model.DatadeVencimento != DateTime.MinValue
+                                           ? (((DateTime)Model.DatadeVencimento).ToString("yyyy-MM-dd"))
+                                           : "")">
+                        
+                    </div>
+                </div>
+            </div>
+         </div>
+        }
+
+      
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="row mb-2">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data de Vencimento </label>
+                        <div class="col-sm-6">
+                            <input asp-for="DatadeVencimento" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                                   value="@(Model.DatadeVencimento != null && Model.DatadeVencimento != DateTime.MinValue
+                                           ? (((DateTime)Model.DatadeVencimento).ToString("yyyy-MM-dd"))
+                                           : "")">
+
+                        </div>
+                    </div>
+                </div>
+            </div>        
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo em Estoque</label>
+                <div class="col-sm-6">
+                    <label asp-for="Saldo" value="@Model.AfSerial" class="form-control form-control-sm" id="colFormLabelSm">@Model.Saldo</label>
+                        <input type="hidden" asp-for="Saldo" value="@Model.Saldo" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Saldo Minimo em Estoque </label>
+                <div class="col-sm-6">
+                    <input asp-for="QuantidadeMinima" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.QuantidadeMinima" disabled>
+                        <input type="hidden" asp-for="QuantidadeMinima" value="@Model.QuantidadeMinima" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação</label>
+                <div class="col-sm-9">
+                    @*<input asp-for="Observacao" class="col-sm-9 col-form-label col-form-label-sm" value="@Model.Observacao">*@
+                    <textarea asp-for="Observacao" class="form-control" rows="2">@Model.Observacao</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> <b><u> Dados da Compra </u></b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM/NF </label>
+                <div class="col-sm-6">
+                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm"> @Model.RFM </label>
+                        <input type="hidden" asp-for="RFM" value="@Model.RFM" />
+                @*    <input asp-for="RFM" value="@Model.RFM" class="form-control form-control-sm" id="colFormLabelSm">*@
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Data Aquisição </label>
+                <div class="col-sm-3">
+                    @*<input asp-for="DataAquisicao" type="date" class="form-control form-control-sm" id="colFormLabelSm">*@
+                        <input asp-for="DataAquisicao" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataAquisicao != null && Model.DataAquisicao != DateTime.MinValue
+                                           ? (((DateTime)Model.DataAquisicao).ToString("yyyy-MM-dd"))
+                                           : "")">
+                </div>
+                <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Valor</label>
+                <div class="col-sm-3">
+                        <input asp-for="Valor" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Valor">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Asset Number</label>
+                <div class="col-sm-6">
+                        <input asp-for="AssetNumber" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.AssetNumber">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Fornecedor </label>
+                <div class="col-sm-6">
+                        <input asp-for="Fornecedor" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Fornecedor">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm"> <b><u>Gestão do Contratos</u></b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Contrato</label>
+                <div class="col-sm-6">
+                        <input asp-for="Contrato" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.Contrato">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Obra Locada</label>
+                <div class="col-sm-6">
+                    <select asp-for="Obra" class="form-select form-select-sm" aria-label="Small select example">
+                        <option value="0" selected>Selecionar...</option>
+                     @*   @foreach (var item in ViewBag.ddlObra)
+                        {
+                            <option value="@item.Id">@item.Nome</option>
+                        }*@
+                            @foreach (var item in ViewBag.ddlObra)
+                            {
+                                if (Model?.Obra == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Nome</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Nome</option>
+                                }
+                            }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">OC</label>
+                <div class="col-sm-6">
+                        <input asp-for="OC" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.OC">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">NF de Saída  </label>
+                <div class="col-sm-6">
+                        <input asp-for="NFSaida" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.NFSaida">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Data Início</label>
+                <div class="col-sm-6">
+                    @*<input asp-for="DataInicio" type="date" class="form-control form-control-sm" id="colFormLabelSm">*@
+                        <input asp-for="DataInicio" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataInicio != null && Model.DataInicio != DateTime.MinValue
+                                           ? (((DateTime)Model.DataInicio).ToString("yyyy-MM-dd"))
+                                           : "")">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"> 	Data Saída  </label>
+                <div class="col-sm-6">
+                    @*<input asp-for="DataSaida" class="form-control form-control-sm" id="colFormLabelSm">*@
+                        <input asp-for="DataSaida" type="date" class="form-control form-control-sm" id="colFormLabelSm"
+                               value="@(Model.DataSaida != null && Model.DataSaida != DateTime.MinValue
+                                           ? (((DateTime)Model.DataSaida).ToString("yyyy-MM-dd"))
+                                           : "")">
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Controle == "Metro")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo em Estoque</label>
+                <div class="col-sm-6">
+                    <label asp-for="Saldo" class="col-sm-3 col-form-label col-form-label-sm" id="colFormLabelSm">@Model.Saldo</label>
+                        <input type="hidden" asp-for="Controle" value="@Model.Saldo" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Saldo Minimo em Estoque </label>
+                <div class="col-sm-6">
+                    <input asp-for="QuantidadeMinima" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.QuantidadeMinima">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação</label>
+                <div class="col-sm-9">
+                    @*<input asp-for="Observacao" class="col-sm-9 col-form-label col-form-label-sm" value="@Model.Observacao">*@
+                    <textarea asp-for="Observacao" class="form-control" rows="2">@Model.Observacao</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> <b><u> Dados da Compra </u></b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM/NF </label>
+                <div class="col-sm-6">
+                    <input asp-for="RFM" value="@Model.RFM" class="form-control form-control-sm" id="colFormLabelSm" disabled>
+                        <input type="hidden" asp-for="RFM" value="@Model.RFM" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Controle == "Quantidade")
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo em Estoque</label>
+                <div class="col-sm-6">
+                    <label asp-for="Saldo" class="col-sm-3 col-form-label col-form-label-sm" id="colFormLabelSm">@Model.Saldo</label>
+                        <input type="hidden" asp-for="Saldo" value="@Model.Saldo" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Saldo Minimo em Estoque </label>
+                <div class="col-sm-6">
+                    <input asp-for="QuantidadeMinima" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.QuantidadeMinima">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação</label>
+                <div class="col-sm-9">
+                    @*<input asp-for="Observacao" class="col-sm-9 col-form-label col-form-label-sm" value="@Model.Observacao">*@
+                    <textarea asp-for="Observacao" class="form-control" rows="2">@Model.Observacao</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm"> <b><u> Dados da Compra </u></b></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM/NF </label>
+                <div class="col-sm-6">
+                    <input asp-for="RFM" value="@Model.RFM" class="form-control form-control-sm" id="colFormLabelSm" disabled>
+                        <input type="hidden" asp-for="RFM" value="@Model.RFM" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+    @if (Model.SaveButton == true)
+    {
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+
+                        <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                            Salvar
+                        </button>
+
+                        @*      <a href="@Url.Action("BackToGestor", "Gestor")" class="btn btn-primary">
+                    Voltar para o Gestor
+                    </a>
+
+                    <a href="@Url.Action("BackToSaidaEstoque", "Gestor")" class="btn btn-info">
+                    Nova Saida
+                    </a>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+
+                        <button type="submit" class="btn btn-secondary mr-2" style="color: white;" disabled>
+                            Salvar
+                        </button>
+
+                        @*      <a href="@Url.Action("BackToGestor", "Gestor")" class="btn btn-primary">
+                    Voltar para o Gestor
+                    </a>
+
+                    <a href="@Url.Action("BackToSaidaEstoque", "Gestor")" class="btn btn-info">
+                    Nova Saida
+                    </a>*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+@if (Model.Controle == "Metro" || Model.Controle == "Quantidade")
+{
+<div class="row">
+    <div class="col-md-8">
+            <a href="@Url.Action("GetAtribuirUsuarioToEdit", "Gestor", new { id = Model.IdProduto })">Atribuir ou Remover Usuário na Lista de Monitoramento de Saldo Minimo</a>
+    </div>
+</div>   
+}
+
+
+
+</form>
+
+
+
+@if (ViewBag.VW_Usuario_NewViewModel != null || ViewBag.VW_Usuario_NewViewModelRelacionado != null)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('AtribuirUsuario');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].insert');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function Delete(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].delete');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function submitForm() {
+        // Simulate form submission
+        document.getElementById("myForm").submit();
+    }
+
+    function DeleteForm() {
+        // Simulate form submission
+        document.getElementById("deleteForm").submit();
+    }
+</script>

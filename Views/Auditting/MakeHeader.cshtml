@@ -1,0 +1,236 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            margin: 5mm;
+        }
+
+        #main-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+        }
+
+        .logo-container {
+            flex: 0 0 auto;
+        }
+
+        .title-container {
+            flex: 1;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .datetime-container {
+            flex: 0 0 auto;
+            font-size: 11px;
+            margin: 10px;
+        }
+
+        #seatrium-image {
+            height: 35px;
+            width: auto;
+            display: block;
+        }
+
+        #employee-information-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            min-height: 110px;
+            page-break-inside: avoid;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .information-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-name {
+            width: 20%;
+            min-width: 20%;
+        }
+
+        .info-id {
+            width: 15%;
+            min-width: 15%;
+        }
+
+        .info-status {
+            width: 5%;
+            min-width: 5%;
+        }
+
+        .info-role {
+            width: 15%;
+            min-width: 15%;
+        }
+
+        .info-date {
+            width: 10%;
+            min-width: 10%;
+        }
+
+        .information-label {
+            font-size: 9px;
+        }
+
+        .information-value {
+            font-weight: bold;
+            font-size: 11px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            min-height: 1.2em;
+        }
+
+        .headerPart {
+            font-family: Arial;
+            height: 190px;
+            page-break-after: avoid;
+        }
+
+        #employeePicture {
+            height: 100px;
+            width: 90px;
+            display: block;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            align-self: flex-start;
+            flex-shrink: 0;
+        }
+
+        .table-header-row {
+            display: flex;
+            width: 100%;
+            font-weight: bold;
+            border-top: 2px dashed #000;
+            border-bottom: 2px dashed #000;
+            border-left: none;
+            border-right: none;
+            page-break-after: avoid;
+            font-size: 10px;
+        }
+
+        .col-movimento {
+            width: 10%;
+            min-width: 10%;
+            padding: 5px 0px;
+        }
+
+        .col-data {
+            width: 10%;
+            min-width: 10%;
+            padding: 5px 0px;
+        }
+
+        .col-qtde {
+            width: 5%;
+            min-width: 5%;
+            padding: 5px 0px;
+            text-align: center;
+        }
+
+        .col-local {
+            width: 10%;
+            min-width: 10%;
+            padding: 5px 0px;
+            text-align: center;
+        }
+
+        .col-ca {
+            width: 5%;
+            min-width: 5%;
+            padding: 5px 0px;
+            text-align: center;
+        }
+
+        .col-balconista {
+            width: 30%;
+            min-width: 25%;
+            padding: 5px 0px;
+        }
+
+        .col-id {
+            width: 30%;
+            min-width: 25%;
+            padding: 5px 0px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="headerPart">
+        <div id="main-header-container">
+            <div class="logo-container">
+                <img id="seatrium-image" src="~/img/seatrium grande.png" />
+            </div>
+            <div class="title-container">
+                <b>Ficha do Colaborador</b>
+            </div>
+            <div class="datetime-container">
+                <b>17/08/2025 10:18:46</b>
+            </div>
+        </div>
+
+        <hr />
+
+        <div id="employee-information-container">
+            <div class="information-container info-name">
+                <span class="information-label">Name</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.Nome</span>
+            </div>
+            <div class="information-container info-id">
+                <span class="information-label">Matricula</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.Chapa</span>
+            </div>
+            <div class="information-container info-status">
+                <span class="information-label">Situacao</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.CodSituacao</span>
+            </div>
+            <div class="information-container info-role">
+                <span class="information-label">Cargo</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.Funcao</span>
+            </div>
+            <div class="information-container info-date">
+                <span class="information-label">Admissao</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.DataAdmissao</span>
+            </div>
+            <div class="information-container info-date">
+                <span class="information-label">Demissao</span>
+                <span class="information-value">@ViewBag.EmployeeInformation.DataDemissao</span>
+            </div>
+            <div>
+                @* <img src="~/img/40335.jpg" id="employeePicture"  /> *@
+                <img src="~/img/image-not-available.jpg" id="employeePicture" />
+            </div>
+        </div>
+
+        <div class="table-header-row">
+            <div class="col-movimento">Movimento</div>
+            <div class="col-data">Data/hora</div>
+            <div class="col-qtde">Qtde</div>
+            <div class="col-local">Local</div>
+            <div class="col-ca">CA</div>
+            <div class="col-balconista">Balconista</div>
+            <div class="col-id">ID da transação</div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+
+

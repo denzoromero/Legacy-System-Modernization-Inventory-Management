@@ -1,0 +1,542 @@
+﻿@model FerramentariaTest.Models.CombinedViewModel
+@{
+    ViewData["Title"] = "EditarEstoqueSaida";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Editar de Estoque</h4>
+<br />
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}
+
+@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+
+@*CatalogoLocal Modal*@
+<form asp-action="SaveCatalogoLocal" method="post">
+<div class="modal fade" id="GerenciadorLocal" tabindex="-1" aria-labelledby="Motivo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="Motivo">Gerenciador de Local</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                @if (Model.CatalogoLocalViewModel != null)
+                {
+                    <table class="table table-sm align-left" id="myTable3">
+                        <tr>
+                            <td>Prateleira</td>
+                            <td>Coluna</td>
+                            <td>Linha</td>
+                            <td></td>
+                            <td>Prateleira</td>
+                            <td>Coluna</td>
+                            <td>Linha</td>
+                        </tr>
+                        <tr>
+                            <input type="hidden" asp-for="CatalogoLocalViewModel.IdCatalogo" value="@Model.CatalogoLocalViewModel.IdCatalogo" class="form-control form-control-sm" id="colFormLabelSm">
+                            <input type="hidden" asp-for="CatalogoLocalViewModel.IdFerramentaria" value="@Model.CatalogoLocalViewModel.IdFerramentaria" class="form-control form-control-sm" id="colFormLabelSm">
+                                <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoId" value="@Model.FormEstoqueSaidaViewModel.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+
+                            <td><input asp-for="CatalogoLocalViewModel.Pos1Prateleira" value="@Model.CatalogoLocalViewModel.Pos1Prateleira" class="form-control form-control-sm"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos1Coluna" value="@Model.CatalogoLocalViewModel.Pos1Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos1Linha" value="@Model.CatalogoLocalViewModel.Pos1Linha"></td>
+                            <td></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos6Prateleira" value="@Model.CatalogoLocalViewModel.Pos6Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos6Coluna" value="@Model.CatalogoLocalViewModel.Pos6Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos6Linha" value="@Model.CatalogoLocalViewModel.Pos6Linha"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos2Prateleira" value="@Model.CatalogoLocalViewModel.Pos2Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos2Coluna" value="@Model.CatalogoLocalViewModel.Pos2Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos2Linha" value="@Model.CatalogoLocalViewModel.Pos2Linha"></td>
+                            <td></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos7Prateleira" value="@Model.CatalogoLocalViewModel.Pos7Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos7Coluna" value="@Model.CatalogoLocalViewModel.Pos7Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos7Linha" value="@Model.CatalogoLocalViewModel.Pos7Linha"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos3Prateleira" value="@Model.CatalogoLocalViewModel.Pos3Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos3Coluna" value="@Model.CatalogoLocalViewModel.Pos3Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos3Linha" value="@Model.CatalogoLocalViewModel.Pos3Linha"></td>
+                            <td></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos8Prateleira" value="@Model.CatalogoLocalViewModel.Pos8Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos8Coluna" value="@Model.CatalogoLocalViewModel.Pos8Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos8Linha" value="@Model.CatalogoLocalViewModel.Pos8Linha"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos4Prateleira" value="@Model.CatalogoLocalViewModel.Pos4Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos4Coluna" value="@Model.CatalogoLocalViewModel.Pos4Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos4Linha" value="@Model.CatalogoLocalViewModel.Pos4Linha"></td>
+                            <td></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos9Prateleira" value="@Model.CatalogoLocalViewModel.Pos9Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos9Coluna" value="@Model.CatalogoLocalViewModel.Pos9Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos9Linha" value="@Model.CatalogoLocalViewModel.Pos9Linha"></td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos5Prateleira" value="@Model.CatalogoLocalViewModel.Pos5Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos5Coluna" value="@Model.CatalogoLocalViewModel.Pos5Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos5Linha" value="@Model.CatalogoLocalViewModel.Pos5Linha"></td>
+                            <td></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos10Prateleira" value="@Model.CatalogoLocalViewModel.Pos10Prateleira"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos10Coluna" value="@Model.CatalogoLocalViewModel.Pos10Coluna"></td>
+                            <td><input class="form-control form-control-sm" asp-for="CatalogoLocalViewModel.Pos10Linha" value="@Model.CatalogoLocalViewModel.Pos10Linha"></td>
+                        </tr>
+                    </table>
+                }
+                else
+                {
+                    <table class="table table-sm align-left" id="myTable3">
+                        <tr>
+                            <td>Prateleira</td>
+                            <td>Coluna</td>
+                            <td>Linha</td>
+                            <td></td>
+                            <td>Prateleira</td>
+                            <td>Coluna</td>
+                            <td>Linha</td>
+                        </tr>
+                        <tr>
+                                @if (Model.CatalogoLocalViewModel != null)
+                                {
+                                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoId" value="@Model.FormEstoqueSaidaViewModel.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+                                    <input type="hidden" asp-for="CatalogoLocalViewModel.IdCatalogo" value="@Model.CatalogoLocalViewModel.IdCatalogo" class="form-control form-control-sm" id="colFormLabelSm">
+                                    <input type="hidden" asp-for="CatalogoLocalViewModel.IdFerramentaria" value="@Model.CatalogoLocalViewModel.IdFerramentaria" class="form-control form-control-sm" id="colFormLabelSm">
+                                }
+                               
+                                <td><input asp-for="CatalogoLocalViewModel.Pos1Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos1Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos1Linha" class="form-control form-control-sm"></td>
+                            <td></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos6Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos6Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos6Linha" class="form-control form-control-sm"></td>
+                        </tr>
+                        <tr>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos2Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos2Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos2Linha" class="form-control form-control-sm"></td>
+                            <td></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos7Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos7Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos7Linha" class="form-control form-control-sm"></td>
+                        </tr>
+                        <tr>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos3Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos3Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos3Linha" class="form-control form-control-sm"></td>
+                            <td></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos8Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos8Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos8Linha" class="form-control form-control-sm"></td>
+                        </tr>
+                        <tr>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos4Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos4Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos4Linha" class="form-control form-control-sm"></td>
+                            <td></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos9Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos9Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos9Linha" class="form-control form-control-sm"></td>
+                        </tr>
+                        <tr>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos5Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos5Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos5Linha" class="form-control form-control-sm"></td>
+                            <td></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos10Prateleira" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos10Coluna" class="form-control form-control-sm"></td>
+                                <td><input asp-for="CatalogoLocalViewModel.Pos10Linha" class="form-control form-control-sm"></td>
+                        </tr>
+                    </table>
+                }              
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                    Salvar
+                </button>
+                <button type="button" class="btn btn-info mr-2" style="color: white;">
+                    Limpar
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+
+@*AtribuirUsuario Modal*@
+<div class="modal fade" id="AtribuirUsuario" tabindex="-1" aria-labelledby="Atribuir" aria-hidden="true">
+    @*<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-xxl-down">*@
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="Atribuir">Gerenciador de Local</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center">
+               
+                <div class="left">
+                     <form id="myForm" asp-action="AddToDatabase" method="post">
+                        <table class="table table-sm align-left" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>                                       
+                               <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoId" value="@Model.FormEstoqueSaidaViewModel.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+                                Id
+                            </th>
+                            <th>
+                                Editar
+                            </th>
+                            <th>
+                                @if (Model.VW_Usuario_NewViewModel != null)
+                                {
+                                  <input class="form-check-input" type="checkbox" onclick="toggle(this);" id="selectAll">
+                                }                                
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.VW_Usuario_NewViewModel != null)
+                        {
+                            @foreach (var item in Model.VW_Usuario_NewViewModel)
+                            {
+                                <tr>
+                                    <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                            @Html.DisplayFor(modelItem => item.Nome)
+                                    </td>
+                                    <td>
+                                            <input class="form-check-input insert" type="checkbox" name="selectedIds" value="@item.Id" id="flexCheckDefault">
+                                    </td>
+                                </tr>
+                            }
+                        }                        
+                    </tbody>
+                </table>
+                    </form>
+                </div>
+             
+                <div class="content mx-3 d-flex flex-column align-items-center">
+                    <button type="button" class="btn btn-outline-warning" onclick="submitForm()"><img src="~/img/arrow-right.svg" /> </button>
+                    <button type="button" class="btn btn-outline-warning" onclick="DeleteForm()"><img src="~/img/arrow-left.svg" /> </button>
+                </div>
+                
+                <div class="right">          
+                    <form id="deleteForm" asp-action="DeleteToDatabase" method="post">       
+                        <table class="table table-sm align-left" id="myTable2">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoId" value="@Model.FormEstoqueSaidaViewModel.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+                                    Id
+                                </th>
+                                <th>
+                                    Editar
+                                </th>
+                                <th>
+                                        @if (Model.VW_Usuario_NewViewModelRelacionado != null)
+                                        {
+                                            <input class="form-check-input" type="checkbox" onclick="Delete(this);" id="selectAll">
+                                        }
+                                        
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.VW_Usuario_NewViewModelRelacionado != null)
+                            {
+                                @foreach (var item in Model.VW_Usuario_NewViewModelRelacionado)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Nome)
+                                        </td>
+                                        <td>
+                                                <input class="form-check-input delete" type="checkbox" name="deletedIds" value="@item.Id" id="flexCheckDefault">
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+            
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form asp-action="EditSaida" method="post">
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Id</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.ProdutoId</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoId" value="@Model.FormEstoqueSaidaViewModel.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+    </div>
+</div>  
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Catalogo</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.CatalogoType</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CategoriaClasse" value="@Model.FormEstoqueSaidaViewModel.CategoriaClasse" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Tipo</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.CategoriaNome</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CategoriaNome" value="@Model.FormEstoqueSaidaViewModel.CategoriaNome" class="form-control form-control-sm" id="colFormLabelSm">
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CategoriaId" value="@Model.FormEstoqueSaidaViewModel.CategoriaId" class="form-control form-control-sm" id="colFormLabelSm">
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.IdCategoriaPai" value="@Model.FormEstoqueSaidaViewModel.IdCategoriaPai" class="form-control form-control-sm" id="colFormLabelSm">
+
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.CatalogoNome</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoNome" value="@Model.FormEstoqueSaidaViewModel.CatalogoNome" class="form-control form-control-sm" id="colFormLabelSm">
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CategoriaClasse" value="@Model.FormEstoqueSaidaViewModel.CategoriaClasse" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Classe</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.ClasseNome</label>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Codigo</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.CatalogoCodigo</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoId" value="@Model.FormEstoqueSaidaViewModel.CatalogoId" class="form-control form-control-sm" id="colFormLabelSm">
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoCodigo" value="@Model.FormEstoqueSaidaViewModel.CatalogoCodigo" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Controle</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">
+                    Controle
+                        <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoPorAferido" value="@Model.FormEstoqueSaidaViewModel.CatalogoPorAferido" class="form-control form-control-sm" id="colFormLabelSm">
+                        <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoPorMetro" value="@Model.FormEstoqueSaidaViewModel.CatalogoPorMetro" class="form-control form-control-sm" id="colFormLabelSm">
+                        <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoPorSerial" value="@Model.FormEstoqueSaidaViewModel.CatalogoPorSerial" class="form-control form-control-sm" id="colFormLabelSm">
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Descrição</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-9 col-form-label col-form-label-sm">CatalogoDescricao</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.CatalogoDescricao" value="@Model.FormEstoqueSaidaViewModel.CatalogoDescricao" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo Em Estoque</label>
+            <div class="col-sm-6">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.ProdutoQuantidade</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoQuantidade" value="@Model.FormEstoqueSaidaViewModel.ProdutoQuantidade" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Saldo Minimo em Estoque</label>
+            <div class="col-sm-6">
+                    <input asp-for="FormEstoqueSaidaViewModel.ProdutoQuantidadeMinima" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.FormEstoqueSaidaViewModel.ProdutoQuantidadeMinima">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação</label>
+            <div class="col-sm-9">
+                    <input asp-for="FormEstoqueSaidaViewModel.ProdutoObservacao" class="form-control form-control-sm" id="colFormLabelSm" value="@Model.FormEstoqueSaidaViewModel.ProdutoObservacao">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Dados da Compra</label>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM/NF</label>
+            <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.FormEstoqueSaidaViewModel.ProdutoRFM</label>
+                    <input type="hidden" asp-for="FormEstoqueSaidaViewModel.ProdutoRFM" value="@Model.FormEstoqueSaidaViewModel.ProdutoRFM" class="form-control form-control-sm" id="colFormLabelSm">
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<br />
+
+<div class="row">
+ @*   <div class="col-md-2">
+            <a href="@Url.Action("GetGerenciadorLocal", "Gestor", new { CatalogoId = Model.FormEstoqueSaidaViewModel.CatalogoId, ProdutoId = Model.FormEstoqueSaidaViewModel.ProdutoId })">Gerenciador de Local</a>
+    </div>*@
+       |
+    <div class="col-md-8">
+            <a href="@Url.Action("GetAtribuirUsuario", "Gestor", new { id = Model.FormEstoqueSaidaViewModel.ProdutoId })">Atribuir ou Remover Usuário na Lista de Monitoramento de Saldo Minimo</a>
+    </div>
+</div>
+
+<br />
+
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+
+                <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                    Salvar
+                </button>
+
+                    <a href="@Url.Action("BackToGestor", "Gestor")" class="btn btn-primary">
+                    Voltar para o Gestor
+                </a>
+
+                    <a href="@Url.Action("BackToSaidaEstoque", "Gestor")" class="btn btn-info">
+                        Nova Saida
+                    </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+
+@if (ViewBag.OpenGerenciaModal != null && (bool)ViewBag.OpenGerenciaModal)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('GerenciadorLocal');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+@if (ViewBag.OpenAtribuiUsuario != null && (bool)ViewBag.OpenAtribuiUsuario)
+{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modal = document.getElementById('AtribuirUsuario');
+            var modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        });
+    </script>
+}
+
+<script>
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].insert');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function Delete(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"].delete');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+
+    function submitForm() {
+        // Simulate form submission
+        document.getElementById("myForm").submit();
+    }
+
+    function DeleteForm() {
+        // Simulate form submission
+        document.getElementById("deleteForm").submit();
+    }
+</script>

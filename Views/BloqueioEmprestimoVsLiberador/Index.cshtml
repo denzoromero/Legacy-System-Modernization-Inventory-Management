@@ -1,0 +1,63 @@
+﻿@model IEnumerable<FerramentariaTest.Models.VW_Usuario_NewViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Usuários para Liberação Excepcional</h1>
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}*@
+
+   <form id="myForm" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+
+<table class="table align-middle mb-0 light-dark-table">
+    <thead>
+        <tr>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.Chapa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Chapa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+
+                        <td>
+                            <input class="form-check-input" name="selectedIds" value="@item.Id" type="checkbox" @(item.IsChecked ? "checked" : "")>
+                        </td>
+                    </tr>
+                }
+            }
+
+    </tbody>
+</table>
+
+    <button type="submit" class="btn btn-primary loadingButton">
+    <img src="~/img/plus-lg.svg" alt="Plus Icon"> Salvar
+</button>
+
+            </form>

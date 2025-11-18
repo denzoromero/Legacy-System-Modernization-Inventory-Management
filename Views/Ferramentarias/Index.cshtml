@@ -1,0 +1,180 @@
+﻿@* @model IPagedList<FerramentariaTest.Models.WithReservationFerramentariaModel> *@
+
+@model NewFerramentariaModel
+
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    int pageSize = Model?.Pagination ?? 10;
+    int pageNumber = Model?.PageNumber ?? 1;
+
+    IPagedList<WithReservationFerramentariaModel> pagedList = null;
+
+    @if (Model?.WithReservationFerramentariaModel != null)
+    {
+        pagedList = Model.WithReservationFerramentariaModel.ToPagedList(pageNumber, pageSize);
+    }
+   
+}
+
+
+@{
+    ViewData["Title"] = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ferramentaria</h1>
+
+@*@if (ViewBag.ShowSuccessAlert)
+{
+    <div class="alert alert-success" role="alert">
+        <img src="~/img/check-lg.svg" /> Success!
+    </div>
+
+}
+
+@if (ViewBag.ShowErrorAlert)
+{
+    <div class="alert alert-warning" role="alert">
+        <img src="~/img/exclamation-triangle-fill.svg" /> @ViewBag.Error
+    </div>
+}*@
+
+
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-primary loadingButton">
+            <img src="~/img/plus-lg.svg" alt="Plus Icon"> ADD
+        </button>
+    </a>
+</p>
+@using (Html.BeginForm("SearchFerramentaria", "Ferramentarias", FormMethod.Get))
+{
+    @*SEARCH*@
+    <div class="input-group">
+        @Html.TextBox("filter", ViewBag.Filter as string, new { @class = "form-control rounded", placeholder = "Search" })
+        <button type="submit" class="btn btn-outline-primary loadingButton">search</button>
+    </div>
+
+    <label class="form-check-label" for="inlineRadio1">Status do Registro &nbsp;</label>
+    @*Radio Buttons Status*@
+    <div class="form-check form-check-inline">
+        @Html.RadioButton("status", "1", new { @class = "form-check-input", id = "Ativo" })
+        <label class="form-check-label" for="Ativo">Ativo</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        @Html.RadioButton("status", "0", new { @class = "form-check-input", id = "Inativo" })
+        <label class="form-check-label" for="Inativo">Inativo</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        @Html.RadioButton("status", true, new { @class = "form-check-input", id = "Todos" })
+        <label class="form-check-label" for="Todos">Todos</label>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-sm-9">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination10" value="10" checked>
+                <label class="form-check-label" for="pagination10">10</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination30" value="30">
+                <label class="form-check-label" for="pagination30">30</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="pagination" id="pagination50" value="50">
+                <label class="form-check-label" for="pagination50">50</label>
+            </div>
+        </div>
+    </div>
+}
+<br />
+
+<table class="table align-middle mb-0" id="myTable">
+    <thead class="bg-light">
+        <tr>
+            <th>
+                Id @*@Html.DisplayNameFor(model => model.Id)*@
+            </th>
+            <th>
+                Nome @*@Html.DisplayNameFor(model => model.Nome)*@
+            </th>
+           @* <th>
+                Data Registro @Html.DisplayNameFor(model => model.DataRegistro)
+            </th>*@
+            <th>
+               Ativo @* @Html.DisplayNameFor(model => model.Ativo)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (pagedList != null)
+        {
+          @*   IPagedList<WithReservationFerramentariaModel> *@
+
+            @foreach (var item in pagedList)
+            {
+                <tr>
+                    <td>
+                        @* @Html.DisplayFor(modelItem => item.Id) *@
+                        @item.Id
+                    </td>
+                    <td>
+                        @* @Html.DisplayFor(modelItem => item.Nome) *@
+                        @item.Nome
+                    </td>
+                    <td>
+                        @if (item.Ativo == 1)
+                        {
+                            <span>Ativo</span>
+                        }
+                        else
+                        {
+                            <span>Inativo</span>
+                        }
+                     @*   @Html.DisplayFor(modelItem => item.Ativo)*@
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <button type="button" class="btn btn-warning">
+                                <img src="~/img/pencil-square.svg" /> Edit
+                            </button>
+                        </a>
+                        @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                        @if (item.Ativo == 1)
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <button type="button" class="btn btn-danger">
+                                     Inativar
+                                </button>
+                            </a>
+
+                            @if (item.IdVirtual == null)
+                            {
+                                <a class="btn btn-info" asp-action="AddToVirtual" asp-route-id="@item.Id">
+                                    Exclude Reservation
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-danger opacity-50" asp-action="RemoveToVirtual" asp-route-id="@item.Id">
+                                    Include Reservation
+                                </a>
+                            }
+                        }
+
+                   
+                    </td>
+                </tr>
+            }
+        }      
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    @Html.PagedListPager(pagedList, page => Url.Action("TestPage", new { page, pageSize, filter = Model?.FerramentariaFilter, ativo = Model?.Ativo }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+</div>

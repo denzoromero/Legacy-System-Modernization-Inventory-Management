@@ -1,0 +1,101 @@
+﻿@model FerramentariaTest.Entities.VW_Reativacao_Item
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>VW_Reativacao_Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Codigo" class="control-label"></label>
+                <input asp-for="Codigo" class="form-control" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AF" class="control-label"></label>
+                <input asp-for="AF" class="form-control" />
+                <span asp-validation-for="AF" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PAT" class="control-label"></label>
+                <input asp-for="PAT" class="form-control" />
+                <span asp-validation-for="PAT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Saldo" class="control-label"></label>
+                <input asp-for="Saldo" class="form-control" />
+                <span asp-validation-for="Saldo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Controle" class="control-label"></label>
+                <input asp-for="Controle" class="form-control" />
+                <span asp-validation-for="Controle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocalEmEstoque" class="control-label"></label>
+                <input asp-for="LocalEmEstoque" class="form-control" />
+                <span asp-validation-for="LocalEmEstoque" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Motivo" class="control-label"></label>
+                <input asp-for="Motivo" class="form-control" />
+                <span asp-validation-for="Motivo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Justificativa" class="control-label"></label>
+                <input asp-for="Justificativa" class="form-control" />
+                <span asp-validation-for="Justificativa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Usuario" class="control-label"></label>
+                <input asp-for="Usuario" class="form-control" />
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataInativacao" class="control-label"></label>
+                <input asp-for="DataInativacao" class="form-control" />
+                <span asp-validation-for="DataInativacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Justificativa_Reativacao" class="control-label"></label>
+                <input asp-for="Justificativa_Reativacao" class="form-control" />
+                <span asp-validation-for="Justificativa_Reativacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MatriculaFuncionarioEmprestimo" class="control-label"></label>
+                <input asp-for="MatriculaFuncionarioEmprestimo" class="form-control" />
+                <span asp-validation-for="MatriculaFuncionarioEmprestimo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdProdutoAlocado" class="control-label"></label>
+                <input asp-for="IdProdutoAlocado" class="form-control" />
+                <span asp-validation-for="IdProdutoAlocado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

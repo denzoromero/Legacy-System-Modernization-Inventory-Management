@@ -1,0 +1,139 @@
+﻿@model FerramentariaTest.Models.FormEstoqueSaidaViewModel
+
+@{
+    ViewData["Title"] = "FormEstoqueSaida";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Saída de Estoque</h4>
+<br />
+
+<p>
+    Item do catalogo para foi selecioando então informe a quantidade de entrada.
+</p>
+
+<form asp-action="SaveSaida" method="post">
+<div class="row">
+
+      <div class="col-md-6">
+            <input type="hidden" asp-for="CatalogoId" value="@Model.CatalogoId" class="form-control form-control-sm" id="colFormLabelSm">
+            <input type="hidden" asp-for="ProdutoId" value="@Model.ProdutoId" class="form-control form-control-sm" id="colFormLabelSm">
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Catalogo</label>
+                <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CatalogoType</label>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Tipo</label>
+                <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CategoriaNome</label>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Item</label>
+                <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-8 col-form-label col-form-label-sm">@Model.CatalogoNome</label>
+                </div>
+            </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Classe</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.ClasseNome</label>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Codigo</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">@Model.CatalogoCodigo</label>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Controle</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-6 col-form-label col-form-label-sm">Controle
+
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Descrição</label>
+            <div class="col-sm-9">
+                <label for="colFormLabelSm" class="col-sm-9 col-form-label col-form-label-sm">@Model.CatalogoDescricao</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+
+            <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Saldo Atual</label>
+                <div class="col-sm-9">
+                    <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">@Model.ProdutoQuantidade</label>
+                    <input type="hidden" asp-for="ProdutoQuantidade" value="@Model.ProdutoQuantidade" class="form-control form-control-sm" id="colFormLabelSm">
+                    <input type="hidden" asp-for="ProdutoRFM" value="@Model.ProdutoRFM" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+            <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Quantidade de Saída </label>
+                <div class="col-sm-7">
+                    <input asp-for="QuantidadeSaida" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">RFM </label>
+                <div class="col-sm-7">
+                    <input asp-for="RFM" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Observação </label>
+                <div class="col-sm-7">
+                    <input asp-for="Observacao" class="form-control form-control-sm" id="colFormLabelSm">
+                </div>
+            </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-sm-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <button type="submit" class="btn btn-info mr-2" style="color: white;">
+                     Salvar
+                </button>
+
+                @*  <button type="button" class="btn btn-primary">
+                Saida de Estoque
+                </button>*@
+                    <a href="@Url.Action("BackToGestor", "Gestor")" class="btn btn-primary">
+                    Voltar para o Gestor
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+</form>
